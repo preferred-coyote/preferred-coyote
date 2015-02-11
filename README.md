@@ -34,7 +34,7 @@
 
 ## Deployment
 
-- Heroku
+- [Heroku](http://preferredcoyote.herokuapp.com/)
 
 ## Development
 
@@ -46,6 +46,23 @@ From within the root directory:
 sudo npm install -g bower
 npm install
 bower install
+bundle install
+```
+
+Bundler is a package manager for Ruby, similar to NPM. 
+To check if you have Bundler:
+```sh
+$ bundle
+```
+If you don't have Bundler, please find installation instructions [here.](http://bundler.io/).
+Remember to sudo for a global install.
+
+```sh
+$ sudo gem install bundler
+```
+Then go to the repo and do
+```sh
+bundle install
 ```
 
 ### Roadmap
