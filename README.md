@@ -1,14 +1,14 @@
 [![Stories in Ready](https://badge.waffle.io/preferred-coyote/preferred-coyote.svg?label=ready&title=Ready)](http://waffle.io/preferred-coyote/preferred-coyote)
 
-# Project Name
+# converse.ly
 
-> Pithy project description
+> Chat roulette for voice
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Jackson Hoose (marmalade)
+  - __Scrum Master__: Yan Fan (yanarchy)
+  - __Development Team Members__: Travis Chapman (teechap), Alex Tseung (alextsg)
 
 ## Table of Contents
 
@@ -22,15 +22,19 @@
 
 ## Usage
 
-> Some usage instructions
+###Branch Details
+
+- Deployment branch: master
+- Development branch: develop
+
 
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+
+## Deployment
+
+- [Heroku](http://preferredcoyote.herokuapp.com/)
 
 ## Development
 
@@ -42,6 +46,23 @@ From within the root directory:
 sudo npm install -g bower
 npm install
 bower install
+bundle install
+```
+
+Bundler is a package manager for Ruby, similar to NPM. 
+To check if you have Bundler:
+```sh
+$ bundle
+```
+If you don't have Bundler, please find installation instructions [here.](http://bundler.io/).
+Remember to sudo for a global install.
+
+```sh
+$ sudo gem install bundler
+```
+Then go to the repo and do
+```sh
+bundle install
 ```
 
 ### Roadmap
