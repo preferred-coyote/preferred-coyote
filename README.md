@@ -1,3 +1,5 @@
+[![Stories in Ready](https://badge.waffle.io/preferred-coyote/preferred-coyote.svg?label=ready&title=Ready)](http://waffle.io/preferred-coyote/preferred-coyote)
+
 # Project Name
 
 > Pithy project description
