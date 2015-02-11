@@ -4,5 +4,7 @@ module.exports = {
     uri: 'mongodb://localhost/preferredcoyote-dev'
   },
 
+  port: 3000,
+
   seedDB: true
 };
