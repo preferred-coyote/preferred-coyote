@@ -1,4 +1,4 @@
-# Project Name #
+#converse.ly
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -16,29 +16,17 @@ Oh, and I also like to write press-releases in what I call "Oprah-speak" for mai
 Once the project moves into development, the press release can be used as a touchstone; a guiding light. The product team can ask themselves, "Are we building what is in the press release?" If they find they're spending time building things that aren't in the press release (overbuilding), they need to ask themselves why. This keeps product development focused on achieving the customer benefits and not building extraneous stuff that takes longer to build, takes resources to maintain, and doesn't provide real customer benefit (at least not enough to warrant inclusion in the press release).
  -->
  
-## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+## A voice-only chat roulette
 
-## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+### For when you just want to talk about what interests you.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-
-## Problem ##
-  > Describe the problem your product solves.
-
-## Solution ##
-  > Describe how your product elegantly solves the problem.
-
-## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > conversely pairs users with like interests together in private voice calls over the internet. Browse for users to speak to or trust our program to match you. The service is free, but the experience is priceless.
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Sign up easily through your Facebook account--your personal details will always be private--and create a username.
+  > Log-in and add some interests to your account!
+  > Click 'browse' to search for users by interests or click 'Chat!' for our program to match you with a possible new friend.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
-
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Sometimes when my husband won't stop talking about football, I enjoy using conversely to find people to talk to about the topics that I like. The people I've spoken to have been interesting, funny, and strange--you never know what you're going to get! It's a ball!
