@@ -4,7 +4,7 @@ var morgan = require('morgan');
 var config = require('./environment');
 
 // configure express
-module.exports = function expressConfig(app){
+module.exports = function expressConfig(app) {
 
   // standard POST request body parser
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,6 +18,7 @@ module.exports = function expressConfig(app){
   // set static dir (dist folder for now)
   app.use(express.static(__dirname + '/../../client/dist'));
 
+  // set
   app.set('port', config.port);
 
 };

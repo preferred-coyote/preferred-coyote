@@ -1,10 +1,10 @@
 var router = require('express').Router();
 
 // config function for application router
-module.exports = function applicationRouter(app){
+module.exports = function applicationRouter(app) {
 
   // define base route
-  router.get('/', function(req, res, next){
+  router.get('/', function(req, res, next) {
     res.send('Hello Worlds!');
   });
 

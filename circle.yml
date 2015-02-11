@@ -7,6 +7,6 @@ notifications:
 
 deployment:
   production:
-    branch: develop
+    branch: master
     heroku:
       appname: preferredcoyote
