@@ -3,6 +3,6 @@ machine:
     version: 0.10.34
 deployment:
   master:
-    branch: develop
+    branch: master
     heroku:
       appname: preferredcoyote
