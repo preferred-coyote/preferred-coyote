@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/preferred-coyote/preferred-coyote",
   "dependencies": {
-    "express": "^4.11.2"
+    "body-parser": "^1.11.0",
+    "express": "^4.11.2",
+    "lodash": "^3.1.0"
   }
 }
