@@ -14,5 +14,7 @@
     "client/src/bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+  }
 }
