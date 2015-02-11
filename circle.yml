@@ -2,7 +2,7 @@ machine:
   node:
     version: 0.10.34
 deployment:
-  master:
-    branch: master
+  production:
+    branch: develop
     heroku:
       appname: preferredcoyote
