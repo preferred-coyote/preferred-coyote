@@ -2,9 +2,6 @@ machine:
   node:
     version: 0.10.34
 
-notifications:
-  email: false
-
 deployment:
   production:
     branch: master
