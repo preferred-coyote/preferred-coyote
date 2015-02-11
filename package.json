@@ -18,5 +18,18 @@
     "express": "^4.11.2",
     "lodash": "^3.1.0",
     "morgan": "^1.5.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-compass": "^2.0.3",
+    "gulp-concat": "^2.4.3",
+    "gulp-image": "^0.5.6",
+    "gulp-jshint": "^1.9.2",
+    "gulp-minify-css": "^0.4.5",
+    "gulp-mocha": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-watch": "^4.1.1",
+    "jshint-stylish": "^1.0.0"
   }
 }
