@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/preferred-coyote/preferred-coyote/issues"
   },
-  "homepage": "https://github.com/preferred-coyote/preferred-coyote"
+  "homepage": "https://github.com/preferred-coyote/preferred-coyote",
+  "dependencies": {
+    "express": "^4.11.2"
+  }
 }
