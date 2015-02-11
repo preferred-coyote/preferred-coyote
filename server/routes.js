@@ -5,7 +5,7 @@ module.exports = function applicationRouter(app){
 
   // define base route
   router.get('/', function(req, res, next){
-    res.send('Hello World!');
+    res.send('Hello Worlds!');
   });
 
   // mount router to application
