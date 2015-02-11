@@ -1,0 +1,19 @@
+{
+  "name": "PreferredCoyote",
+  "version": "1.0.0",
+  "description": "> Pithy project description",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/preferred-coyote/preferred-coyote.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/preferred-coyote/preferred-coyote/issues"
+  },
+  "homepage": "https://github.com/preferred-coyote/preferred-coyote"
+}
