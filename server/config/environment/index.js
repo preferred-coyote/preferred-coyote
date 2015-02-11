@@ -25,15 +25,6 @@ var all = {
   //   session: 'yo-soa-secret'
   // },
 
-  // // MongoDB connection options
-  // mongo: {
-  //   options: {
-  //     db: {
-  //       safe: true
-  //     }
-  //   }
-  // },
-
   /**
    * OAuth callbacks/config
    */
