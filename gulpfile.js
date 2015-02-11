@@ -22,11 +22,9 @@ var handleError = function(err){
 };
 
 gulp.task('lint', function(){
-  // lint files
 });
 
 gulp.task('test', function(){
-  // runSequence('karma');
 });
 
 gulp.task('karma', function(done){
