@@ -64,6 +64,11 @@ Then go to the repo and do
 ```sh
 bundle install
 ```
+##Testing
+
+* Circle CI
+* Jest
+* Karma
 
 ### Roadmap
 
