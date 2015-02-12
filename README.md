@@ -64,11 +64,17 @@ Then go to the repo and do
 ```sh
 bundle install
 ```
-##Testing
+## Testing
 
 * Circle CI
 * Jest
 * Karma
+
+## Gulp
+
+```gulp```
+
+
 
 ### Roadmap
 

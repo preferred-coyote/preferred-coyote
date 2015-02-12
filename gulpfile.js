@@ -13,23 +13,25 @@ var paths = {
     css: './client/dist/css',
     img: './client/dist/img'
   },
-  karmaConf: __dirname + '/spec/karam.conf.js'
+  karmaConf: __dirname + '/spec/_karma.conf.js'
 };
 
-var handleError = function(err){
+var handleError = function(err) {
   console.log(err.toString());
   this.emit('end');
 };
 
-gulp.task('lint', function(){
-});
+gulp.task('lint', function() {});
 
-gulp.task('test', function(){
-});
+gulp.task('test', function() {});
 
-gulp.task('karma', function(done){
+gulp.task('karma', function(done) {
   return karma.start({
     configFile: paths.karmaConf,
     singleRun: true
   }, done);
 });
+
+// Default Task
+
+gulp.task('default', ['lint', 'test', 'karma']);
