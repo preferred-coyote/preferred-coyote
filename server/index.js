@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+// include jsx compiler
+require('node-jsx').install();
+
 require('./config/express')(app);
 require('./routes')(app);
 
