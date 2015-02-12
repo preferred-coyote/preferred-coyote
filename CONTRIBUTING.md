@@ -4,11 +4,8 @@
 
 1. Fork the repo
 1. Cut a namespaced feature branch from master
-  - bug/...
-  - feat/...
-  - test/...
-  - doc/...
-  - refactor/...
+  - /featurename
+  For example: 'userprofile', 'editprofile', etc.
 1. Make commits to your feature branch. Prefix each commit like so:
   - (feat) Added a new feature
   - (fix) Fixed inconsistent tests [Fixes #0]
@@ -31,6 +28,8 @@
 - Deployment branch: master
 - Development branch: develop
 
+Please make all pull requests on our develop branch.
+
 ## Detailed Workflow
 
 ### Fork the repo
@@ -38,17 +37,13 @@
 Use github’s interface to make a fork of the repo, then add that repo as an upstream remote:
 
 ```
-git remote add upstream https://github.com/hackreactor-labs/<NAME_OF_REPO>.git
+git remote add upstream https://github.com/preferred-coyote/preferred-coyote.git
 ```
 
-### Cut a namespaced feature branch from master
-
-Your branch should follow this naming convention:
-  - bug/...
-  - feat/...
-  - test/...
-  - doc/...
-  - refactor/...
+### Cut a namespaced feature branch from develop
+- '/featurename'
+There is no exact naming convention, but please be clear about what it is.
+For example: 'userprofile', 'editprofile', etc.
 
 These commands will help you do this:
 
@@ -61,12 +56,14 @@ git checkout -b `your-branch-name`
 ### Make commits to your feature branch. 
 
 Prefix each commit like so
-  - (feat) Added a new feature
-  - (fix) Fixed inconsistent tests [Fixes #0]
-  - (refactor) ...
-  - (cleanup) ...
-  - (test) ...
-  - (doc) ...
+  - (feat) Added a new feature (#ISSUENUMBER)
+  - (fix) Fixed inconsistent tests [Fixes #0] (#ISSUENUMBER)
+  - (refactor) ... (#ISSUENUMBER)
+  - (cleanup) ... (#ISSUENUMBER)
+  - (test) ... (#ISSUENUMBER)
+  - (doc) ... (#ISSUENUMBER)
+
+Please add an issue number, if relevant.
 
 Make changes and commits on your branch, and make sure that you
 only make changes that are relevant to this branch. If you find
@@ -76,7 +73,7 @@ changes.
 
 #### Commit Message Guidelines
 
-- Commit messages should be written in the present tense; e.g. "Fix continuous
+- <b>Commit messages should be written in the present tense</b>; e.g. "Fix continuous
   integration script".
 - The first line of your commit message should be a brief summary of what the
   commit changes. Aim for about 70 characters max. Remember: This is a summary,
@@ -85,15 +82,15 @@ changes.
   be a blank line and then a more detailed description of the commit. This can be
   as detailed as you want, so dig into details here and keep the first line short.
 
-### Rebase upstream changes into your branch
+### Rebase upstream changes from develop into your branch
 
 Once you are done making changes, you can begin the process of getting
 your code merged into the main repo. Step 1 is to rebase upstream
-changes to the dev branch into yours by running this command
+changes to the develop branch into yours by running this command
 from your branch:
 
 ```bash
-git pull --rebase upstream dev
+git pull --rebase upstream develop
 ```
 
 Please leave the master branch alone.
@@ -111,8 +108,8 @@ and picking the versions you want. Be aware that these changes will show
 up in your pull request, so try and incorporate upstream changes as much
 as possible.
 
-You pick a file by `git add`ing it - you do not make commits during a
-rebase.
+You pick a file by `git add`ing it - <b>you do not make commits during a
+rebase.</b>
 
 Once you are done fixing conflicts for a specific commit, run:
 
@@ -130,10 +127,12 @@ you get here again and nothing is broken and all the tests pass.
 
 ### Make a pull request
 
-Make a clear pull request from your fork and branch to the upstream dev
+Make a clear pull request from your fork and branch to the upstream develop
 branch, detailing exactly what changes you made and what feature this
 should add. The clearer your pull request is the faster you can get
 your changes incorporated into this repo.
+
+Please also make sure that your code passes all tests, particularly Circle CI.
 
 At least one other person MUST give your changes a code review, and once
 they are satisfied they will merge your changes into upstream. Alternatively,
