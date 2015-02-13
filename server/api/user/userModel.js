@@ -4,7 +4,7 @@ var Promise = require('bluebird');
 var DB = require('../../db');
 
 var User = DB.define('user', {
-  name: Sequelize.STRING,
+  username: Sequelize.STRING,
   password: Sequelize.STRING
 }, {
   instanceMethods: {
@@ -20,21 +20,20 @@ var User = DB.define('user', {
         });
       });
     }
-  }, {
-    classMethods: {
-      setPassword: function(password) {
-        return new Promise(function(resolve, reject) {
-          bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(password, salt, null, function(err, hash) {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(hash);
-              }
-            });
-          })
-        });
-      }
+  },
+  classMethods: {
+    setPassword: function(password) {
+      return new Promise(function(resolve, reject) {
+        bcrypt.genSalt(10, function(err, salt) {
+          bcrypt.hash(password, salt, null, function(err, hash) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(hash);
+            }
+          });
+        })
+      });
     }
   }
 });
