@@ -3,6 +3,7 @@ var authController = require('./authController');
 
 module.exports = function(app) {
 
+
 	// login
 	router.post('/login', authController.login);
 	// signin
@@ -12,5 +13,6 @@ module.exports = function(app) {
 
 	// mount router onto /api
 	app.use('/api', router);
+
 
 };
