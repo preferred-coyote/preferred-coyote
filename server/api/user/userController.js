@@ -1,3 +1,4 @@
+
 var User = require('./userModel');
 
 // get all the users
