@@ -2,8 +2,7 @@
 
 ## General Workflow
 
-1. Fork the repo
-1. Cut a namespaced feature branch from master
+1. Cut a namespaced feature branch from develop
   - /featurename
   For example: 'userprofile', 'editprofile', etc.
 1. Make commits to your feature branch. Prefix each commit like so:
@@ -13,7 +12,7 @@
   - (cleanup) ...
   - (test) ...
   - (doc) ...
-1. When you've finished with your fix or feature, Rebase upstream changes into your branch. submit a [pull request][]
+1. When you've finished with your fix or feature, Rebase changes into your branch. submit a [pull request][]
    directly to master. Include a description of your changes.
 1. Your pull request will be reviewed by another maintainer. The point of code
    reviews is to help keep the codebase clean and of high quality and, equally
@@ -22,6 +21,8 @@
 1. Fix any issues raised by your code reviwer, and push your fixes as a single
    new commit.
 1. Once the pull request has been reviewed, it will be merged by another member of the team. Do not merge your own commits.
+1. The person who merges the pull request will also need to delete the feature branch that was merged.
+
 
 ##About Branches
 
@@ -32,12 +33,19 @@ Please make all pull requests on our develop branch.
 
 ## Detailed Workflow
 
-### Fork the repo
-
-Use github’s interface to make a fork of the repo, then add that repo as an upstream remote:
+### Clone the repo
 
 ```
-git remote add upstream https://github.com/preferred-coyote/preferred-coyote.git
+git clone https://github.com/preferred-coyote/preferred-coyote.git
+```
+
+### Create a new branch develop
+```
+git checkout -b develop
+```
+then pull the develop branch down from preferred-coyote.
+```
+git pull origin develop
 ```
 
 ### Cut a namespaced feature branch from develop
@@ -50,6 +58,8 @@ These commands will help you do this:
 ``` bash
 
 # Creates your branch and brings you there
+
+```
 git checkout -b `your-branch-name`
 ```
 
@@ -82,22 +92,22 @@ changes.
   be a blank line and then a more detailed description of the commit. This can be
   as detailed as you want, so dig into details here and keep the first line short.
 
-### Rebase upstream changes from develop into your branch
+### Rebase origin changes from develop into your branch
 
 Once you are done making changes, you can begin the process of getting
-your code merged into the main repo. Step 1 is to rebase upstream
+your code merged into the main repo. Step 1 is to rebase origin
 changes to the develop branch into yours by running this command
 from your branch:
 
 ```bash
-git pull --rebase upstream develop
+git pull --rebase origin develop
 ```
 
 Please leave the master branch alone.
 
 This will start the rebase process. You must commit all of your changes
 before doing this. If there are no conflicts, this should just roll all
-of your changes back on top of the changes from upstream, leading to a
+of your changes back on top of the changes from origin, leading to a
 nice, clean, linear commit history.
 
 If there are conflicting changes, git will start yelling at you part way
@@ -105,7 +115,7 @@ through the rebasing process. Git will pause rebasing to allow you to sort
 out the conflicts. You do this the same way you solve merge conflicts,
 by checking all of the files git says have been changed in both histories
 and picking the versions you want. Be aware that these changes will show
-up in your pull request, so try and incorporate upstream changes as much
+up in your pull request, so try and incorporate origin changes as much
 as possible.
 
 You pick a file by `git add`ing it - <b>you do not make commits during a
@@ -127,7 +137,7 @@ you get here again and nothing is broken and all the tests pass.
 
 ### Make a pull request
 
-Make a clear pull request from your fork and branch to the upstream develop
+Make a clear pull request from your fork and branch to the origin develop
 branch, detailing exactly what changes you made and what feature this
 should add. The clearer your pull request is the faster you can get
 your changes incorporated into this repo.
@@ -135,7 +145,7 @@ your changes incorporated into this repo.
 Please also make sure that your code passes all tests, particularly Circle CI.
 
 At least one other person MUST give your changes a code review, and once
-they are satisfied they will merge your changes into upstream. Alternatively,
+they are satisfied they will merge your changes into origin. Alternatively,
 they may have some requested changes. You should make more commits to your
 branch to fix these, then follow this process again from rebasing onwards.
 
@@ -164,7 +174,7 @@ This is just to help you organize your process
 - [ ] Did I follow the correct naming convention for my branch?
 - [ ] Is my branch focused on a single main change?
  - [ ] Do all of my changes directly relate to this change?
-- [ ] Did I rebase the upstream master branch after I finished all my
+- [ ] Did I rebase the origin master branch after I finished all my
   work?
 - [ ] Did I write a clear pull request message detailing what changes I made?
 - [ ] Did I get a code review?
