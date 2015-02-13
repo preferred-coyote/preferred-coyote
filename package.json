@@ -35,7 +35,8 @@
     "object-assign": "^2.0.0",
     "react": "^0.12.2",
     "react-router": "^0.12.0",
-    "sequelize": "^2.0.2"
+    "sequelize": "^2.0.2",
+    "sequelize-cli": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
