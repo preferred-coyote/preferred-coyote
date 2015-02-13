@@ -16,7 +16,7 @@ var App = React.createClass({
       <div className="wrapper">
         <Header appName={this.props.appName}>
           <li><Link to="index">Home</Link></li>
-          <li><Link to="page1">Page 1</Link></li>
+          <li><Link to="page1">Page 2</Link></li>
           <li><Link to="login">Login</Link></li>
         </Header>
         <main>

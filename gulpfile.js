@@ -6,11 +6,13 @@ var browserify = require('gulp-browserify');
 
 var paths = {
   src: {
-    bower: './client/src/bower_components',
-    img: './client/src/img',
-    scss: './client/src/scss'
+    // bower: './client/src/bower_components',
+    // img: './client/src/img',
+    // scss: './client/src/scss',
+    js: './app'
   },
   dist: {
+    public: './public',
     css: './client/dist/css',
     img: './client/dist/img'
   },
@@ -34,7 +36,7 @@ gulp.task('browserify', function() {
       debug: true,
       transform: ['reactify']
     }))
-    .pipe(gulp.dest('./public/'))
+    .pipe(gulp.dest(paths.dist.public))
 });
 
 gulp.task('karma', function(done) {
@@ -44,6 +46,11 @@ gulp.task('karma', function(done) {
   }, done);
 });
 
+
+gulp.task('watch', function() {
+  gulp.watch(paths.src.js + '/**/*.js', ['browserify']);
+});
+
 // Default Task
 
-gulp.task('default', ['lint', 'test', 'karma']);
+gulp.task('default', ['lint', 'test', 'browserify', 'watch']);
