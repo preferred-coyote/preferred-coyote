@@ -37,7 +37,6 @@
     "passport-facebook": "^1.0.3",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
-    "q": "^1.1.2",
     "react": "^0.12.2",
     "react-router": "^0.12.0",
     "sequelize": "^2.0.2",
