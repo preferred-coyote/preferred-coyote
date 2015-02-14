@@ -5,14 +5,14 @@ module.exports = function(app) {
 
 
 	// login
-	router.post('/login', authController.login);
-	// signin
-	router.post('/signup', authController.signup);
-	// logout
-	router.get('/logout', authController.logout);
+  router.post('/login', authController.login);
+  // signin
+  router.post('/signup', authController.signup);
+  // logout
+  router.get('/logout', authController.logout);
 
-	// mount router onto /api
-	app.use('/api', router);
+  // mount router onto /api
+  app.use('/api', router);
 
 
 };
