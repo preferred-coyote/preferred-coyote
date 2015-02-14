@@ -12,8 +12,6 @@ module.exports = function(app) {
   // update a specific user
   router.put('/user/:id', userController.update);
 
-
-
   // mount router onto /api
   app.use('/api', router);
 

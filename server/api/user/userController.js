@@ -1,10 +1,11 @@
-
-var User = require('./userModel');
+var DB = require('../../models');
+var User = DB.User;
+var Interest = DB.Interest;
 
 // get all the users
 module.exports.list = function(req, res, next) {
 
-  User.findAll().success(function(users) {
+  User.findAll().then(function(users) {
     res.json(users);
   });
 
@@ -52,14 +53,20 @@ module.exports.create = function(req, res, next) {
 // view a user profile
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
-  User.find(id).success(function(user) {
+  User.find({
+    where: {
+      id: id
+    },
+    include: [DB.Interest]
+  }).then(function(user) {
     if (!user) {
       res.status(404).json({
         message: 'User not found'
       });
     }
     res.json(user);
-  }).error(function() {
+  }).catch(function(err) {
+    console.log(err);
     res.status(500).json({
       message: 'Error'
     });
@@ -69,7 +76,7 @@ module.exports.show = function(req, res, next) {
 // update a user
 module.exports.update = function(req, res, next) {
   var id = req.params.id;
-  User.find(id).success(function(user) {
+  User.find(id).then(function(user) {
     if (user) {
       // update user attributes
       // user.updateAttributes()
