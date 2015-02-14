@@ -21,15 +21,15 @@ module.exports.login = function(req, res, next) {
       next(new Error('User doesn\'t exist'))
     } else {
       return User.comparePasswords(password)
-      .then(function(foundUser) {
-        if (foundUser) {
-          res.send(user);
-        } else {
-          return next(new Error('no user'))
-        }
-      })
+        .then(function(foundUser) {
+          if (foundUser) {
+            res.send(user);
+          } else {
+            return next(new Error('no user'));
+          }
+        });
     }
-  })
+  });
 };
 
 module.exports.signup = function(req, res, next) {
@@ -42,11 +42,11 @@ module.exports.signup = function(req, res, next) {
       username: username
     }
   }).complete(function(err, user) {
-	  if (err) {
+    if (err) {
       console.log(err)
     } else {
       if (user) {
-      	next(new Error('User already exists!'));
+        next(new Error('User already exists!'));
       } else {
         newUser = {
           username: username
@@ -60,16 +60,16 @@ module.exports.signup = function(req, res, next) {
               console.log('Auth');
               res.json(user);
             }
-          })
-        })
+          });
+        });
       }
     }
-  })
+  });
 };
-	
+  
 module.exports.logout = function(req, res, next) {
   req.session.destroy(function(){
     res.redirect('/');
-  })
+  });
 };
 
