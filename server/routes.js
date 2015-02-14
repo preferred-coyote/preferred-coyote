@@ -11,7 +11,7 @@ module.exports = function applicationRouter(app) {
   // inject api routes onto app
   require('./api/user')(app);
   require('./api/auth')(app);
-
+  require('./api/interest')(app);
 
   // throw 404 for undefined assets and api endpoints
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')

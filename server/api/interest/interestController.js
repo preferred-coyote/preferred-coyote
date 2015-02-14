@@ -1,11 +1,12 @@
+var DB = require('../../models');
+var Interest = DB.Interest;
+
 module.exports.list = function(req, res, next) {
-  res.json([{
-    id: 1,
-    name: 'Sports'
-  }, {
-    id:2,
-    name: 'Cars'
-  }]);
+  Interest.findAll().then(function(interests) {
+    res.status(200).json(interests);
+  }).catch(function(err) {
+    res.status(500).end();
+  });
 };
 
 module.exports.create = function(req, res, next) {
@@ -16,9 +17,16 @@ module.exports.create = function(req, res, next) {
 
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
-  res.status(200).json({
-    id: id,
-    user: 'Sports'
+  Interest.find({
+    where: {
+      id: id
+    },
+    include: [DB.User]
+  }).then(function(interests) {
+    res.json(interests);
+  }).catch(function(err) {
+    console.log(err);
+    res.status(500).end();
   });
 };
 
