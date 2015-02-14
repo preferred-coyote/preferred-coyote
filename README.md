@@ -74,7 +74,34 @@ bundle install
 
 ```gulp```
 
+## Database
 
+These are instructions for using migrations for this project.
+
+Download and download Sequel Pro [here](http://www.sequelpro.com/).
+
+Make sure you have a global install of sequelize-cli.
+
+```
+npm install -g sequelize-cli
+```
+
+Start up Sequel Pro--it is self explanatory.
+
+In command line:
+
+```sh
+sequelize db:migrate
+```
+
+To migrate over.
+
+To use:
+```
+sequelize migration:create --name="ENTERNAMEHERE"
+```
+
+See this [link](http://sequelize.readthedocs.org/en/latest/docs/migrations/) for more info.
 
 ### Roadmap
 
