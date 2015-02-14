@@ -1,11 +1,6 @@
-var passport = require('passport');
-
-var express = require('express');
-var app = express();
 var Promise = require('bluebird');
 
-var userController = require('../user/userController');
-var User = require('../user/userModel.js');
+var User = require('../../models/user.js');
 
 module.exports.login = function(req, res, next) {
   var username = req.body.username,
