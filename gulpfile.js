@@ -3,6 +3,7 @@ var karma = require('karma').server;
 var watch = require('gulp-watch');
 var runSequence = require('run-sequence');
 var browserify = require('gulp-browserify');
+var run = require('gulp-run');
 
 var paths = {
   src: {
@@ -37,6 +38,12 @@ gulp.task('browserify', function() {
       transform: ['reactify']
     }))
     .pipe(gulp.dest(paths.dist.public))
+});
+
+gulp.task('seed', function(done) {
+  run('node seed.js').exec(function() {
+    done();
+  });
 });
 
 gulp.task('karma', function(done) {

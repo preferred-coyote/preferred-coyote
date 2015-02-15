@@ -5,9 +5,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Interest.belongsToMany(models.User, {
-          through: 'users_interests'
-        });
+        Interest.belongsToMany(models.User);
       }
     }
   });
