@@ -23,9 +23,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     classMethods: {
       associate: function(models) {
-        User.belongsToMany(models.Interest, {
-          through: 'users_interests'
-        });
+        User.belongsToMany(models.Interest);
       },
       setPassword: function(password) {
         return new Promise(function(resolve, reject) {

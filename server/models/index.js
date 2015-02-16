@@ -26,6 +26,19 @@ Object.keys(db).forEach(function(modelName) {
   }
 });
 
+/* associations */
+db.User.belongsToMany(db.Interest, {
+  through: db.InterestsUsers
+});
+db.Interest.belongsToMany(db.User, {
+  through: db.InterestsUsers
+});
+
+/* sync */
+sequelize.sync().then(function() {
+  console.log('sync');
+});
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

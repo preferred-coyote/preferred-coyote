@@ -1,6 +1,7 @@
+var passport = require('passport');
 var Promise = require('bluebird');
-
-var User = require('../../models/user.js');
+var userController = require('../user/userController');
+var User = require('../../models').User;
 
 module.exports.login = function(req, res, next) {
   var username = req.body.username,
@@ -38,14 +39,16 @@ module.exports.signup = function(req, res, next) {
     }
   }).complete(function(err, user) {
     if (err) {
-      console.log(err)
+      console.log(err);
     } else {
       if (user) {
         next(new Error('User already exists!'));
       } else {
+
         newUser = {
           username: username
-        }
+        };
+
         User.setPassword(password).then(function(password) {
           newUser.password = password;
           User.build(newUser).save().complete(function(err, user) {
@@ -61,9 +64,9 @@ module.exports.signup = function(req, res, next) {
     }
   });
 };
-  
+
 module.exports.logout = function(req, res, next) {
-  req.session.destroy(function(){
+  req.session.destroy(function() {
     res.redirect('/');
   });
 };
