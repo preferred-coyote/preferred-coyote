@@ -14,12 +14,17 @@ var App = React.createClass({
   render: function() {
     return (
       <div className="wrapper">
-        <Header appName={this.props.appName}>
+        <Header appName="Converse.ly">
+          <li className="divider"></li>
           <li><Link to="index">Home</Link></li>
-          <li><Link to="page1">Page 2</Link></li>
+          <li className="divider"></li>
+          <li><Link to="signup">Sign up</Link></li>
+          <li className="divider"></li>
           <li><Link to="login">Login</Link></li>
+          <li className="divider"></li>
+          <li><Link to="login">Logout</Link></li>
         </Header>
-        <main>
+        <main id="main" role="main" className="main">
           <RouteHandler />
         </main>
       </div>

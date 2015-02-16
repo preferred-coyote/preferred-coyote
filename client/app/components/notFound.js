@@ -3,8 +3,12 @@ var React = require('react');
 var NotFound = React.createClass({
   render: function() {
     return (
-      <h1>Sorry, not found</h1>
-    )
+      <div className="row">
+        <div className="large-12 columns">
+          <h1 className="text-center">Sorry, not found</h1>
+        </div>
+      </div>
+    );
   }
 });
 
