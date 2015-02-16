@@ -23,6 +23,8 @@ var App = React.createClass({
           <li><Link to="login">Login</Link></li>
           <li className="divider"></li>
           <li><Link to="login">Logout</Link></li>
+          <li className="divider"></li>
+          <li><Link to="profile">Profile</Link></li>
         </Header>
         <main id="main" role="main" className="main">
           <RouteHandler />

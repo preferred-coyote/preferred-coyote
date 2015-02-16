@@ -13,11 +13,13 @@ var NotFound = require('./components/notFound').NotFound;
 var Home = require('./components/home').Home;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
+var Profile = require('./components/profile/profile').Profile;
 
 var routes = (
   <Route name="conversely" path="/" handler={App}>
     <DefaultRoute name="index" handler={Home} />
     <Route name="signup" path="signup" handler={Signup} />
+    <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
     <NotFoundRoute name="notfound" handler={NotFound} />
   </Route>
