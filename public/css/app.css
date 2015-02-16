@@ -8102,5 +8102,8 @@ th.hide-for-touch {
     display: table-cell !important;
   }
 }
+body {
+  -webkit-font-smoothing: antialiased;
+}
 
 /*# sourceMappingURL=app.css.map */
