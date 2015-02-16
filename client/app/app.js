@@ -12,11 +12,12 @@ var App = require('./components/app').App;
 var NotFound = require('./components/notFound').NotFound;
 var Home = require('./components/home').Home;
 var Login = require('./components/auth/login').Login;
+var Signup = require('./components/auth/signup').Signup;
 
 var routes = (
   <Route name="conversely" path="/" handler={App}>
     <DefaultRoute name="index" handler={Home} />
-    <Route name="page1" path="page1" handler={NotFound} />
+    <Route name="signup" path="signup" handler={Signup} />
     <Route name="login" path="login" handler={Login} />
     <NotFoundRoute name="notfound" handler={NotFound} />
   </Route>
