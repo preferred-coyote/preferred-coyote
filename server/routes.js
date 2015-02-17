@@ -1,4 +1,6 @@
 var router = require('express').Router();
+var config = require('./config/environment');
+var jwt = require('express-jwt');
 
 // config function for application router
 module.exports = function applicationRouter(app) {
@@ -7,6 +9,20 @@ module.exports = function applicationRouter(app) {
   router.get('/', function(req, res, next) {
     res.render('index.ejs');
   });
+
+  // define jwt route
+  router.use('/api', jwt({
+    secret: config.jwtTokenSecret,
+    credentialsRequired: false,
+    getToken: function fromHeaderOrQuerystring(req) {
+      console.log('REQUEST, ', req.headers);
+      if(req.headers['x-access-token']){
+        return req.headers['x-access-token'];
+      }
+      return null;
+    }
+  }));
+
 
   // inject api routes onto app
   require('./api/user')(app);

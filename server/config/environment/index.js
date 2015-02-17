@@ -18,12 +18,14 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 3000
+  port: process.env.PORT || 3000,
 
-  // Secret for session, you will want to change this and make it an environment variable
-  // secrets: {
-  //   session: 'yo-soa-secret'
-  // },
+  //Secret for session, you will want to change this and make it an environment variable
+  secret: {
+    session: 'yo-soa-secret'
+  },
+
+  jwtTokenSecret: 'hellohello'
 
   /**
    * OAuth callbacks/config
