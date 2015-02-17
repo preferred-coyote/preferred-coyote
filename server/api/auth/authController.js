@@ -9,7 +9,7 @@ var userController = require('../user/userController');
 var createUser = require('../user/userController.js').create;
 
 module.exports.login = function(req, res, next) {
-  return passport.authenticate('local',function(err, user, info) {
+  passport.authenticate('local',function(err, user, info) {
     console.log('I\'M IN LOGIN!!!');
     console.log(user);
     console.log(info);

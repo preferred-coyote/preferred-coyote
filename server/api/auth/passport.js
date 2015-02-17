@@ -1,7 +1,8 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var jwt = require('jsonwebtoken');
-var User = require('../../models/');
+var DB = require('../../models');
+var User = DB.User;
 var promise = require('bluebird');
 
 module.exports = function(app) {
@@ -15,7 +16,9 @@ module.exports = function(app) {
       console.log('AM I MAKING IT INTO PASSPORT.JS??');
       console.log(username);
       console.log(password);
-      
+      console.log(User);
+      console.log(User.findOne);
+
       User.findOne({ username: username }, function(err, user) {
         console.log('I AM RIGHT BEFORE THE IF IN PASSPORT.JS');
         // return done if error
