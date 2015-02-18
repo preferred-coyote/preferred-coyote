@@ -6,7 +6,7 @@ var Interests = React.createClass({
       data: this.props.interests.map(function(element) {
         return (<div>{element.name}</div>);
       })
-    }
+    };
   },
 
   render: function() {

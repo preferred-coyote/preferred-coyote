@@ -43,20 +43,20 @@ var Profile = React.createClass({
   getInitialState: function() {
     return {
       user: data
-    }
+    };
   },
 
   render: function() {
     return (
       <div className="row">
-      <div className="large-12 columns">
-        <Info username={this.state.user.username} avatarimg = {this.state.user.avatar} ></Info>
-        <form>
-          <input type="checkbox" name="searchable" id="checkbox1" value="searchable" defaultChecked><label for="checkbox1">Allow Users to Find Me</label></input>
-        </form>
-        <Interests interests={this.state.user.Interests}></Interests>
-        <Pass />
-      </div>
+        <div className="large-12 columns">
+          <Info username={this.state.user.username} avatarimg = {this.state.user.avatar} ></Info>
+          <form>
+            <input type="checkbox" name="searchable" id="checkbox1" value="searchable" defaultChecked><label for="checkbox1">Allow Users to Find Me</label></input>
+          </form>
+          <Interests interests={this.state.user.Interests}></Interests>
+          <Pass />
+        </div>
       </div>
     );
   }

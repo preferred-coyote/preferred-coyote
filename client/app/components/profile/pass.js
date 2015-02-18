@@ -11,7 +11,6 @@ var Pass = React.createClass({
               <input type="text" name="newpassword" placeholder="New password"></input>
               <input type="submit" value="Update Password" className="button small"></input>
           </fieldset>
-
         </form>
       </div>
     );
