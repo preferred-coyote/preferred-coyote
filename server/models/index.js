@@ -27,12 +27,12 @@ Object.keys(db).forEach(function(modelName) {
 });
 
 /* associations */
-db.User.belongsToMany(db.Interest, {
-  through: db.InterestsUsers
-});
-db.Interest.belongsToMany(db.User, {
-  through: db.InterestsUsers
-});
+// db.User.belongsToMany(db.Interest, {
+//   through: db.InterestsUsers
+// });
+// db.Interest.belongsToMany(db.User, {
+//   through: db.InterestsUsers
+// });
 
 /* sync */
 sequelize.sync().then(function() {
