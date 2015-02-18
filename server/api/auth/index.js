@@ -12,7 +12,7 @@ module.exports = function(app) {
   router.get('/logout', authController.logout);
 
   // mount router onto /api
-  app.use('/api', router);
+  app.use('/api/auth', router);
 
 
 };

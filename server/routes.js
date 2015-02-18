@@ -10,20 +10,6 @@ module.exports = function applicationRouter(app) {
     res.render('index.ejs');
   });
 
-  // define jwt route
-  router.use('/api', jwt({
-    secret: config.jwtTokenSecret,
-    credentialsRequired: false,
-    getToken: function fromHeaderOrQuerystring(req) {
-      console.log('REQUEST, ', req.headers);
-      if(req.headers['x-access-token']){
-        return req.headers['x-access-token'];
-      }
-      return null;
-    }
-  }));
-
-
   // inject api routes onto app
   require('./api/user')(app);
   require('./api/auth')(app);
@@ -34,8 +20,6 @@ module.exports = function applicationRouter(app) {
     .get(function(req, res, next) {
       res.status(404).end();
     });
-
-
 
   // catch all route to send to react
   router.get('/*', function(req, res, next) {

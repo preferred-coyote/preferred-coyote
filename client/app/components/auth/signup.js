@@ -7,7 +7,7 @@ var Signup = React.createClass({
       <div className="row">
         <div className="large-12 columns">
           <h1>Sign Up</h1>
-        	<form className="form" role="form" action="/api/signup" method="POST">
+        	<form className="form" role="form" action="/api/auth/signup" method="POST">
     	      <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="username"/>
             <label for="password">Password</label>

@@ -9,7 +9,7 @@ var Login = React.createClass({
       <div className="row">
         <div className="large-12 columns">
           <h2>Login</h2>
-          <form className="form" role="form" action="/api/login" method="POST">
+          <form className="form" role="form" action="/api/auth/login" method="POST">
             <label for="username">Username</label>
     	      <input type="text" name="username" id="username" placeholder="username" />
             <label for="password">Password</label>

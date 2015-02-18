@@ -5,6 +5,7 @@ var app = module.exports = express();
 // require('node-jsx').install();
 
 require('./config/express')(app);
+require('./config/jwt')(app);
 require('./api/auth/passport')(app);
 require('./routes')(app);
 

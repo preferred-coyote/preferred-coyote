@@ -14,36 +14,36 @@ module.exports = function(app) {
   passport.use(new LocalStrategy(
     function(username, password, done) {
       console.log('AM I MAKING IT INTO PASSPORT.JS??');
-      console.log(username);
-      console.log(password);
-      console.log(User);
-      console.log(User.findOne);
 
-      User.findOne({ username: username }, function(err, user) {
-        console.log('I AM RIGHT BEFORE THE IF IN PASSPORT.JS');
-        // return done if error
-        if (err) {
-          console.log('you erred in passport.js');
-          return done(err);
+      User.find({
+        where: {
+          username: username
         }
+      }).then(function(user) {
+
         // there isn't a user return done with false authentication
         if (!user) {
           console.log('no user in passport.js');
           return done(null, false, { message: 'Incorrect username.' });
         }
-        // verify the password is correct
-        user.comparePasswords(password, function(match){
-          if(!match){
-            console.log('no match in passport.js');
-            return done(null, false, { message: 'Incorrect password.' });
-          } else {
 
-            console.log('correct password');
-            return done(null, user);
-          }
+        // verify the password is correct
+        user.comparePasswords(password).then(function(match) {
+          console.log('correct password');
+          return done(null, user);
+        }).catch(function(err) {
+          return done(null, false, { message: 'Incorrect password.' });
         });
+        
+      }).catch(function(err) {
+        // there was an error
+        if (err) {
+          console.log('you erred in passport.js');
+          return done(err);
+        }
 
       });
+
     }
   ));
 
