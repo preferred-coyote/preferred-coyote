@@ -44,8 +44,8 @@ gulp.task('scss', function() {
 gulp.task('browserify', function() {
   gulp.src(paths.src.js + '/app.js')
     .pipe(browserify({
-      debug: true,
-      transform: ['reactify']
+      debug: false, // disable source maps
+      transform: ['reactify'],
     }))
     .pipe(gulp.dest(paths.dist.js))
 });
@@ -70,5 +70,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-
 gulp.task('default', ['lint', 'test', 'browserify', 'scss', 'watch']);
