@@ -1,4 +1,6 @@
 var router = require('express').Router();
+var config = require('./config/environment');
+var jwt = require('express-jwt');
 
 // config function for application router
 module.exports = function applicationRouter(app) {
@@ -18,8 +20,6 @@ module.exports = function applicationRouter(app) {
     .get(function(req, res, next) {
       res.status(404).end();
     });
-
-
 
   // catch all route to send to react
   router.get('/*', function(req, res, next) {

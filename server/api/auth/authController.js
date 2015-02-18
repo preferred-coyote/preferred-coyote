@@ -1,73 +1,45 @@
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
 var Promise = require('bluebird');
-var userController = require('../user/userController');
+var config = require('../../config/environment');
+
 var User = require('../../models').User;
+var userController = require('../user/userController');
+
+var createUser = require('../user/userController').create;
 
 module.exports.login = function(req, res, next) {
-  var username = req.body.username,
-      password = req.body.password;
 
-  User.find({
-    where: {
-      username: username
+  //goes through Passport first
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      return res.status(500).end();
     }
-  })
-  .then(function(user) {
+
+    // if there is no user
     if (!user) {
-      next(new Error('User doesn\'t exist'))
-    } else {
-      return User.comparePasswords(password)
-        .then(function(foundUser) {
-          if (foundUser) {
-            res.send(user);
-          } else {
-            return next(new Error('no user'));
-          }
-        });
+      return res.status(404).json({ message: 'Invalid' });
     }
-  });
+
+    //delete password and send back user with jwt token
+    if (user) {
+      delete user.password;
+      res.json({
+        user: user,
+        token: jwt.sign(user, config.jwtTokenSecret, {expiresInMinutes: 1000 })
+      });
+    }
+  })(req, res, next);
 };
 
 module.exports.signup = function(req, res, next) {
-  var username = req.body.username,
-      password = req.body.password,
-      newUser;
-
-  User.find({
-    where: {
-      username: username
-    }
-  }).complete(function(err, user) {
-    if (err) {
-      console.log(err);
-    } else {
-      if (user) {
-        next(new Error('User already exists!'));
-      } else {
-
-        newUser = {
-          username: username
-        };
-
-        User.setPassword(password).then(function(password) {
-          newUser.password = password;
-          User.build(newUser).save().complete(function(err, user) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log('Auth');
-              res.json(user);
-            }
-          });
-        });
-      }
-    }
-  });
+  console.log('hello');
+  createUser(req, res, next);
 };
 
 module.exports.logout = function(req, res, next) {
   req.session.destroy(function() {
-    res.redirect('/');
+    res.status(200);
   });
 };
 
