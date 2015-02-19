@@ -21,16 +21,33 @@
   },
   "homepage": "https://github.com/preferred-coyote/preferred-coyote",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^2.9.9",
     "body-parser": "^1.11.0",
+    "ejs": "^2.2.4",
     "express": "^4.11.2",
+    "express-jwt": "^1.0.0",
+    "flux": "^2.0.1",
+    "jsonwebtoken": "^3.2.2",
+    "keymirror": "^0.1.1",
     "lodash": "^3.1.0",
     "morgan": "^1.5.1",
+    "mysql": "^2.5.4",
+    "node-jsx": "^0.12.4",
+    "object-assign": "^2.0.0",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-local": "^1.0.0",
     "react": "^0.12.2",
-    "react-router": "^0.12.0"
+    "react-router": "^0.12.0",
+    "reflux": "^0.2.5",
+    "sequelize": "^2.0.2",
+    "sequelize-cli": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
     "gulp": "^3.8.11",
+    "gulp-browserify": "^0.5.1",
     "gulp-compass": "^2.0.3",
     "gulp-concat": "^2.4.3",
     "gulp-image": "^0.5.6",
@@ -38,6 +55,7 @@
     "gulp-minify-css": "^0.4.5",
     "gulp-mocha": "^2.0.0",
     "gulp-rename": "^1.2.0",
+    "gulp-run": "^1.6.6",
     "gulp-uglify": "^1.1.0",
     "gulp-watch": "^4.1.1",
     "jshint-stylish": "^1.0.0",
@@ -47,6 +65,9 @@
     "karma-cli": "0.0.4",
     "karma-mocha": "^0.1.10",
     "mocha": "^2.1.0",
+    "node-jsx": "^0.12.4",
+    "react-tools": "^0.12.2",
+    "reactify": "^1.0.0",
     "run-sequence": "^1.0.2"
   }
 }

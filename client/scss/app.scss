@@ -1,0 +1,16 @@
+// compass css3 lib
+@import "compass/css3";
+
+// local variables
+@import "variables";
+
+// import css reset first
+@import "../bower_components/foundation/scss/normalize";
+
+// import foundation config
+@import "foundation/foundation_variables";
+@import "foundation/foundation_importer";
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
