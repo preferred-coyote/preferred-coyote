@@ -50,7 +50,7 @@ var Profile = React.createClass({
     return (
       <div className="row">
         <div className="large-12 columns">
-          <Info username={this.state.user.username} avatarimg = {this.state.user.avatar} ></Info>
+          <Info username={this.state.user.username} avatarimg={this.state.user.avatar}></Info>
           <form>
             <input type="checkbox" name="searchable" id="checkbox1" value="searchable" defaultChecked><label for="checkbox1">Allow Users to Find Me</label></input>
           </form>
