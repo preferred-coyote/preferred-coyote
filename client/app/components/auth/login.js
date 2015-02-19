@@ -14,7 +14,7 @@ var Login = React.createClass({
     	      <input type="text" name="username" id="username" placeholder="username" />
             <label for="password">Password</label>
     	      <input type="password" name="password" id="password" />
-    	      <button type="submit" className="button">Sign Up</button>
+    	      <button type="submit" className="button">Login</button>
           </form>
         </div>
       </div>
