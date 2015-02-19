@@ -21,6 +21,7 @@ var routes = (
     <Route name="signup" path="signup" handler={Signup} />
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
+    <Route name="logout" path="logout" handler={Login} />
     <NotFoundRoute name="notfound" handler={NotFound} />
   </Route>
 );

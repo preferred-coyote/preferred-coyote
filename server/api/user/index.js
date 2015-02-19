@@ -36,22 +36,22 @@ module.exports = function(app) {
    * protect post/update/delete routes
    * from users who don't own that resource
    */
-  router.all('*', function(req, res, next) {
-    // skip over the create path
-    if (req.path === '/auth/signup') return next();
-    // continue if its a get request or if its to create a user
-    if (req.method === 'GET') return next();
-    // there is no auth'd user
-    if (!req.user) return res.status(401).json({
-      message: 'Not authorized'
-    });
-    // continue if the user who is modifying the resource owns it
-    if (req.user.id === req.foundUser.id) return next();
-    // otherwise its forbidden
-    return res.status(401).json({
-      message: 'Not authorized'
-    });
-  });
+  // router.all('*', function(req, res, next) {
+  //   // skip over the create path
+  //   if (req.path === '/auth/signup') return next();
+  //   // continue if its a get request or if its to create a user
+  //   if (req.method === 'GET') return next();
+  //   // there is no auth'd user
+  //   if (!req.user) return res.status(401).json({
+  //     message: 'Not authorized'
+  //   });
+  //   // continue if the user who is modifying the resource owns it
+  //   if (req.user.id === req.foundUser.id) return next();
+  //   // otherwise its forbidden
+  //   return res.status(401).json({
+  //     message: 'Not authorized'
+  //   });
+  // });
 
   // list all users
   router.get('/user', userController.list);

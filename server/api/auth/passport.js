@@ -13,17 +13,14 @@ module.exports = function(app) {
    */
   passport.use(new LocalStrategy(
     function(username, password, done) {
-      console.log('AM I MAKING IT INTO PASSPORT.JS??');
 
       User.find({
         where: {
           username: username
         }
       }).then(function(user) {
-
         // there isn't a user return done with false authentication
         if (!user) {
-          console.log('no user in passport.js');
           return done(null, false, { message: 'Incorrect username.' });
         }
 
@@ -34,11 +31,10 @@ module.exports = function(app) {
         }).catch(function(err) {
           return done(null, false, { message: 'Incorrect password.' });
         });
-        
+
       }).catch(function(err) {
         // there was an error
         if (err) {
-          console.log('you erred in passport.js');
           return done(err);
         }
 
