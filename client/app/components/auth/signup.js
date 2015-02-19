@@ -12,7 +12,7 @@ var Signup = React.createClass({
             <input type="text" id="username" name="username" placeholder="username"/>
             <label for="password">Password</label>
     	      <input id="password" type="password" name="password" />
-    	      <button type="submit" className="button">Login</button>
+    	      <button type="submit" className="button">Signup</button>
           </form>
         </div>
       </div>

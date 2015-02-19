@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var config = require('./environment');
 var path = require('path');
+var multer = require('multer');
 
 // configure express
 module.exports = function expressConfig(app) {
@@ -12,6 +13,24 @@ module.exports = function expressConfig(app) {
 
   // parse json
   app.use(bodyParser.json());
+
+  app.use(multer({
+    dest: '../storage/', // where to store avatars
+    fileSize: 1024 * 1024,
+    files: 1,
+    inMemory: true,
+    onFileUploadStart: function(file) {
+      // only allow jpegs and pngs
+      if (file.mimetype !== 'image/jpg'
+        && file.mimetype !== 'image/jpeg'
+        && file.mimetype !== 'image/png') {
+        return false;
+      }
+    },
+    rename: function(fieldName, fileName) {
+      return fieldName + fileName + Date.now() // avatar name
+    }
+  }));
 
   // HTTP request logger middleware
   app.use(morgan('combined'));
