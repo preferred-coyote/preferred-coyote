@@ -116,7 +116,7 @@ module.exports.show = function(req, res, next) {
 
 // update a user
 module.exports.update = function(req, res, next) {
-  var id = req.params.id;
+  var id = req.params.id || req.user.id;
   User.find(id).then(function(user) {
     if (user) {
       user.updateAttributes(req.body).then(function() {

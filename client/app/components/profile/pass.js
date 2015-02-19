@@ -4,7 +4,7 @@ var Pass = React.createClass({
   render: function() {
     return (
       <div>
-        <form className="form" role="form" action="/api/user/profile" enctype="multipart/form-data" method="POST">
+        <form className="form" role="form" action="/api/user/profile" enctype="multipart/form-data" method="PUT">
           <label for="avatar">Upload a new avatar</label>
           <input type="file" name="avatar" id="avatar" />
           <label for="profile">Update profile</label>

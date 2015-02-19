@@ -61,6 +61,7 @@ module.exports = function(app) {
   router.get('/user/:id', userController.show);
   // update a specific user
   router.put('/user/:id', userController.update);
+  router.put('/user/profile', userController.update);
 
   // mount router onto /api
   app.use('/api', router);
