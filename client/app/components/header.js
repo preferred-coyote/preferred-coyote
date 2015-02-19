@@ -4,7 +4,27 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 
+var Reflux = require('reflux');
+var userStore = require('../stores/userStore');
+
 var Header = React.createClass({
+
+  mixins: [
+    Reflux.listenTo(userStore, 'onLoggedIn')
+  ],
+
+  getInitialState: function() {
+    return userStore.getUserData();
+  },
+
+  onLoggedIn: function(user) {
+    var user = userStore.getUserData();
+    console.log(user);
+    this.setState({
+      loggedIn: user.loggedIn
+    });
+  },
+
   render: function() {
     return (
       <header className="header top-bar" role="header">

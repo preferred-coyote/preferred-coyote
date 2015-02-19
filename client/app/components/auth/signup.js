@@ -1,17 +1,27 @@
 /** @jsx React.DOM */
 var React = require('react');
 
+var signupStore = require('../../stores/signupStore');
+
 var Signup = React.createClass({
+  signup: function(e) {
+    e.preventDefault();
+    actions.signup({
+      username: this.refs.username.getDOMNode().value.trim(),
+      password: this.refs.password.getDOMNode().value.trim()
+    });
+  },
+
   render: function() {
     return (
       <div className="row">
         <div className="large-12 columns">
           <h1>Sign Up</h1>
-        	<form className="form" role="form" action="/api/auth/signup" method="POST">
-    	      <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="username"/>
-            <label for="password">Password</label>
-    	      <input id="password" type="password" name="password" />
+        	<form className="form" onSubmit={this.signup} role="form" action="/api/auth/signup" method="POST">
+    	      <label htmlFor="username">Username</label>
+            <input type="text" id="username" name="username" ref="username" placeholder="username"/>
+            <label htmlFor="password">Password</label>
+    	      <input id="password" type="password" ref="password" name="password" />
     	      <button type="submit" className="button">Signup</button>
           </form>
         </div>

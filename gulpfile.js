@@ -63,11 +63,14 @@ gulp.task('karma', function(done) {
   }, done);
 });
 
-
+// folders to watch
 gulp.task('watch', function() {
   gulp.watch(paths.src.js + '/**/*.js', ['browserify']);
   gulp.watch(paths.src.scss + '/**/*.scss', ['scss']);
 });
+
+// build for deploys
+gulp.task('build', ['browserify', 'scss']);
 
 // Default Task
 gulp.task('default', ['lint', 'test', 'browserify', 'scss', 'watch']);
