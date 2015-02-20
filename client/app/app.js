@@ -14,6 +14,7 @@ var Home = require('./components/home').Home;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
 var Profile = require('./components/profile/profile').Profile;
+// var pubnub = require('./stores/pubnubStore');
 
 var routes = (
   <Route name="conversely" path="/" handler={App}>
