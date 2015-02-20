@@ -29,6 +29,13 @@ var App = React.createClass({
     };
   },
 
+  componentDidMount: function(){
+
+    if (this.state.loggedIn) {
+      this.transitionTo('profile');
+    }
+  },
+
   logout: function(e) {
     e.preventDefault();
     actions.logout();
