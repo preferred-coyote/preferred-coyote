@@ -19,7 +19,8 @@ actions.login.preEmit = function(creds) {
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
         if (data.body && data.body.user) {
-          window.sessionStorage.token = data.body.token;
+          //window.sessionStorage.token = data.body.token;
+          window.localStorage.setItem('token', data.body.token);
           resolve(data.body.user);
         } else {
           reject({});
@@ -29,17 +30,19 @@ actions.login.preEmit = function(creds) {
 };
 
 actions.logout.preEmit = function() {
-  delete window.sessionStorage.token;
+  // delete window.sessionStorage.token;
+  window.localStorage.removeItem('token');
 };
 
 actions.signup.preEmit = function(creds) {
+
   return new Promise(function(resolve, reject) {
     request
       .post('/api/auth/signup')
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
-        console.log(data);
+        resolve(data);
       });
   });
 };

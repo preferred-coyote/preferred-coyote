@@ -47,6 +47,7 @@ gulp.task('browserify', function() {
       debug: false, // disable source maps
       transform: ['reactify'],
     }))
+    .on('error', handleError)
     .pipe(gulp.dest(paths.dist.js))
 });
 

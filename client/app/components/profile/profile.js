@@ -37,9 +37,12 @@ var data = {
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 var Interests = require('./interests').Interests;
-
+var Authentication = require('../../utils/Authentication');
 
 var Profile = React.createClass({
+
+  mixins: [Authentication],
+
   getInitialState: function() {
     return {
       user: data

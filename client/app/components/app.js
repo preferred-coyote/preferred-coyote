@@ -19,22 +19,33 @@ var User = require('./user').User;
 var App = React.createClass({
 
   mixins: [
-    Reflux.listenTo(userStore, 'setLoggedIn')
+    Reflux.listenTo(userStore, 'setLoggedIn'),
+    Router.Navigation
   ],
 
   getInitialState: function() {
     return {
-      loggedIn: false
+      loggedIn: userStore.isLoggedIn()
     };
   },
 
-  logout: function() {
+  componentDidMount: function(){
+
+    if (this.state.loggedIn) {
+      this.transitionTo('profile');
+    }
+  },
+
+  logout: function(e) {
+    e.preventDefault();
     actions.logout();
+    this.transitionTo('index');
   },
 
   setLoggedIn: function() {
+    // user store has changed, get the user data
     var user = userStore.getUserData();
-    console.log('set state')
+    // set the state to loggedIn if the user is present and logged in
     this.setState({
       loggedIn: user && user.loggedIn // set bool as to whether use is logged in
     });
@@ -67,8 +78,8 @@ var App = React.createClass({
         <Header appName="Converse.ly">
           <li className="divider"></li>
           <li><Link to="index">Home</Link></li>
-          <li><a href="#" onClick={this.logout}>Logout</a></li>
           {buttons}
+          {this.state.loggedIn ? <li><a href="#" onClick={this.logout}>Logout</a></li> : ''}
         </Header>
         <main id="main" role="main" className="main">
           <RouteHandler />
