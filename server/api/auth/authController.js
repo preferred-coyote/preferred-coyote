@@ -22,9 +22,9 @@ module.exports.login = function(req, res, next) {
     }
     //delete password and send back user with jwt token
     if (user) {
-      delete user.password;
+      delete user.dataValues.password;
       res.status(200).json({
-        user: user,
+        user: user.dataValues,
         token: jwt.sign(user, config.jwtTokenSecret, {expiresInMinutes: 1000 })
       });
     }

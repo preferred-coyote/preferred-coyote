@@ -23,7 +23,6 @@ module.exports = function(app) {
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
-
         // verify the password is correct
         user.comparePasswords(password).then(function(match) {
           console.log('correct password');

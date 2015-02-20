@@ -28,13 +28,15 @@ var App = React.createClass({
     };
   },
 
-  logout: function() {
+  logout: function(e) {
+    e.preventDefault();
     actions.logout();
   },
 
   setLoggedIn: function() {
+    // user store has changed, get the user data
     var user = userStore.getUserData();
-    console.log('set state')
+    // set the state to loggedIn if the user is present and logged in
     this.setState({
       loggedIn: user && user.loggedIn // set bool as to whether use is logged in
     });
@@ -67,8 +69,8 @@ var App = React.createClass({
         <Header appName="Converse.ly">
           <li className="divider"></li>
           <li><Link to="index">Home</Link></li>
-          <li><a href="#" onClick={this.logout}>Logout</a></li>
           {buttons}
+          {this.state.loggedIn ? <li><a href="#" onClick={this.logout}>Logout</a></li> : ''}
         </Header>
         <main id="main" role="main" className="main">
           <RouteHandler />

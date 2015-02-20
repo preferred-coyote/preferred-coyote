@@ -6,7 +6,7 @@ var userStore = Reflux.createStore({
 
   init: function() {
     this.user = {
-      loggedIn: false
+      loggedIn: window.sessionStorage.token || false
     };
   },
 
@@ -21,6 +21,10 @@ var userStore = Reflux.createStore({
     })
   },
 
+  isLoggedIn: function() {
+    return this.user && this.user.loggedIn;
+  },
+
   logout: function() {
     this.user = {
       loggedIn: false
@@ -28,16 +32,10 @@ var userStore = Reflux.createStore({
     this.trigger(this.user);
   },
 
-  // updateUser: function(user) {
-  //   this.user = user;
-  //   this.trigger(this.user);
-  // },
-
-
-
   getUserData: function() {
     return this.user;
   }
+
 });
 
 module.exports = userStore;
