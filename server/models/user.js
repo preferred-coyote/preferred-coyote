@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
             if (err) {
               reject(err);
             } else {
-              resolve(match);
+              resolve(!!match);
             }
           });
         });

@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
+var Router = require('react-router');
 var Reflux = require('reflux');
 
 var Button = require('../ui/button').Button;
@@ -10,6 +11,20 @@ var userStore = require('../../stores/userStore');
 
 var Login = React.createClass({
 
+  mixins: [
+    Reflux.listenTo(userStore, "onLoggedIn"),
+    Router.Navigation
+  ],
+
+  statics: {
+    willTransitionTo: function(transition) {
+
+      if (userStore.isLoggedIn()) {
+        transition.redirect('profile');
+      }
+    }
+  },
+
   getInitialState: function() {
     return {
       error: '',
@@ -17,8 +32,10 @@ var Login = React.createClass({
     };
   },
 
-  onErrorMessage: function() {
-    // this.refs
+  onLoggedIn: function(isAuthenticated) {
+    if (isAuthenticated) {
+      this.transitionTo('profile');
+    }
   },
 
   login: function(e) {
@@ -26,6 +43,8 @@ var Login = React.createClass({
     actions.login({
       username: this.refs.username.getDOMNode().value.trim(),
       password: this.refs.password.getDOMNode().value.trim()
+    }).then(function(auth){
+      console.log("line 30", auth);
     });
   },
 
