@@ -43,8 +43,6 @@ var Login = React.createClass({
     actions.login({
       username: this.refs.username.getDOMNode().value.trim(),
       password: this.refs.password.getDOMNode().value.trim()
-    }).then(function(auth){
-      console.log("line 30", auth);
     });
   },
 
