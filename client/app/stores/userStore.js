@@ -6,7 +6,7 @@ var userStore = Reflux.createStore({
 
   init: function() {
     this.user = {
-      loggedIn: window.sessionStorage.token || false
+      loggedIn: !!window.localStorage.getItem('token')
     };
   },
 
@@ -15,9 +15,30 @@ var userStore = Reflux.createStore({
     user.then(function(user) {
       self.user = user;
       self.user.loggedIn = true;
-      self.trigger(self.loggedIn);
+      self.trigger(self.user.loggedIn);
     }).catch(function(err) {
-      console.log('error authenticating');
+      console.log('error authenticating', err);
+    })
+  },
+
+  signup: function(signinPromise){
+    var self = this;
+    signinPromise.then(function(data){
+      //set user obj and loggedIn to true if status code 201
+      if (data.status === 201){
+        self.user = data.body.user;
+        self.user.loggedIn = true;
+        //window.sessionStorage.token = data.body.token;
+        window.localStorage.setItem('token', data.body.token);
+
+      } else if (data.status === 409){
+        //username already exists
+        self.user.loggedIn = false;
+
+      }
+      self.trigger(self.user.loggedIn);
+    }).catch(function(err){
+
     })
   },
 

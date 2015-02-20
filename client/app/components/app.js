@@ -19,18 +19,27 @@ var User = require('./user').User;
 var App = React.createClass({
 
   mixins: [
-    Reflux.listenTo(userStore, 'setLoggedIn')
+    Reflux.listenTo(userStore, 'setLoggedIn'),
+    Router.Navigation
   ],
 
   getInitialState: function() {
     return {
-      loggedIn: false
+      loggedIn: userStore.isLoggedIn()
     };
+  },
+
+  componentDidMount: function(){
+
+    if (this.state.loggedIn) {
+      this.transitionTo('profile');
+    }
   },
 
   logout: function(e) {
     e.preventDefault();
     actions.logout();
+    this.transitionTo('index');
   },
 
   setLoggedIn: function() {

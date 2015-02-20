@@ -73,10 +73,13 @@ module.exports.create = function(req, res, next) {
        * true === user is created
        * false === user was found
        */
+
       var created = user[1];
       if (created) {
+        //user was created, return user
         res.status(201).json({
-          message: 'User created.'
+          user: user[0].dataValues,
+          token: jwt.sign(user, config.jwtTokenSecret, {expiresInMinutes: 1000 })
         });
       } else {
         res.status(409).json({
