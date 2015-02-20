@@ -7,7 +7,7 @@ var Info = React.createClass({
         <h2>{this.props.username}</h2>
         <h2>{this.props.realname}</h2>
         <img src={this.props.avatarimg} alt="PREFERRED COYOTE"/>
-        <div style={{margin: '3px 0px 0px 0px'}}>
+        <div>
           <a href="#" className="button tiny">Change Avatar</a>
         </div>
       </div>

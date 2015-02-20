@@ -37,9 +37,12 @@ var data = {
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 var Interests = require('./interests').Interests;
-
+var Authentication = require('../../utils/Authentication');
 
 var Profile = React.createClass({
+
+  mixins: [Authentication],
+
   getInitialState: function() {
     return {
       user: data
@@ -50,11 +53,13 @@ var Profile = React.createClass({
     return (
       <div className="row">
         <div className="large-12 columns">
-          <Info username={this.state.user.username} avatarimg = {this.state.user.avatar} ></Info>
+          <Info username={this.state.user.username} avatarimg={this.state.user.avatar} />
           <form>
-            <input type="checkbox" name="searchable" id="checkbox1" value="searchable" defaultChecked><label for="checkbox1">Allow Users to Find Me</label></input>
+            <input type="checkbox" name="searchable" id="checkbox1" value="searchable" defaultChecked>
+              <label for="checkbox1">Allow Users to Find Me</label>
+            </input>
           </form>
-          <Interests interests={this.state.user.Interests}></Interests>
+          <Interests interests={this.state.user.Interests} />
           <Pass />
         </div>
       </div>

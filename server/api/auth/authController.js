@@ -9,23 +9,25 @@ var userController = require('../user/userController');
 var createUser = require('../user/userController').create;
 
 module.exports.login = function(req, res, next) {
-
   //goes through Passport first
   passport.authenticate('local', function(err, user, info) {
+
     if (err) {
-      return res.status(500).end();
+      return res.status(500).json({
+        message: 'Error Authenticating'
+      });
     }
 
     // if there is no user
     if (!user) {
-      return res.status(404).json({ message: 'Invalid' });
+      return res.status(404).json({ message: 'Bad User/Login' });
     }
 
     //delete password and send back user with jwt token
     if (user) {
-      delete user.password;
-      res.json({
-        user: user,
+      delete user.dataValues.password;
+      res.status(200).json({
+        user: user.dataValues,
         token: jwt.sign(user, config.jwtTokenSecret, {expiresInMinutes: 1000 })
       });
     }
@@ -33,7 +35,8 @@ module.exports.login = function(req, res, next) {
 };
 
 module.exports.signup = function(req, res, next) {
-  console.log('hello');
+  //this is being called on form submit of signup page
+
   createUser(req, res, next);
 };
 
