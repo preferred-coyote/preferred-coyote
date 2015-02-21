@@ -8,7 +8,9 @@
     "url": "https://github.com/preferred-coyote/preferred-coyote.git"
   },
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "postinstall": "npm run build",
+    "build": "./node_modules/bower/bin/bower install && node node_modules/.bin/gulp build"
   },
   "engines": {
     "node": "0.10.x",
