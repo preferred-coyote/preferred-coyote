@@ -10,7 +10,8 @@ var userStore = Reflux.createStore({
     var self = this;
 
     this.user = {
-      loggedIn: !!window.localStorage.getItem('token')
+      loggedIn: !!window.localStorage.getItem('token'),
+      user: window.localStorage.getItem('user')
     };
 
     if (this.user.loggedIn && !this.user.username) {
@@ -49,7 +50,7 @@ var userStore = Reflux.createStore({
         self.user.loggedIn = true;
         //window.sessionStorage.token = data.body.token;
         window.localStorage.setItem('token', data.body.token);
-
+        
       } else if (data.status === 409){
         //username already exists
         self.user.loggedIn = false;

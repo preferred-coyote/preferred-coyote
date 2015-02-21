@@ -14,6 +14,7 @@ var Home = require('./components/home').Home;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
 var Profile = require('./components/profile/profile').Profile;
+var PubNub = require('./components/voice/pubnub').PubNub;
 // var pubnub = require('./stores/pubnubStore');
 
 var routes = (
@@ -23,6 +24,7 @@ var routes = (
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
+    <Route name="pubnub" path="pubnub" handler={PubNub} />
     <NotFoundRoute name="notfound" handler={NotFound} />
   </Route>
 );

@@ -54,7 +54,8 @@ var App = React.createClass({
   getNav: function() {
     if (this.state.loggedIn) {
       return [
-        { to: 'profile', text: 'Profile' }
+        { to: 'profile', text: 'Profile' },
+        { to: 'pubnub', text: 'Call User'}
       ];
     } else {
       return [
