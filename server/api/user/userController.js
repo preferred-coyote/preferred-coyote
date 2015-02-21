@@ -7,8 +7,38 @@ var config = require('../../config/environment');
 // get all the users
 module.exports.list = function(req, res, next) {
 
-  User.findAll().then(function(users) {
-    res.json(users);
+  // page needs to be greater than 0 and present
+  var page = req.query.page && req.query.page > 0
+    ? req.query.page
+    : 1; // otherwise its the first page
+
+  // limit queries per page to 25 or less
+  var limit = req.query.limit && req.query.limit <= 25
+    ? req.query.limit
+    : 12; // default to 12 per page
+
+  /**
+   * list route is a paginated list of users
+   * page and limit query paramaters allow pagination
+   * queries from the frontend
+   */
+  User.findAndCountAll({
+    attributes: ['username', 'profile', 'createdAt'],
+    limit: limit,
+    offset: page-1 // offset is 0 index
+  }).then(function(users) {
+    res.status(200).json({
+      page: page, // display current page
+      limit: limit, // display query limit
+      total_users: users.count, // total number of users
+      next_page: (page * limit) < users.count, // boolean for whether there is a next pages
+      users: users.rows // the data
+    });
+  }).catch(function(err) {
+    // there was an errorr in the query
+    res.status(500).json({
+      message: 'Internal Server Error'
+    });
   });
 
 };
@@ -43,10 +73,14 @@ module.exports.create = function(req, res, next) {
        * true === user is created
        * false === user was found
        */
+
       var created = user[1];
       if (created) {
-        console.log(user);
-        res.status(201).json(user);
+        //user was created, return user
+        res.status(201).json({
+          user: user[0].dataValues,
+          token: jwt.sign(user, config.jwtTokenSecret, {expiresInMinutes: 1000 })
+        });
       } else {
         res.status(409).json({
           message: 'Username taken.'
@@ -60,6 +94,9 @@ module.exports.create = function(req, res, next) {
 // view a user profile
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
+
+  res.json({ foundUser: req.foundUser });
+
   User.find({
     where: {
       id: id
@@ -82,11 +119,22 @@ module.exports.show = function(req, res, next) {
 
 // update a user
 module.exports.update = function(req, res, next) {
-  var id = req.params.id;
+  var id = req.params.id || req.user.id;
   User.find(id).then(function(user) {
     if (user) {
-      // update user attributes
-      // user.updateAttributes()
+      user.updateAttributes(req.body).then(function() {
+        return res.status(204).json({
+          message: 'User updated'
+        });
+      }).catch(function(err) {
+        return res.status(500).json({
+          message: 'Error updating resource'
+        });
+      })
     }
-  });
+  }).catch(function(err) {
+    return res.status(500).json({
+      message: 'Error updating resource'
+    });
+  })
 };
