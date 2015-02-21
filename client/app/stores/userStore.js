@@ -1,13 +1,32 @@
 var Reflux = require('reflux');
+var request = require('superagent');
+var _ = require('lodash');
 var actions = require('../actions/actions');
 
 var userStore = Reflux.createStore({
   listenables: actions,
 
   init: function() {
+    var self = this;
+
     this.user = {
       loggedIn: !!window.localStorage.getItem('token')
     };
+
+    if (this.user.loggedIn && !this.user.username) {
+      request
+        .post('/api/auth/check')
+        .set('x-access-token', window.localStorage.getItem('token'))
+        .set('Content-Type', 'application/json')
+        .end(function(data) {
+          if (data.body.user) {
+            self.user = _.defaults(self.user, data.user);
+          } else {
+            self.user.loggedIn = false;
+          }
+          self.trigger(self.user.loggedIn);
+        });
+    }
   },
 
   login: function(user) {
