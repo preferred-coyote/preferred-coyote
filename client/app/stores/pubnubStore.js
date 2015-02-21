@@ -69,11 +69,33 @@ var pubnubStore = Reflux.createStore({
 
 //only returns name of user
   findRandomUser: function(){
+    console.log("IN RANDOM USER");
     var total = Object.keys(userlist).length;
     var randomNum = Math.floor(Math.random()*total);
     var randomUser = Object.keys(userlist)[randomNum];
+    console.log('USER LIST', userlist);
     return randomUser;
+  },
+
+  phoneInit: function() {
+    this.phone = PHONE({
+      number        : userStore.getUserData().username,
+      publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+      subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
+      media : { audio : true, video : true },
+      ssl           : false
+    });
+  },
+
+  pubnubInit: function() {
+    this.pubnub = PUBNUB.init({
+      channel       : 'preferred-coyote',
+      uuid          : userStore.getUserData().username,
+      publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+      subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
+    });
   }
+
 });
 
 module.exports = pubnubStore;

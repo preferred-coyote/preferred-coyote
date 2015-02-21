@@ -4,24 +4,19 @@ var React = require('react/addons');
 var Router = require('react-router');
 var pubnubStore = require('../../stores/pubnubStore');
 var userStore = require('../../stores/userStore');
+var Reflux = require('reflux');
 
-
-var pubnub = PUBNUB.init({
-  channel       : 'preferred-coyote',
-  uuid          : userStore.getUserData().username,
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
-});
-
-var phone = PHONE({
-  number        : 'alex',
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-  media : { audio : true, video : true },
-  ssl           : false
-});
+var pubnub = 
 
 var PubNub = React.createClass({
+
+  mixins: [
+    Reflux.listenTo(userStore, 'updateUser')
+  ],
+
+  updateUser: function() {
+    var user = userStore.getUserData();
+  },
 
   render: function() {
     return (
@@ -46,6 +41,7 @@ var PubNub = React.createClass({
 
 	componentDidMount: function(user) {
 		var self = this;
+    var pubnub = pubnubStore.pubnubInit();
     pubnub.subscribe({
       channel: 'preferred-coyote',
       message: function(message) {
@@ -84,16 +80,18 @@ var PubNub = React.createClass({
 			console.log(userlist);
 		})
 		var user = pubnubStore.findRandomUser();
-		console.log('IN NEXT USER, OUR USER IS: ', user);
+		console.log('IN NEXT USER, OUR USER IS: ', pubnubStore);
 
 		self.phoneUser(user);
 	},
 
 	endCall: function() {
+    var phone = pubnubStore.phone;
 		phone.hangup();
 	},
 
 	changePhoneState: function(user, state) {
+    var pubnub = pubnubStore.pubnubInit();
    	pubnub.state({
   	channel: 'preferred-coyote',
   	uuid: user,
@@ -106,6 +104,8 @@ var PubNub = React.createClass({
 
 	phoneUser: function(user) {
 		var self = this;
+    var user = this.state.user;
+    var phone = pubnubStore.phone;
     phone.ready(function(){
       session = phone.dial(user);
       self.changePhoneState(user, false);
