@@ -22,7 +22,7 @@ var randomize = function() {
 var random = randomize();
 
 var phone = PHONE({
-  number        : randomize(),
+  number        : userStore.getUserData(),
   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
   media : { audio : true, video : true },

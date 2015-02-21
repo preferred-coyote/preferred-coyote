@@ -6,8 +6,6 @@ var pubnubStore = require('../../stores/pubnubStore');
 var userStore = require('../../stores/userStore');
 var Reflux = require('reflux');
 
-var pubnub = 
-
 var PubNub = React.createClass({
 
   mixins: [
