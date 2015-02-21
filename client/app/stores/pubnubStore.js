@@ -6,31 +6,20 @@ var userStore = require('./userStore');
 //   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
 // });
 
-var pubnub = PUBNUB.init({
-  channel       : 'preferred-coyote',
-  uuid          : userStore.getUserData().username,
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
-});
+// var pubnub = PUBNUB.init({
+//   channel       : 'preferred-coyote',
+//   uuid          : userStore.getUserData().username,
+//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
+// });
 
 var randomize = function() {
   var arr = ['a', 'b', 'c', 'd', 'e', 'f'];
-  var randomnum = Math.floor(Math.random()*arr.length);
+  var randomnum = Math.floor(Math.random() * arr.length);
   return arr[randomnum]
 }
 
 var random = randomize();
-
-var phone = PHONE({
-  number        : userStore.getUserData(),
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-  media : { audio : true, video : true },
-  ssl           : false
-});
-
-
-var userlist = {};
 
 var pubnubStore = Reflux.createStore({
   listenables: actions,
@@ -39,7 +28,7 @@ var pubnubStore = Reflux.createStore({
   },
 
 //get list of users currently available to chat
-  getUsersAvailable: function(user) {
+  getUsersAvailable: function(user, pubnub, userlist) {
     //TODO
     //var username = 
     return new Promise(function(resolve, reject) {
@@ -61,6 +50,7 @@ var pubnubStore = Reflux.createStore({
 
           userlist = tempList;
           console.log(userlist);
+          if (userlist) resolve(userlist);
         }
       });
     });
@@ -68,7 +58,7 @@ var pubnubStore = Reflux.createStore({
   },
 
 //only returns name of user
-  findRandomUser: function(){
+  findRandomUser: function(userlist){
     console.log("IN RANDOM USER");
     var total = Object.keys(userlist).length;
     var randomNum = Math.floor(Math.random()*total);
@@ -78,8 +68,8 @@ var pubnubStore = Reflux.createStore({
   },
 
   phoneInit: function() {
-    this.phone = PHONE({
-      number        : userStore.getUserData().username,
+    return PHONE({
+      number        : userStore.getUserData(),
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
       media : { audio : true, video : true },
@@ -88,9 +78,10 @@ var pubnubStore = Reflux.createStore({
   },
 
   pubnubInit: function() {
-    this.pubnub = PUBNUB.init({
+    console.log("in pubnubinit of pubnubStore");
+    return PUBNUB.init({
       channel       : 'preferred-coyote',
-      uuid          : userStore.getUserData().username,
+      uuid          : userStore.getUserData(),
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
     });

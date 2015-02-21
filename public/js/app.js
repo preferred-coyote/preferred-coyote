@@ -577,6 +577,11 @@ var pubnubStore = require('../../stores/pubnubStore');
 var userStore = require('../../stores/userStore');
 var Reflux = require('reflux');
 
+
+var pubnub;
+var userlist = {};
+var phone;
+
 var PubNub = React.createClass({displayName: "PubNub",
 
   mixins: [
@@ -584,7 +589,7 @@ var PubNub = React.createClass({displayName: "PubNub",
   ],
 
   updateUser: function() {
-    var user = userStore.getUserData();
+    return userStore.getUserData();
   },
 
   render: function() {
@@ -593,8 +598,8 @@ var PubNub = React.createClass({displayName: "PubNub",
       	React.createElement("h1", null, "Hello ", this.state.username), 
       	React.createElement("h4", null, "Available Users: ", this.state.availableUsers), 
       	
-		    React.createElement("video", {autoplay: true, id: "uservideo"}), 
-		    React.createElement("video", {autoplay: true, id: "peervideo"}), 
+		    React.createElement("video", {autoPlay: true, id: "uservideo"}), 
+		    React.createElement("video", {autoPlay: true, id: "peervideo"}), 
 		    React.createElement("button", {id: "nextUser", onClick: this.nextUser}, "Next!"), 
 		    React.createElement("button", {id: "endCall", onClick: this.endCall}, "Stop Call")
       )
@@ -602,15 +607,22 @@ var PubNub = React.createClass({displayName: "PubNub",
   },
 
 	getInitialState: function() {
+    console.log('in getInitialState, username: ', this.updateUser());
 		return {
-			user: userStore.getUserData().username,
-			users: userStore.getUserData()
+			// user: userStore.getUserData().username,
+      user: this.updateUser()
+			// users: userStore.getUserData()
 		}
 	},
 
-	componentDidMount: function(user) {
+	componentDidMount: function() {
 		var self = this;
-    var pubnub = pubnubStore.pubnubInit();
+    var user = this.state.user;
+    console.log('user is: ', user);
+    pubnub = pubnubStore.pubnubInit();
+    console.log('pubnub should have initialized ', pubnub);
+    phone = pubnubStore.phoneInit();
+    console.log('phone should have initialized ', phone);
     pubnub.subscribe({
       channel: 'preferred-coyote',
       message: function(message) {
@@ -624,15 +636,21 @@ var PubNub = React.createClass({displayName: "PubNub",
 
       heartbeat: 300,
       connect: function() {
-				pubnubStore.getUsersAvailable(self.state.user);
-				var rando = pubnubStore.findRandomUser();
-				self.phoneUser(rando);
+				pubnubStore.getUsersAvailable(self.state.user, pubnub, userlist)
+        .then(function(){
+				  return pubnubStore.findRandomUser(userlist);
+        })
+        .then(function(rando){
+          console.log('random user is: ', rando);
+				  self.phoneUser(rando);
+        })
       }
     });
 
 	},
 
 	setInitialState: function() {
+    console.log('in setInitialState');
 		var self = this;
 		return {
 			available: false,
@@ -646,37 +664,38 @@ var PubNub = React.createClass({displayName: "PubNub",
 		var self = this;
 		self.endCall();
 		pubnubStore.getUsersAvailable().then(function(userlist) {
-			console.log(userlist);
+			console.log('userlist in nextUser: ', userlist);
 		})
-		var user = pubnubStore.findRandomUser();
+		var rando = pubnubStore.findRandomUser();
 		console.log('IN NEXT USER, OUR USER IS: ', pubnubStore);
 
-		self.phoneUser(user);
+		self.phoneUser(rando);
 	},
 
 	endCall: function() {
-    var phone = pubnubStore.phone;
 		phone.hangup();
 	},
 
 	changePhoneState: function(user, state) {
-    var pubnub = pubnubStore.pubnubInit();
+    // var pubnub = pubnubStore.pubnubInit();
    	pubnub.state({
-  	channel: 'preferred-coyote',
-  	uuid: user,
-  	state: {available: state},
-	  	callback: function(user) {
-	  		console.log(JSON.stringify(user));
-	  	}
+    	channel: 'preferred-coyote',
+    	uuid: user,
+    	state: {available: state},
+    	callback: function(user) {
+    		console.log(JSON.stringify(user));
+    	}
   	});
 	},
 
 	phoneUser: function(user) {
 		var self = this;
     var user = this.state.user;
-    var phone = pubnubStore.phone;
+    // phone = pubnubStore.phoneInit();
     phone.ready(function(){
-      session = phone.dial(user);
+      var rando = pubnubStore.findRandomUser();
+      console.log('phone dialing: ', rando);
+      session = phone.dial(rando);
       self.changePhoneState(user, false);
     });
     // When Call Comes In or is to be Connected
@@ -684,7 +703,6 @@ var PubNub = React.createClass({displayName: "PubNub",
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
 
-      console.log('username in receive:', username);
       // Display Your Friend's Live Video
       session.connected(function(session){
         console.log(session);
@@ -790,31 +808,20 @@ var userStore = require('./userStore');
 //   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
 // });
 
-var pubnub = PUBNUB.init({
-  channel       : 'preferred-coyote',
-  uuid          : userStore.getUserData().username,
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
-});
+// var pubnub = PUBNUB.init({
+//   channel       : 'preferred-coyote',
+//   uuid          : userStore.getUserData().username,
+//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
+// });
 
 var randomize = function() {
   var arr = ['a', 'b', 'c', 'd', 'e', 'f'];
-  var randomnum = Math.floor(Math.random()*arr.length);
+  var randomnum = Math.floor(Math.random() * arr.length);
   return arr[randomnum]
 }
 
 var random = randomize();
-
-var phone = PHONE({
-  number        : userStore.getUserData(),
-  publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-  subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-  media : { audio : true, video : true },
-  ssl           : false
-});
-
-
-var userlist = {};
 
 var pubnubStore = Reflux.createStore({
   listenables: actions,
@@ -823,7 +830,7 @@ var pubnubStore = Reflux.createStore({
   },
 
 //get list of users currently available to chat
-  getUsersAvailable: function(user) {
+  getUsersAvailable: function(user, pubnub, userlist) {
     //TODO
     //var username = 
     return new Promise(function(resolve, reject) {
@@ -845,6 +852,7 @@ var pubnubStore = Reflux.createStore({
 
           userlist = tempList;
           console.log(userlist);
+          if (userlist) resolve(userlist);
         }
       });
     });
@@ -852,7 +860,7 @@ var pubnubStore = Reflux.createStore({
   },
 
 //only returns name of user
-  findRandomUser: function(){
+  findRandomUser: function(userlist){
     console.log("IN RANDOM USER");
     var total = Object.keys(userlist).length;
     var randomNum = Math.floor(Math.random()*total);
@@ -862,8 +870,8 @@ var pubnubStore = Reflux.createStore({
   },
 
   phoneInit: function() {
-    this.phone = PHONE({
-      number        : userStore.getUserData().username,
+    return PHONE({
+      number        : userStore.getUserData(),
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
       media : { audio : true, video : true },
@@ -872,9 +880,10 @@ var pubnubStore = Reflux.createStore({
   },
 
   pubnubInit: function() {
-    this.pubnub = PUBNUB.init({
+    console.log("in pubnubinit of pubnubStore");
+    return PUBNUB.init({
       channel       : 'preferred-coyote',
-      uuid          : userStore.getUserData().username,
+      uuid          : userStore.getUserData(),
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
     });
@@ -936,7 +945,7 @@ var userStore = Reflux.createStore({
 
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('user')
+      user: window.localStorage.getItem('sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4fuuid')
     };
 
     if (this.user.loggedIn && !this.user.username) {
@@ -999,6 +1008,7 @@ var userStore = Reflux.createStore({
   },
 
   getUserData: function() {
+    console.log('in userStore getUserData, user: ', this.user);
     return this.user;
   }
 
