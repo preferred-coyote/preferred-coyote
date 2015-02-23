@@ -60,16 +60,18 @@ var pubnubStore = Reflux.createStore({
 //only returns name of user
   findRandomUser: function(userlist){
     console.log("IN RANDOM USER");
-    var total = Object.keys(userlist).length;
-    var randomNum = Math.floor(Math.random()*total);
-    var randomUser = Object.keys(userlist)[randomNum];
+    // var total = Object.keys(userlist).length;
+    // var randomNum = Math.floor(Math.random());
+    // var randomUser = Object.keys(userlist)[randomNum];
     console.log('USER LIST', userlist);
-    return randomUser;
+    // return randomUser;
   },
 
   phoneInit: function() {
+    var user = JSON.parse(localStorage.getItem('user'));
+
     return PHONE({
-      number        : userStore.getUserData(),
+      number        : user.username,
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
       media : { audio : true, video : true },
@@ -79,9 +81,11 @@ var pubnubStore = Reflux.createStore({
 
   pubnubInit: function() {
     console.log("in pubnubinit of pubnubStore");
+    var user = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
     return PUBNUB.init({
       channel       : 'preferred-coyote',
-      uuid          : userStore.getUserData(),
+      uuid          : user.username,
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
     });

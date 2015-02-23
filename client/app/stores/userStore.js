@@ -8,10 +8,10 @@ var userStore = Reflux.createStore({
 
   init: function() {
     var self = this;
-
+    console.log('in init');
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4fuuid')
+      user: window.localStorage.getItem('user')
     };
 
     if (this.user.loggedIn && !this.user.username) {
@@ -74,7 +74,6 @@ var userStore = Reflux.createStore({
   },
 
   getUserData: function() {
-    console.log('in userStore getUserData, user: ', this.user);
     return this.user;
   }
 

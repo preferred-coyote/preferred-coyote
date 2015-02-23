@@ -24,8 +24,7 @@ var PubNub = React.createClass({
   render: function() {
     return (
       <div>
-      	<h1>Hello {this.state.username}</h1>
-      	<h4>Available Users: {this.state.availableUsers}</h4>
+      	<h1>Hello {window.localStorage.getItem('user')}</h1>
       	
 		    <video autoPlay id='uservideo'></video>
 		    <video autoPlay id='peervideo'></video>
@@ -36,18 +35,14 @@ var PubNub = React.createClass({
   },
 
 	getInitialState: function() {
-    console.log('in getInitialState, username: ', this.updateUser());
-		return {
-			// user: userStore.getUserData().username,
-      user: this.updateUser()
-			// users: userStore.getUserData()
-		}
+    var user = JSON.parse(window.localStorage.getItem('user'));
+    return user;
 	},
 
 	componentDidMount: function() {
 		var self = this;
-    var user = this.state.user;
-    console.log('user is: ', user);
+    var user = JSON.parse(localStorage.getItem('user'));
+    console.log('user is: ', user.username);
     pubnub = pubnubStore.pubnubInit();
     console.log('pubnub should have initialized ', pubnub);
     phone = pubnubStore.phoneInit();
@@ -58,14 +53,14 @@ var PubNub = React.createClass({
         console.log(JSON.stringify(message));
       },
       state: {
-        name: user,
+        name: user.username,
         timestamp: new Date(),
         available: true
       },
 
       heartbeat: 300,
       connect: function() {
-				pubnubStore.getUsersAvailable(self.state.user, pubnub, userlist)
+				pubnubStore.getUsersAvailable(user.username, pubnub, userlist)
         .then(function(){
 				  return pubnubStore.findRandomUser(userlist);
         })
@@ -119,10 +114,11 @@ var PubNub = React.createClass({
 
 	phoneUser: function(user) {
 		var self = this;
-    var user = this.state.user;
+    var user = JSON.parse(localStorage.getItem('user'));
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
-      var rando = pubnubStore.findRandomUser();
+      var rando = 'yan';
+      // var rando = pubnubStore.findRandomUser('yan');
       console.log('phone dialing: ', rando);
       session = phone.dial(rando);
       self.changePhoneState(user, false);
@@ -139,11 +135,11 @@ var PubNub = React.createClass({
         peervideo.play();
         uservideo.src = phone.video.src;
         uservideo.play();
-        self.changePhoneState(user, false);
+        self.changePhoneState(user.username, false);
       });
       session.ended(function(session) {
         console.log('Session ended. Goodbye!');
-        self.changePhoneState(user, true);
+        self.changePhoneState(user.username, true);
       })
     });
 	}

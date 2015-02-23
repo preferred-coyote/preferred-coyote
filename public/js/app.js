@@ -22,6 +22,7 @@ actions.login.preEmit = function(creds) {
         if (data.body && data.body.user) {
           //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
+          window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
         } else {
           reject({});
@@ -582,6 +583,7 @@ var pubnub;
 var userlist = {};
 var phone;
 
+
 var PubNub = React.createClass({displayName: "PubNub",
 
   mixins: [
@@ -595,8 +597,7 @@ var PubNub = React.createClass({displayName: "PubNub",
   render: function() {
     return (
       React.createElement("div", null, 
-      	React.createElement("h1", null, "Hello ", this.state.username), 
-      	React.createElement("h4", null, "Available Users: ", this.state.availableUsers), 
+      	React.createElement("h1", null, "Hello ", window.localStorage.getItem('user')), 
       	
 		    React.createElement("video", {autoPlay: true, id: "uservideo"}), 
 		    React.createElement("video", {autoPlay: true, id: "peervideo"}), 
@@ -607,18 +608,19 @@ var PubNub = React.createClass({displayName: "PubNub",
   },
 
 	getInitialState: function() {
-    console.log('in getInitialState, username: ', this.updateUser());
-		return {
-			// user: userStore.getUserData().username,
-      user: this.updateUser()
-			// users: userStore.getUserData()
-		}
+    var user = JSON.parse(window.localStorage.getItem('user'));
+    return user;
 	},
 
 	componentDidMount: function() {
 		var self = this;
+<<<<<<< HEAD
     var user = this.state.user;
     console.log('user is: ', user);
+=======
+    var user = JSON.parse(localStorage.getItem('user'));
+    console.log('user is: ', user.username);
+>>>>>>> PN almost working
     pubnub = pubnubStore.pubnubInit();
     console.log('pubnub should have initialized ', pubnub);
     phone = pubnubStore.phoneInit();
@@ -629,14 +631,14 @@ var PubNub = React.createClass({displayName: "PubNub",
         console.log(JSON.stringify(message));
       },
       state: {
-        name: user,
+        name: user.username,
         timestamp: new Date(),
         available: true
       },
 
       heartbeat: 300,
       connect: function() {
-				pubnubStore.getUsersAvailable(self.state.user, pubnub, userlist)
+				pubnubStore.getUsersAvailable(user.username, pubnub, userlist)
         .then(function(){
 				  return pubnubStore.findRandomUser(userlist);
         })
@@ -690,10 +692,15 @@ var PubNub = React.createClass({displayName: "PubNub",
 
 	phoneUser: function(user) {
 		var self = this;
+<<<<<<< HEAD
     var user = this.state.user;
+=======
+    var user = JSON.parse(localStorage.getItem('user'));
+>>>>>>> PN almost working
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
-      var rando = pubnubStore.findRandomUser();
+      var rando = 'yan';
+      // var rando = pubnubStore.findRandomUser('yan');
       console.log('phone dialing: ', rando);
       session = phone.dial(rando);
       self.changePhoneState(user, false);
@@ -710,11 +717,11 @@ var PubNub = React.createClass({displayName: "PubNub",
         peervideo.play();
         uservideo.src = phone.video.src;
         uservideo.play();
-        self.changePhoneState(user, false);
+        self.changePhoneState(user.username, false);
       });
       session.ended(function(session) {
         console.log('Session ended. Goodbye!');
-        self.changePhoneState(user, true);
+        self.changePhoneState(user.username, true);
       })
     });
 	}
@@ -823,6 +830,18 @@ var randomize = function() {
 
 var random = randomize();
 
+<<<<<<< HEAD
+=======
+// var phone = PHONE({
+//   number        : randomize(),
+//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
+//   media : { audio : true, video : true },
+//   ssl           : false
+// });
+
+
+>>>>>>> PN almost working
 var pubnubStore = Reflux.createStore({
   listenables: actions,
 
@@ -862,16 +881,23 @@ var pubnubStore = Reflux.createStore({
 //only returns name of user
   findRandomUser: function(userlist){
     console.log("IN RANDOM USER");
-    var total = Object.keys(userlist).length;
-    var randomNum = Math.floor(Math.random()*total);
-    var randomUser = Object.keys(userlist)[randomNum];
+    // var total = Object.keys(userlist).length;
+    // var randomNum = Math.floor(Math.random());
+    // var randomUser = Object.keys(userlist)[randomNum];
     console.log('USER LIST', userlist);
-    return randomUser;
+    // return randomUser;
   },
 
   phoneInit: function() {
+<<<<<<< HEAD
     return PHONE({
       number        : userStore.getUserData(),
+=======
+    var user = JSON.parse(localStorage.getItem('user'));
+
+    return PHONE({
+      number        : user.username,
+>>>>>>> PN almost working
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
       media : { audio : true, video : true },
@@ -881,9 +907,15 @@ var pubnubStore = Reflux.createStore({
 
   pubnubInit: function() {
     console.log("in pubnubinit of pubnubStore");
+    var user = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
     return PUBNUB.init({
       channel       : 'preferred-coyote',
+<<<<<<< HEAD
       uuid          : userStore.getUserData(),
+=======
+      uuid          : user.username,
+>>>>>>> PN almost working
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
     });
@@ -942,10 +974,10 @@ var userStore = Reflux.createStore({
 
   init: function() {
     var self = this;
-
+    console.log('in init');
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4fuuid')
+      user: window.localStorage.getItem('user')
     };
 
     if (this.user.loggedIn && !this.user.username) {
@@ -1008,7 +1040,6 @@ var userStore = Reflux.createStore({
   },
 
   getUserData: function() {
-    console.log('in userStore getUserData, user: ', this.user);
     return this.user;
   }
 
