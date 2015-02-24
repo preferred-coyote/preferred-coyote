@@ -581,6 +581,7 @@ var Reflux = require('reflux');
 var pubnub;
 var userlist = {};
 var phone;
+
 var session;
 
 var PubNub = React.createClass({displayName: "PubNub",
@@ -640,20 +641,8 @@ var PubNub = React.createClass({displayName: "PubNub",
     };
 	},
 
-<<<<<<< HEAD
-	componentDidMount: function() {
-		var self = this;
-<<<<<<< HEAD
-    var user = this.state.user;
-    console.log('user is: ', user);
-=======
-    var user = JSON.parse(localStorage.getItem('user'));
-    console.log('user is: ', user.username);
->>>>>>> PN almost working
-=======
   initializePhoneAndPubNub: function() {
     // Initializes both phone and pubnub
->>>>>>> WIP still
     pubnub = pubnubStore.pubnubInit();
     phone = pubnubStore.phoneInit();
     
@@ -769,15 +758,7 @@ var PubNub = React.createClass({displayName: "PubNub",
 
 	phoneUser: function(rando) {
 		var self = this;
-<<<<<<< HEAD
-<<<<<<< HEAD
     var user = this.state.user;
-=======
-    var user = JSON.parse(localStorage.getItem('user'));
->>>>>>> PN almost working
-=======
-    var user = this.state.user;
->>>>>>> WIP still
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
       session = phone.dial(rando);
@@ -902,22 +883,6 @@ var randomize = function() {
 
 var random = randomize();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-// var phone = PHONE({
-//   number        : randomize(),
-//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-//   media : { audio : true, video : true },
-//   ssl           : false
-// });
-
-=======
-var userlist;
->>>>>>> WIP still
-
->>>>>>> PN almost working
 var pubnubStore = Reflux.createStore({
   listenables: actions,
 
@@ -961,15 +926,10 @@ var pubnubStore = Reflux.createStore({
   },
 
   phoneInit: function() {
-<<<<<<< HEAD
-    return PHONE({
-      number        : userStore.getUserData(),
-=======
     var user = JSON.parse(localStorage.getItem('user'));
 
     return PHONE({
       number        : user.username,
->>>>>>> PN almost working
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
       media : { audio : true, video : true },
@@ -981,11 +941,7 @@ var pubnubStore = Reflux.createStore({
     var user = JSON.parse(localStorage.getItem('user'));
     return PUBNUB.init({
       channel       : 'preferred-coyote',
-<<<<<<< HEAD
-      uuid          : userStore.getUserData(),
-=======
       uuid          : user.username,
->>>>>>> PN almost working
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
       subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
     });
