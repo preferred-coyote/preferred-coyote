@@ -30,7 +30,6 @@ var PubNub = React.createClass({
     var peer = this.state.peer || '';
     var user = this.state.user || '';
     var userlist = this.state.userlist.length ? this.state.userlist.map(function(user) {
-      console.log(user);
       return <li>{user}</li>;
     }) : 'There are no users available.';
 
@@ -52,7 +51,7 @@ var PubNub = React.createClass({
         </ul>
         <button id="startCall" onClick={this.startCall}>Call!</button>
 		    <button id="nextUser" onClick={this.nextUser}>Next!</button>
-		    <button id="endCall" onClick={this.endCall}>Stop Call</button>
+		    <button id="endCall" onClick={this.endAll}>Stop Call</button>
       </div>
     );
   },
@@ -125,7 +124,6 @@ var PubNub = React.createClass({
   				  return pubnubStore.findRandomUser(list);
           })
           .then(function(rando){
-            console.log('random user is: ', rando);
 
             // start call with random user selected
   				  self.phoneUser(rando);
@@ -133,10 +131,10 @@ var PubNub = React.createClass({
       },
 
       callback: function(msg) {
-        console.log('in start call callback ', msg);
         pubnubStore.getUsersAvailable(user, pubnub)
         .then(function(list) {
           list = Object.keys(list);
+          console.log('list is', list);
           self.setState({
             userlist: list
           });
@@ -158,7 +156,7 @@ var PubNub = React.createClass({
       })
       .then(function(rando){
         console.log('random user is: ', rando);
-        phone.dial(rando);
+        session = phone.dial(rando);
       });
 	},
 
@@ -168,6 +166,7 @@ var PubNub = React.createClass({
     console.log('in endCall, user is', user);
 		if (session) {
       console.log('in endCall, session exists');
+      console.log('session is ', session);
       session.hangup();
     };
     console.log('in endcall after hangup, user is ', user);
@@ -176,6 +175,14 @@ var PubNub = React.createClass({
       peer: null
     });
 	},
+
+  endAll: function() {
+    session.hangup();
+    phone.hangup();
+    pubnub.unsubscribe({
+      channel: 'preferred-coyote'
+    })
+  },
 
 	changePhoneState: function(user, state) {
     // var pubnub = pubnubStore.pubnubInit();
@@ -197,6 +204,10 @@ var PubNub = React.createClass({
     var user = this.state.user;
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
+      pubnub.publish({
+        channel: 'preferred-coyote',        
+        message: 'Message posted'
+      });
       session = phone.dial(rando);
     });
     // When Call Comes In or is to be Connected
@@ -207,21 +218,35 @@ var PubNub = React.createClass({
       self.changePhoneState(user, false);
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
+      pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       // Display Your Friend's Live Video
       session.connected(function(session){
-        // set the peer that you've connected to 
+        // set the peer that you've connected to
+        self.changePhoneState(user, false); 
         self.setState({
           peer: session.number
         });
-
+        console.log('I HAVE CONNECTED! SESSION: ', session);
+        console.log('PHONE: ', phone);
         peervideo.src = session.video.src;
         peervideo.play();
         uservideo.src = phone.video.src;
         uservideo.play();
+        pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       });
       session.ended(function(session) {
-        phone.hangup();
+        // phone.hangup();
         self.changePhoneState(user, true);
+        pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       })
     });
 	}

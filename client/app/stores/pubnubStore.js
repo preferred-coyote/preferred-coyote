@@ -25,7 +25,6 @@ var pubnubStore = Reflux.createStore({
         channel: 'preferred-coyote',
         state: true,
         callback: function(list) {
-          console.log('in getusersavailable: ', list);
           //this returns all users in channel
           var tempList = {};
           list.uuids.filter(function(uuids) {
