@@ -21,6 +21,7 @@ actions.login.preEmit = function(creds) {
         if (data.body && data.body.user) {
           //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
+          window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
         } else {
           reject({});

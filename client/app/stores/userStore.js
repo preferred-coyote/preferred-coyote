@@ -8,9 +8,10 @@ var userStore = Reflux.createStore({
 
   init: function() {
     var self = this;
-
+    console.log('in init');
     this.user = {
-      loggedIn: !!window.localStorage.getItem('token')
+      loggedIn: !!window.localStorage.getItem('token'),
+      user: window.localStorage.getItem('user')
     };
 
     if (this.user.loggedIn && !this.user.username) {
@@ -47,9 +48,10 @@ var userStore = Reflux.createStore({
       if (data.status === 201){
         self.user = data.body.user;
         self.user.loggedIn = true;
-        //window.sessionStorage.token = data.body.token;
         window.localStorage.setItem('token', data.body.token);
-
+        //writes user to local Storage on signup. this happen sin actions for login.
+        window.localStorage.setItem('user', JSON.stringify(data.body.user));       
+        
       } else if (data.status === 409){
         //username already exists
         self.user.loggedIn = false;
