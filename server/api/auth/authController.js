@@ -46,3 +46,14 @@ module.exports.logout = function(req, res, next) {
   });
 };
 
+module.exports.check = function(req, res, next) {
+  if (!req.user) {
+    res.json({
+      message: 'Bad Token'
+    });
+  } else {
+    res.json({
+      user: req.user
+    });
+  }
+};
