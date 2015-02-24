@@ -6,7 +6,8 @@ var actions = Reflux.createActions([
   // user actions
   'login',
   'logout',
-  'signup'
+  'signup',
+  'updatePassword'
   // , 'createProfile',
   // 'updateProfile'
 ]);
@@ -18,6 +19,9 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
+        if (data.status === 404) {
+          reject('Incorrect username or password');
+        }
         if (data.body && data.body.user) {
           //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
@@ -47,5 +51,24 @@ actions.signup.preEmit = function(creds) {
       });
   });
 };
+
+actions.updatePassword.preEmit = function(formData){
+  return new Promise(function(resolve, reject) {
+    request
+    .put('/api/user/profile/password')
+    .set('x-access-token', window.localStorage.getItem('token') || '')
+    .set('Content-Type', 'application/json')
+    .send({
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+      newPasswordConfirmation: formData.newPasswordConfirmation
+    })
+    .end(function(data){
+      console.log("Line 62 actions", data);
+      resolve(data);
+    });
+  })
+};
+
 
 module.exports = actions;
