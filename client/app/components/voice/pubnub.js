@@ -100,7 +100,6 @@ var PubNub = React.createClass({
 
       presence: function(info) {
       // detects users in channel and sets them in this.state
-        console.log('presence triggered ', info);
         pubnubStore.getUsersAvailable(user, pubnub)
           .then(function(list) {
             list = Object.keys(list);
@@ -131,16 +130,28 @@ var PubNub = React.createClass({
             // start call with random user selected
   				  self.phoneUser(rando);
           });
+      },
+
+      callback: function(msg) {
+        console.log('in start call callback ', msg);
+        pubnubStore.getUsersAvailable(user, pubnub)
+        .then(function(list) {
+          list = Object.keys(list);
+          self.setState({
+            userlist: list
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
       }
     });
 	},
 
 	nextUser: function() {
-		var self = this;
-    var user = this.state.user;
-
     this.endCall();
-
+    var self = this;
+    var user = this.state.user;
     pubnubStore.getUsersAvailable(user, pubnub)
       .then(function(userlist){
         return pubnubStore.findRandomUser(userlist);
@@ -153,9 +164,13 @@ var PubNub = React.createClass({
 
 	endCall: function() {
     var self = this;
+    var user = this.state.user;
+    console.log('in endCall, user is', user);
 		if (session) {
+      console.log('in endCall, session exists');
       session.hangup();
     };
+    console.log('in endcall after hangup, user is ', user);
     self.changePhoneState(user, false);
     this.setState({
       peer: null
@@ -168,18 +183,11 @@ var PubNub = React.createClass({
     	channel: 'preferred-coyote',
     	uuid: user,
     	state: {available: state},
-    	callback: function(user) {
-    		console.log('IN CHANGE PHONE STATE', JSON.stringify(user));
-        pubnubStore.getUsersAvailable(user, pubnub)
-          .then(function(list) {
-            list = Object.keys(list);
-            self.setState({
-              userlist: list
-            });
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
+    	callback: function() {
+        pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
     	}
   	});
 	},
