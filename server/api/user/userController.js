@@ -95,6 +95,8 @@ module.exports.create = function(req, res, next) {
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
 
+  res.json({ foundUser: req.foundUser });
+
   User.find({
     where: {
       id: id
@@ -116,12 +118,8 @@ module.exports.show = function(req, res, next) {
 };
 
 // update a user
-module.exports.updatePassword = function(req, res, next) {
-  //this is old code
-  /*
+module.exports.update = function(req, res, next) {
   var id = req.params.id || req.user.id;
-
-
   User.find(id).then(function(user) {
     if (user) {
       user.updateAttributes(req.body).then(function() {
@@ -139,57 +137,4 @@ module.exports.updatePassword = function(req, res, next) {
       message: 'Error updating resource'
     });
   })
-  */
-
-  //if we have a password and it's confirmed, try to update the password field
-  if (req.user && req.user.id && req.body.newPassword && req.body.newPassword === req.body.newPasswordConfirmation){
-
-    User.find({
-      where: { id: req.user.id }
-    }).then(function(user) {
-
-      user.comparePasswords(req.body.oldPassword)
-      .then(function(isMatch){
-        if (isMatch) {
-
-          User.setPassword(req.body.newPassword)
-            .then(function(hash){
-              user.updateAttributes({
-                password: hash
-              }).success(function(){
-                //successfully updated the user's password
-                res.status(200).json({
-                  message: "Password updated"
-                });
-                return;
-              });
-            })
-            .catch(function(err){
-
-            });
-        } else {
-          res.status(400).json({
-            message: "The old password was incorrect"
-          });
-        }
-      })
-    })
-    .catch(function(err){
-
-      res.status(500).json({
-        message: err
-      });
-    });
-  } else {
-    return res.status(400).json({
-    message: "Didnt get all the form data needed for password update"
-  });
-  }
-  if (req.body.newPassword !== req.body.newPasswordConfirmation) {
-    res.status(400).json({
-      message: "Password confirmation mismatch"
-    });
-    return;
-  }
-
 };

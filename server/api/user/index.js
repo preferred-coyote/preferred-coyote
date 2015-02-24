@@ -60,8 +60,8 @@ module.exports = function(app) {
   // get a specific user
   router.get('/user/:id', userController.show);
   // update a specific user
-  //router.put('/user/:id', userController.update);
-  router.put('/user/profile/password', userController.updatePassword);
+  router.put('/user/:id', userController.update);
+  router.put('/user/profile', userController.update);
 
   // mount router onto /api
   app.use('/api', router);
