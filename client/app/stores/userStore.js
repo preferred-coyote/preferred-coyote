@@ -36,7 +36,9 @@ var userStore = Reflux.createStore({
       self.user.loggedIn = true;
       self.trigger(self.user.loggedIn);
     }).catch(function(err) {
-      console.log('error authenticating', err);
+      if (err === 'Incorrect username or password') {
+        self.trigger(false);
+      }
     })
   },
 

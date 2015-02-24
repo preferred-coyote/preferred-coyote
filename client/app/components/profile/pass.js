@@ -10,6 +10,7 @@ var Pass = React.createClass({
       newPassword: this.refs.newPassword.getDOMNode().value.trim(),
       newPasswordConfirmation: this.refs.newPasswordConfirmation.getDOMNode().value.trim()
     });
+
   },
 
   render: function() {
