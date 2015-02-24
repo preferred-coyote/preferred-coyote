@@ -578,11 +578,10 @@ var pubnubStore = require('../../stores/pubnubStore');
 var userStore = require('../../stores/userStore');
 var Reflux = require('reflux');
 
-
 var pubnub;
 var userlist = {};
 var phone;
-
+var session;
 
 var PubNub = React.createClass({displayName: "PubNub",
 
@@ -594,24 +593,54 @@ var PubNub = React.createClass({displayName: "PubNub",
     return userStore.getUserData();
   },
 
+  componentWillUnmount: function() {
+    // phone.hangup();
+  },
+
   render: function() {
+    var peer = this.state.peer || '';
+    var user = this.state.user || '';
+    var userlist = this.state.userlist.length ? this.state.userlist.map(function(user) {
+      console.log(user);
+      return React.createElement("li", null, user);
+    }) : 'There are no users available.';
+
     return (
       React.createElement("div", null, 
-      	React.createElement("h1", null, "Hello ", window.localStorage.getItem('user')), 
-      	
-		    React.createElement("video", {autoPlay: true, id: "uservideo"}), 
-		    React.createElement("video", {autoPlay: true, id: "peervideo"}), 
+      	React.createElement("h1", null, "Hello ", this.state.user), 
+      	React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-6 columns"}, 
+  		      React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
+            user
+          ), 
+          React.createElement("div", {className: "large-6 columns"}, 
+  		      React.createElement("video", {width: "250", autoPlay: true, id: "peervideo"}), 
+            peer
+          )
+        ), 
+        React.createElement("ul", null, 
+          userlist
+        ), 
+        React.createElement("button", {id: "startCall", onClick: this.startCall}, "Call!"), 
 		    React.createElement("button", {id: "nextUser", onClick: this.nextUser}, "Next!"), 
 		    React.createElement("button", {id: "endCall", onClick: this.endCall}, "Stop Call")
       )
-    )
+    );
   },
 
+  //for "Call User" button, it hits getInitialSTate > render > ComponentDidMount
+  //automatically
+  //this allows us to get the user by going "this.state.user"
 	getInitialState: function() {
     var user = JSON.parse(window.localStorage.getItem('user'));
-    return user;
+    return {
+      user: user.username,
+      peer: null,
+      userlist: []
+    };
 	},
 
+<<<<<<< HEAD
 	componentDidMount: function() {
 		var self = this;
 <<<<<<< HEAD
@@ -621,61 +650,99 @@ var PubNub = React.createClass({displayName: "PubNub",
     var user = JSON.parse(localStorage.getItem('user'));
     console.log('user is: ', user.username);
 >>>>>>> PN almost working
+=======
+  initializePhoneAndPubNub: function() {
+    // Initializes both phone and pubnub
+>>>>>>> WIP still
     pubnub = pubnubStore.pubnubInit();
-    console.log('pubnub should have initialized ', pubnub);
     phone = pubnubStore.phoneInit();
-    console.log('phone should have initialized ', phone);
+    
+  },
+
+  startCall: function() {
+    var self = this;
+    var user = this.state.user;
+    console.log('The current user is: ', user);
+
+    if (pubnub === undefined && phone === undefined) {
+      this.initializePhoneAndPubNub();
+    }
+
+    // declares channel and starting state for user
     pubnub.subscribe({
+      //TODO: change channel name later to grab interest as name
       channel: 'preferred-coyote',
       message: function(message) {
         console.log(JSON.stringify(message));
       },
       state: {
-        name: user.username,
+        name: user,
         timestamp: new Date(),
         available: true
       },
 
-      heartbeat: 300,
-      connect: function() {
-				pubnubStore.getUsersAvailable(user.username, pubnub, userlist)
-        .then(function(){
-				  return pubnubStore.findRandomUser(userlist);
-        })
-        .then(function(rando){
-          console.log('random user is: ', rando);
-				  self.phoneUser(rando);
-        })
+      presence: function(info) {
+      // detects users in channel and sets them in this.state
+        console.log('presence triggered ', info);
+        pubnubStore.getUsersAvailable(user, pubnub)
+          .then(function(list) {
+            list = Object.keys(list);
+            self.setState({
+              userlist: list
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      },
+
+      // Heartbeat defines heartbeat frequency to monitor for subscriber timeouts.
+      heartbeat: 10,
+
+      connect: function(userlist) {
+
+        //getUsersAvailable returns a list of users currently in channel who are available
+				pubnubStore.getUsersAvailable(user, pubnub)
+          .then(function(list){
+
+          //findRandomUser selects one user randomly from userlist
+  				  return pubnubStore.findRandomUser(list);
+          })
+          .then(function(rando){
+            console.log('random user is: ', rando);
+
+            // start call with random user selected
+  				  self.phoneUser(rando);
+          });
       }
     });
-
-	},
-
-	setInitialState: function() {
-    console.log('in setInitialState');
-		var self = this;
-		return {
-			available: false,
-			availableUsers: pubnubStore.getUsersAvailable(self.state.user)
-		}
 	},
 
 	nextUser: function() {
-		console.log('users', this.state.users);
-		console.log('IN NEXT USER');
 		var self = this;
-		self.endCall();
-		pubnubStore.getUsersAvailable().then(function(userlist) {
-			console.log('userlist in nextUser: ', userlist);
-		})
-		var rando = pubnubStore.findRandomUser();
-		console.log('IN NEXT USER, OUR USER IS: ', pubnubStore);
+    var user = this.state.user;
 
-		self.phoneUser(rando);
+    this.endCall();
+
+    pubnubStore.getUsersAvailable(user, pubnub)
+      .then(function(userlist){
+        return pubnubStore.findRandomUser(userlist);
+      })
+      .then(function(rando){
+        console.log('random user is: ', rando);
+        phone.dial(rando);
+      });
 	},
 
 	endCall: function() {
-		phone.hangup();
+    var self = this;
+		if (session) {
+      session.hangup();
+    };
+    self.changePhoneState(user, false);
+    this.setState({
+      peer: null
+    });
 	},
 
 	changePhoneState: function(user, state) {
@@ -685,43 +752,59 @@ var PubNub = React.createClass({displayName: "PubNub",
     	uuid: user,
     	state: {available: state},
     	callback: function(user) {
-    		console.log(JSON.stringify(user));
+    		console.log('IN CHANGE PHONE STATE', JSON.stringify(user));
+        pubnubStore.getUsersAvailable(user, pubnub)
+          .then(function(list) {
+            list = Object.keys(list);
+            self.setState({
+              userlist: list
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
     	}
   	});
 	},
 
-	phoneUser: function(user) {
+	phoneUser: function(rando) {
 		var self = this;
+<<<<<<< HEAD
 <<<<<<< HEAD
     var user = this.state.user;
 =======
     var user = JSON.parse(localStorage.getItem('user'));
 >>>>>>> PN almost working
+=======
+    var user = this.state.user;
+>>>>>>> WIP still
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
-      var rando = 'yan';
-      // var rando = pubnubStore.findRandomUser('yan');
-      console.log('phone dialing: ', rando);
       session = phone.dial(rando);
-      self.changePhoneState(user, false);
     });
     // When Call Comes In or is to be Connected
     phone.receive(function(session){
+      //TODO: only receive session when user accepts
+      //on click thingy
+        //if so then run everything below:
+      self.changePhoneState(user, false);
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
-
       // Display Your Friend's Live Video
       session.connected(function(session){
-        console.log(session);
+        // set the peer that you've connected to 
+        self.setState({
+          peer: session.number
+        });
+
         peervideo.src = session.video.src;
         peervideo.play();
         uservideo.src = phone.video.src;
         uservideo.play();
-        self.changePhoneState(user.username, false);
       });
       session.ended(function(session) {
-        console.log('Session ended. Goodbye!');
-        self.changePhoneState(user.username, true);
+        phone.hangup();
+        self.changePhoneState(user, true);
       })
     });
 	}
@@ -810,17 +893,6 @@ module.exports = loginStore;
 var Reflux = require('reflux');
 var actions = require('../actions/actions');
 var userStore = require('./userStore');
-// var pubnub = require('pubnub')({
-//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
-// });
-
-// var pubnub = PUBNUB.init({
-//   channel       : 'preferred-coyote',
-//   uuid          : userStore.getUserData().username,
-//   publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-//   subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f'
-// });
 
 var randomize = function() {
   var arr = ['a', 'b', 'c', 'd', 'e', 'f'];
@@ -831,6 +903,7 @@ var randomize = function() {
 var random = randomize();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // var phone = PHONE({
 //   number        : randomize(),
@@ -840,6 +913,9 @@ var random = randomize();
 //   ssl           : false
 // });
 
+=======
+var userlist;
+>>>>>>> WIP still
 
 >>>>>>> PN almost working
 var pubnubStore = Reflux.createStore({
@@ -849,17 +925,17 @@ var pubnubStore = Reflux.createStore({
   },
 
 //get list of users currently available to chat
-  getUsersAvailable: function(user, pubnub, userlist) {
-    //TODO
-    //var username = 
+  getUsersAvailable: function(user, pubnub) {
+
     return new Promise(function(resolve, reject) {
       pubnub.here_now({
+        //TODO: Change channel grab interest as name
         channel: 'preferred-coyote',
         state: true,
         callback: function(list) {
+          console.log('in getusersavailable: ', list);
           //this returns all users in channel
           var tempList = {};
-
           list.uuids.filter(function(uuids) {
             if (uuids.state.available && uuids.uuid !== user)
               return true;
@@ -868,10 +944,8 @@ var pubnubStore = Reflux.createStore({
           }).forEach(function(uuid) {
             tempList[uuid] = 'here';
           });
-
-          userlist = tempList;
-          console.log(userlist);
-          if (userlist) resolve(userlist);
+          if (tempList) resolve(tempList);
+          else reject(null);
         }
       });
     });
@@ -880,12 +954,10 @@ var pubnubStore = Reflux.createStore({
 
 //only returns name of user
   findRandomUser: function(userlist){
-    console.log("IN RANDOM USER");
-    // var total = Object.keys(userlist).length;
-    // var randomNum = Math.floor(Math.random());
-    // var randomUser = Object.keys(userlist)[randomNum];
-    console.log('USER LIST', userlist);
-    // return randomUser;
+    var total = Object.keys(userlist).length;
+    var randomNum = Math.floor(Math.random());
+    var randomUser = Object.keys(userlist)[randomNum];
+    return randomUser;
   },
 
   phoneInit: function() {
@@ -906,9 +978,7 @@ var pubnubStore = Reflux.createStore({
   },
 
   pubnubInit: function() {
-    console.log("in pubnubinit of pubnubStore");
     var user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
     return PUBNUB.init({
       channel       : 'preferred-coyote',
 <<<<<<< HEAD
@@ -1014,8 +1084,9 @@ var userStore = Reflux.createStore({
       if (data.status === 201){
         self.user = data.body.user;
         self.user.loggedIn = true;
-        //window.sessionStorage.token = data.body.token;
         window.localStorage.setItem('token', data.body.token);
+        //writes user to local Storage on signup. this happen sin actions for login.
+        window.localStorage.setItem('user', JSON.stringify(data.body.user));       
         
       } else if (data.status === 409){
         //username already exists
