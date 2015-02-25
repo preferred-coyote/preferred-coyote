@@ -34,6 +34,7 @@ var data = {
 }
 ]
 }
+
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 var Interests = require('./interests').Interests;

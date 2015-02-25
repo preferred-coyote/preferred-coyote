@@ -72,6 +72,8 @@ var ChannelView = React.createClass({
 
       // Heartbeat defines heartbeat frequency to monitor for subscriber timeouts.
       heartbeat: 10,
+=======
+>>>>>>> dashboard channels'
 
       callback: function(msg) {
         self.getUsers(user, pubnub, channel);
@@ -80,10 +82,14 @@ var ChannelView = React.createClass({
   },
 
   render: function() {
+<<<<<<< HEAD
     var userList = this.state.userlist.length ? this.state.userlist.map(function(user) {
       // return <div><button className="button small">{channel}</button></div>;
       return <li><button className="button small">{user}</button></li>
     }) : 'No users available.';
+=======
+
+>>>>>>> dashboard channels'
     return (
       <div className="row">
         <div className="large-12 columns">

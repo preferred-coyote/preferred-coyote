@@ -1,9 +1,11 @@
 /** @jsx React.DOM */
-
-var React = require('react');
-
+var React = require('react/addons');
+var Authentication = require('../../utils/Authentication');
 
 var CallView = React.createClass({
+
+	mixins: [Authentication],
+	
   render: function() {
     return (
       <div className="row">
