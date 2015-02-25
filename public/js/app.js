@@ -485,6 +485,7 @@ var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
+var Link = require('react-router').Link;
 
 
 var data = {
@@ -574,7 +575,8 @@ var Dashboard = React.createClass({displayName: "Dashboard",
           React.createElement("p", null, React.createElement(Interests, {interests: this.state.user.Interests}))
         ), 
         React.createElement("div", {className: "small-4 columns"}, 
-          React.createElement("button", {type: "submit", className: "button small"}, "Call Random User")
+          React.createElement(Link, {to: "/pubnub", className: "button"}, "Call Random User"), 
+          React.createElement(Link, {to: "/dashboard/channels", className: "button"}, "Search Topics")
         ), 
         React.createElement("div", {className: "small-8 columns"}, 
           React.createElement(RouteHandler, null)

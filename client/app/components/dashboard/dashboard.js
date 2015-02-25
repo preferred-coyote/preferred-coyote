@@ -4,6 +4,7 @@ var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
+var Link = require('react-router').Link;
 
 
 var data = {
@@ -93,7 +94,8 @@ var Dashboard = React.createClass({
           <p><Interests interests={this.state.user.Interests} /></p>
         </div>
         <div className="small-4 columns">
-          <button type="submit" className="button small">Call Random User</button>
+          <Link to="/pubnub" className="button">Call Random User</Link>
+          <Link to="/dashboard/channels" className="button">Search Topics</Link>
         </div>
         <div className="small-8 columns">
           <RouteHandler />
