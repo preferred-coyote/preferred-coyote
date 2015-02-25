@@ -15,7 +15,6 @@ var userStore = require('../stores/userStore');
 var Header = require('./header').Header;
 var User = require('./user').User;
 
-
 var App = React.createClass({
 
   mixins: [
@@ -32,7 +31,7 @@ var App = React.createClass({
   componentDidMount: function(){
 
     if (this.state.loggedIn) {
-      this.transitionTo('profile');
+      // this.transitionTo('dashboard');
     }
   },
 
@@ -55,7 +54,8 @@ var App = React.createClass({
     if (this.state.loggedIn) {
       return [
         { to: 'profile', text: 'Profile' },
-        { to: 'pubnub', text: 'Call User'}
+        { to: 'pubnub', text: 'Call User'},
+        { to: 'dashboard', text: 'Dashboard'}
       ];
     } else {
       return [

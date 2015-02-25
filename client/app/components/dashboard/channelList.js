@@ -4,8 +4,10 @@ var React = require('react');
 var Link = require('react-router').Link;
 
 var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', 'Kink.com', 'Godzilla'];
+var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({
+  mixins: [Authentication],
 
   getInitialState: function() {
     // console.log('channels: ', channels);
