@@ -316,11 +316,13 @@ module.exports.Signup = Signup;
 
 },{"../../actions/actions":1,"../../stores/signupStore":24,"../../stores/userStore":25,"react":228,"react-router":53,"reflux":229}],5:[function(require,module,exports){
 /** @jsx React.DOM */
-
-var React = require('react');
-
+var React = require('react/addons');
+var Authentication = require('../../utils/Authentication');
 
 var CallView = React.createClass({displayName: "CallView",
+
+	mixins: [Authentication],
+	
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
@@ -334,7 +336,7 @@ var CallView = React.createClass({displayName: "CallView",
 
 module.exports.CallView = CallView;
 
-},{"react":228}],6:[function(require,module,exports){
+},{"../../utils/Authentication":26,"react/addons":67}],6:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -460,6 +462,7 @@ var ChannelView = React.createClass({displayName: "ChannelView",
       // return <div><button className="button small">{channel}</button></div>;
       return React.createElement("li", null, React.createElement("button", {className: "button small"}, user))
     }) : 'No users available.';
+
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "large-12 columns"}, 
@@ -484,19 +487,94 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 
 
-// var MiniProfile = require('./miniProfile').MiniProfile;
-// var OnlineFriendsList = require('./onlineFriendsList').OnlineFriendsList;
-// var CallArea = require('./callArea').CallArea;
-// var ChatBar = require('./chatBar').ChatBar;
+var data = {
+  "id": 2,
+  "username": "Ghost",
+  "location": "San Francisco, CA",
+  "gender": "Male",
+  "bio": "Software Engineer at Hack Reactor",
+  "password": "password",
+  "createdAt": "2015-02-16T22:51:16.000Z",
+  "updatedAt": "2015-02-16T22:51:16.000Z",
+  "avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
+  "Interests": [
+    {
+      "id": 5,
+      "name": "kink.com",
+      "createdAt": "2015-02-16T22:51:16.000Z",
+      "updatedAt": "2015-02-16T22:51:16.000Z",
+      "InterestsUsers": {
+        "createdAt": "2015-02-16T22:51:16.000Z",
+        "updatedAt": "2015-02-16T22:51:16.000Z",
+        "InterestId": 5,
+        "UserId": 2
+      }
+    },
+    {
+      "id": 4,
+      "name": "travel",
+      "createdAt": "2015-02-16T22:51:16.000Z",
+      "updatedAt": "2015-02-16T22:51:16.000Z",
+      "InterestsUsers": {
+        "createdAt": "2015-02-16T22:51:16.000Z",
+        "updatedAt": "2015-02-16T22:51:16.000Z",
+        "InterestId": 4,
+        "UserId": 2
+      }
+    },
+    {
+      "id": 10,
+      "name": "basketball",
+      "createdAt": "2015-02-16T22:51:16.000Z",
+      "updatedAt": "2015-02-16T22:51:16.000Z",
+      "InterestsUsers": {
+        "createdAt": "2015-02-16T22:51:16.000Z",
+        "updatedAt": "2015-02-16T22:51:16.000Z",
+        "InterestId": 6,
+        "UserId": 2
+      }
+    },
+    {
+      "id": 11,
+      "name": "javascript",
+      "createdAt": "2015-02-16T22:51:16.000Z",
+      "updatedAt": "2015-02-16T22:51:16.000Z",
+      "InterestsUsers": {
+        "createdAt": "2015-02-16T22:51:16.000Z",
+        "updatedAt": "2015-02-16T22:51:16.000Z",
+        "InterestId": 7,
+        "UserId": 2
+      }
+    },
+  ]
+}
+
+var Interests = require('../profile/interests').Interests;
+var Authentication = require('../../utils/Authentication');
 
 var Dashboard = React.createClass({displayName: "Dashboard",
+
   mixins: [Authentication],
+
+  getInitialState: function() {
+    return {
+      user: data
+    };
+  },
 
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "small-4 columns"}, 
-          React.createElement("h1", null, "The User Profile")
+          React.createElement("h2", null, this.state.user.username, " Profile"), 
+          React.createElement("img", {src: this.state.user.avatar, alt: "PREFERRED COYOTE"}), 
+          React.createElement("h4", null, this.state.user.location), 
+          React.createElement("h4", null, this.state.user.gender), 
+          React.createElement("p", null, this.state.user.bio), 
+          React.createElement("p", null, React.createElement(Interests, {interests: this.state.user.Interests}))
+        ), 
+        React.createElement("div", {className: "small-4 columns"}, 
+          React.createElement("button", {type: "submit", className: "button small"}, "Call Random User")
         ), 
         React.createElement("div", {className: "small-8 columns"}, 
           React.createElement(RouteHandler, null)
@@ -508,7 +586,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
 module.exports.Dashboard = Dashboard;
 
-},{"../../utils/Authentication":26,"react":228,"react-router":53}],9:[function(require,module,exports){
+},{"../../utils/Authentication":26,"../profile/interests":13,"react":228,"react-router":53}],9:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -718,6 +796,7 @@ var data = {
 }
 ]
 }
+
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 var Interests = require('./interests').Interests;
@@ -1066,8 +1145,8 @@ module.exports.PubNub = PubNub;
 
 var React = require('react');
 var Router = require('react-router');
-var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
+var Route = Router.Route;
 var NotFoundRoute = Router.NotFoundRoute;
 var RouteHandler = Router.RouteHandler;
 
@@ -1088,7 +1167,6 @@ var CallView = require('./components/dashboard/callView').CallView;
 
 var routes = (
   React.createElement(Route, {name: "conversely", path: "/", handler: App}, 
-    React.createElement(DefaultRoute, {name: "index", handler: Home}), 
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
     React.createElement(Route, {name: "profile", path: "profile", handler: Profile}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
@@ -1101,7 +1179,8 @@ var routes = (
       React.createElement(Route, {name: "call", path: "call", handler: CallView})
     ), 
 
-    React.createElement(NotFoundRoute, {name: "notfound", handler: NotFound})
+    React.createElement(NotFoundRoute, {name: "notfound", handler: NotFound}), 
+    React.createElement(DefaultRoute, {name: "index", handler: Home})
   )
 );
 
