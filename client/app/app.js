@@ -2,8 +2,8 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
+var Route = Router.Route;
 var NotFoundRoute = Router.NotFoundRoute;
 var RouteHandler = Router.RouteHandler;
 
@@ -24,7 +24,6 @@ var CallView = require('./components/dashboard/callView').CallView;
 
 var routes = (
   <Route name="conversely" path="/" handler={App}>
-    <DefaultRoute name="index" handler={Home} />
     <Route name="signup" path="signup" handler={Signup} />
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
@@ -38,6 +37,7 @@ var routes = (
     </Route>
 
     <NotFoundRoute name="notfound" handler={NotFound} />
+    <DefaultRoute name="index" handler={Home} />
   </Route>
 );
 
