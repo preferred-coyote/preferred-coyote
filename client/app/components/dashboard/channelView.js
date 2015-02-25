@@ -84,6 +84,7 @@ var ChannelView = React.createClass({
       // return <div><button className="button small">{channel}</button></div>;
       return <li><button className="button small">{user}</button></li>
     }) : 'No users available.';
+
     return (
       <div className="row">
         <div className="large-12 columns">
