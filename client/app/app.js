@@ -17,6 +17,11 @@ var Profile = require('./components/profile/profile').Profile;
 var PubNub = require('./components/voice/pubnub').PubNub;
 // var pubnub = require('./stores/pubnubStore');
 
+var Dashboard = require('./components/dashboard/dashboard').Dashboard;
+var ChannelList = require('./components/dashboard/channelList').ChannelList;
+var ChannelView = require('./components/dashboard/channelView').ChannelView;
+var CallView = require('./components/dashboard/callView').CallView;
+
 var routes = (
   <Route name="conversely" path="/" handler={App}>
     <DefaultRoute name="index" handler={Home} />
@@ -25,6 +30,13 @@ var routes = (
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
     <Route name="pubnub" path="pubnub" handler={PubNub} />
+
+    <Route name="dashboard" path="dashboard" handler={Dashboard}>
+      <Route name="channelList" path="channels" handler={ChannelList} />
+      <Route name="channelView" path="channel/:channelName" handler={ChannelView} />
+      <Route name="call" path="call" handler={CallView} />
+    </Route>
+
     <NotFoundRoute name="notfound" handler={NotFound} />
   </Route>
 );

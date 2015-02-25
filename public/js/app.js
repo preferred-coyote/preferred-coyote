@@ -7,7 +7,8 @@ var actions = Reflux.createActions([
   // user actions
   'login',
   'logout',
-  'signup'
+  'signup',
+  'updatePassword'
   // , 'createProfile',
   // 'updateProfile'
 ]);
@@ -19,6 +20,9 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
+        if (data.status === 404) {
+          reject('Incorrect username or password');
+        }
         if (data.body && data.body.user) {
           //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
@@ -48,6 +52,25 @@ actions.signup.preEmit = function(creds) {
       });
   });
 };
+
+actions.updatePassword.preEmit = function(formData){
+  return new Promise(function(resolve, reject) {
+    request
+    .put('/api/user/profile/password')
+    .set('x-access-token', window.localStorage.getItem('token') || '')
+    .set('Content-Type', 'application/json')
+    .send({
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+      newPasswordConfirmation: formData.newPasswordConfirmation
+    })
+    .end(function(data){
+      console.log("Line 62 actions", data);
+      resolve(data);
+    });
+  })
+};
+
 
 module.exports = actions;
 
@@ -186,6 +209,11 @@ var Login = React.createClass({displayName: "Login",
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
       this.transitionTo('profile');
+    } else {
+      //update UI, username or password wrong
+      this.setState({
+        error: 'Incorrect username or password'
+      });
     }
   },
 
@@ -206,6 +234,7 @@ var Login = React.createClass({displayName: "Login",
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "large-12 columns"}, 
           React.createElement("h2", null, "Login"), 
+          error, 
           React.createElement("form", {className: "form", onSubmit: this.login, role: "form", action: "/api/auth/login", method: "POST"}, 
             React.createElement("label", {htmlFor: "username"}, "Username"), 
     	      React.createElement("input", {type: "text", name: "username", ref: "username", id: "username", placeholder: "username"}), 
@@ -214,8 +243,7 @@ var Login = React.createClass({displayName: "Login",
     	      React.createElement("button", {type: "submit", className: "button button-primary"}, 
               "Login"
             )
-          ), 
-          error 
+          )
         )
       )
     );
@@ -421,20 +449,33 @@ module.exports.Interests = Interests;
 
 },{"react":223}],10:[function(require,module,exports){
 var React = require('react');
+var Actions = require('../../actions/actions');
 
 var Pass = React.createClass({displayName: "Pass",
+
+  updatePassword: function(e){
+    e.preventDefault();
+    Actions.updatePassword({
+      oldPassword: this.refs.oldPassword.getDOMNode().value.trim(),
+      newPassword: this.refs.newPassword.getDOMNode().value.trim(),
+      newPasswordConfirmation: this.refs.newPasswordConfirmation.getDOMNode().value.trim()
+    });
+
+  },
+
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("form", {className: "form", role: "form", action: "/api/user/profile", enctype: "multipart/form-data", method: "PUT"}, 
+        React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
           React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
           React.createElement("input", {type: "file", name: "avatar", id: "avatar"}), 
           React.createElement("label", {for: "profile"}, "Update profile"), 
           React.createElement("textarea", {name: "profile", id: "profile"}), 
           React.createElement("fieldset", null, 
               React.createElement("legend", null, "Change Password"), 
-              React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password"}), 
-              React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password"})
+              React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
+              React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
+              React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
           ), 
           React.createElement("button", {type: "submit", className: "button small"}, "Update")
         )
@@ -446,7 +487,7 @@ var Pass = React.createClass({displayName: "Pass",
 module.exports.Pass = Pass;
 
 
-},{"react":223}],11:[function(require,module,exports){
+},{"../../actions/actions":1,"react":223}],11:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var data = {
@@ -602,7 +643,6 @@ var PubNub = React.createClass({displayName: "PubNub",
     var peer = this.state.peer || '';
     var user = this.state.user || '';
     var userlist = this.state.userlist.length ? this.state.userlist.map(function(user) {
-      console.log(user);
       return React.createElement("li", null, user);
     }) : 'There are no users available.';
 
@@ -624,7 +664,7 @@ var PubNub = React.createClass({displayName: "PubNub",
         ), 
         React.createElement("button", {id: "startCall", onClick: this.startCall}, "Call!"), 
 		    React.createElement("button", {id: "nextUser", onClick: this.nextUser}, "Next!"), 
-		    React.createElement("button", {id: "endCall", onClick: this.endCall}, "Stop Call")
+		    React.createElement("button", {id: "endCall", onClick: this.endAll}, "Stop Call")
       )
     );
   },
@@ -697,7 +737,6 @@ var PubNub = React.createClass({displayName: "PubNub",
   				  return pubnubStore.findRandomUser(list);
           })
           .then(function(rando){
-            console.log('random user is: ', rando);
 
             // start call with random user selected
   				  self.phoneUser(rando);
@@ -705,10 +744,10 @@ var PubNub = React.createClass({displayName: "PubNub",
       },
 
       callback: function(msg) {
-        console.log('in start call callback ', msg);
         pubnubStore.getUsersAvailable(user, pubnub)
         .then(function(list) {
           list = Object.keys(list);
+          console.log('list is', list);
           self.setState({
             userlist: list
           });
@@ -730,7 +769,7 @@ var PubNub = React.createClass({displayName: "PubNub",
       })
       .then(function(rando){
         console.log('random user is: ', rando);
-        phone.dial(rando);
+        session = phone.dial(rando);
       });
 	},
 
@@ -740,6 +779,7 @@ var PubNub = React.createClass({displayName: "PubNub",
     console.log('in endCall, user is', user);
 		if (session) {
       console.log('in endCall, session exists');
+      console.log('session is ', session);
       session.hangup();
     };
     console.log('in endcall after hangup, user is ', user);
@@ -748,6 +788,14 @@ var PubNub = React.createClass({displayName: "PubNub",
       peer: null
     });
 	},
+
+  endAll: function() {
+    session.hangup();
+    phone.hangup();
+    pubnub.unsubscribe({
+      channel: 'preferred-coyote'
+    })
+  },
 
 	changePhoneState: function(user, state) {
     // var pubnub = pubnubStore.pubnubInit();
@@ -769,6 +817,10 @@ var PubNub = React.createClass({displayName: "PubNub",
     var user = this.state.user;
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
+      pubnub.publish({
+        channel: 'preferred-coyote',        
+        message: 'Message posted'
+      });
       session = phone.dial(rando);
     });
     // When Call Comes In or is to be Connected
@@ -779,21 +831,35 @@ var PubNub = React.createClass({displayName: "PubNub",
       self.changePhoneState(user, false);
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
+      pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       // Display Your Friend's Live Video
       session.connected(function(session){
-        // set the peer that you've connected to 
+        // set the peer that you've connected to
+        self.changePhoneState(user, false); 
         self.setState({
           peer: session.number
         });
-
+        console.log('I HAVE CONNECTED! SESSION: ', session);
+        console.log('PHONE: ', phone);
         peervideo.src = session.video.src;
         peervideo.play();
         uservideo.src = phone.video.src;
         uservideo.play();
+        pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       });
       session.ended(function(session) {
-        phone.hangup();
+        // phone.hangup();
         self.changePhoneState(user, true);
+        pubnub.publish({
+          channel: 'preferred-coyote',        
+          message: 'Message posted'
+        });
       })
     });
 	}
@@ -906,7 +972,6 @@ var pubnubStore = Reflux.createStore({
         channel: 'preferred-coyote',
         state: true,
         callback: function(list) {
-          console.log('in getusersavailable: ', list);
           //this returns all users in channel
           var tempList = {};
           list.uuids.filter(function(uuids) {
@@ -1008,7 +1073,6 @@ var userStore = Reflux.createStore({
 
   init: function() {
     var self = this;
-    console.log('in init');
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
       user: window.localStorage.getItem('user')
@@ -1037,7 +1101,9 @@ var userStore = Reflux.createStore({
       self.user.loggedIn = true;
       self.trigger(self.user.loggedIn);
     }).catch(function(err) {
-      console.log('error authenticating', err);
+      if (err === 'Incorrect username or password') {
+        self.trigger(false);
+      }
     })
   },
 
