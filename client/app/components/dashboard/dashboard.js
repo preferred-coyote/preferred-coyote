@@ -93,7 +93,7 @@ var Dashboard = React.createClass({
           <p><Interests interests={this.state.user.Interests} /></p>
         </div>
         <div className="small-4 columns">
-          
+          <button type="submit" className="button small">Call Random User</button>
         </div>
         <div className="small-8 columns">
           <RouteHandler />
