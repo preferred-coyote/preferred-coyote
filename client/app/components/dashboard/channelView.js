@@ -4,6 +4,7 @@ var React = require('react');
 var Router = require('react-router');
 var Reflux = require('reflux');
 
+var Authentication = require('../../utils/Authentication');
 var channelStore = require('../../stores/channelStore');
 
 var pubnub;
@@ -11,7 +12,7 @@ var userlist = {};
 
 var ChannelView = React.createClass({
 
-  mixins: [Router.State],
+  mixins: [Router.State, Authentication],
 
   getInitialState: function() {
     var user = JSON.parse(window.localStorage.getItem('user'));

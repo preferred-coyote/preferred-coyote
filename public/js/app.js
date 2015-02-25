@@ -93,7 +93,6 @@ var userStore = require('../stores/userStore');
 var Header = require('./header').Header;
 var User = require('./user').User;
 
-
 var App = React.createClass({displayName: "App",
 
   mixins: [
@@ -110,7 +109,7 @@ var App = React.createClass({displayName: "App",
   componentDidMount: function(){
 
     if (this.state.loggedIn) {
-      this.transitionTo('profile');
+      // this.transitionTo('dashboard');
     }
   },
 
@@ -133,7 +132,8 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'profile', text: 'Profile' },
-        { to: 'pubnub', text: 'Call User'}
+        { to: 'pubnub', text: 'Call User'},
+        { to: 'dashboard', text: 'Dashboard'}
       ];
     } else {
       return [
@@ -194,7 +194,7 @@ var Login = React.createClass({displayName: "Login",
     willTransitionTo: function(transition) {
 
       if (userStore.isLoggedIn()) {
-        transition.redirect('profile');
+        transition.redirect('dashboard');
       }
     }
   },
@@ -208,7 +208,7 @@ var Login = React.createClass({displayName: "Login",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('profile');
+      this.transitionTo('dashboard');
     } else {
       //update UI, username or password wrong
       this.setState({
@@ -341,8 +341,10 @@ var React = require('react');
 var Link = require('react-router').Link;
 
 var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', 'Kink.com', 'Godzilla'];
+var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({displayName: "ChannelList",
+  mixins: [Authentication],
 
   getInitialState: function() {
     // console.log('channels: ', channels);
@@ -371,13 +373,14 @@ var ChannelList = React.createClass({displayName: "ChannelList",
 
 module.exports.ChannelList = ChannelList;
 
-},{"react":228,"react-router":53}],7:[function(require,module,exports){
+},{"../../utils/Authentication":26,"react":228,"react-router":53}],7:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var Router = require('react-router');
 var Reflux = require('reflux');
 
+var Authentication = require('../../utils/Authentication');
 var channelStore = require('../../stores/channelStore');
 
 var pubnub;
@@ -385,7 +388,7 @@ var userlist = {};
 
 var ChannelView = React.createClass({displayName: "ChannelView",
 
-  mixins: [Router.State],
+  mixins: [Router.State, Authentication],
 
   getInitialState: function() {
     var user = JSON.parse(window.localStorage.getItem('user'));
@@ -472,12 +475,14 @@ var ChannelView = React.createClass({displayName: "ChannelView",
 
 module.exports.ChannelView = ChannelView;
 
-},{"../../stores/channelStore":21,"react":228,"react-router":53,"reflux":229}],8:[function(require,module,exports){
+},{"../../stores/channelStore":21,"../../utils/Authentication":26,"react":228,"react-router":53,"reflux":229}],8:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
+var Authentication = require('../../utils/Authentication');
+
 
 // var MiniProfile = require('./miniProfile').MiniProfile;
 // var OnlineFriendsList = require('./onlineFriendsList').OnlineFriendsList;
@@ -485,6 +490,8 @@ var RouteHandler = Router.RouteHandler;
 // var ChatBar = require('./chatBar').ChatBar;
 
 var Dashboard = React.createClass({displayName: "Dashboard",
+  mixins: [Authentication],
+
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
@@ -501,7 +508,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
 module.exports.Dashboard = Dashboard;
 
-},{"react":228,"react-router":53}],9:[function(require,module,exports){
+},{"../../utils/Authentication":26,"react":228,"react-router":53}],9:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');

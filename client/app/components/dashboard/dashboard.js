@@ -3,6 +3,8 @@
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
+var Authentication = require('../../utils/Authentication');
+
 
 // var MiniProfile = require('./miniProfile').MiniProfile;
 // var OnlineFriendsList = require('./onlineFriendsList').OnlineFriendsList;
@@ -10,6 +12,8 @@ var RouteHandler = Router.RouteHandler;
 // var ChatBar = require('./chatBar').ChatBar;
 
 var Dashboard = React.createClass({
+  mixins: [Authentication],
+
   render: function() {
     return (
       <div className="row">

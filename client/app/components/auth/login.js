@@ -20,7 +20,7 @@ var Login = React.createClass({
     willTransitionTo: function(transition) {
 
       if (userStore.isLoggedIn()) {
-        transition.redirect('profile');
+        transition.redirect('dashboard');
       }
     }
   },
@@ -34,7 +34,7 @@ var Login = React.createClass({
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('profile');
+      this.transitionTo('dashboard');
     } else {
       //update UI, username or password wrong
       this.setState({
