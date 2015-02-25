@@ -25,6 +25,7 @@ var CallView = require('./components/dashboard/callView').CallView;
 var routes = (
   <Route name="conversely" path="/" handler={App}>
     <DefaultRoute name="index" handler={Home} />
+
     <Route name="signup" path="signup" handler={Signup} />
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />

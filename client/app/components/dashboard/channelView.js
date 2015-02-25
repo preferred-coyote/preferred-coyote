@@ -54,7 +54,7 @@ var ChannelView = React.createClass({
 
       connect: function() {
         pubnub.publish({
-          channel: 'preferred-coyote',        
+          channel: 'preferred-coyote',
           message: 'Message posted'
         });
       },
@@ -66,7 +66,7 @@ var ChannelView = React.createClass({
       },
 
       presence: function(info) {
-      // detects users in channel and sets them in this.state
+        // detects users in channel and sets them in this.state
         self.getUsers(user, pubnub, channel);
       },
 
