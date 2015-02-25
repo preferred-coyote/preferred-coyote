@@ -6,7 +6,7 @@ var Reflux = require('reflux');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
-var LinkButton = require('./ui/linkButton').LinkButton;
+// var LinkButton = require('./ui/linkButton').LinkButton;
 
 var actions = require('../actions/actions');
 var userStore = require('../stores/userStore');
@@ -19,7 +19,8 @@ var App = React.createClass({
 
   mixins: [
     Reflux.listenTo(userStore, 'setLoggedIn'),
-    Router.Navigation
+    Router.Navigation,
+    Router.State
   ],
 
   getInitialState: function() {
@@ -28,10 +29,10 @@ var App = React.createClass({
     };
   },
 
-  componentDidMount: function(){
-
-    if (this.state.loggedIn) {
-      // this.transitionTo('dashboard');
+  componentDidMount: function() {
+    var path = this.getPathname();
+    if (this.state.loggedIn && ['/', '/login', '/signup'].indexOf(path) !== -1) {
+      this.transitionTo('dashboard');
     }
   },
 
@@ -68,7 +69,7 @@ var App = React.createClass({
   render: function() {
     var buttons = this.getNav().map(function(link) {
       if (typeof link === 'object') {
-        return <LinkButton to={link.to} text={link.text} />
+        return <li><Link to={link.to}>{link.text}</Link></li>
       } else {
         return link;
       }

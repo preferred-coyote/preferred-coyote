@@ -89,7 +89,7 @@ $column-gutter: rem-calc(30);
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // We use these to define default font stacks
-$font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+$font-family-sans-serif: 'Source Sans Pro', sans-serif;
 $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
 
@@ -118,12 +118,12 @@ $jet         : #222222;
 $black       : #000000;
 
 // We use these as default colors throughout
-$primary-color: #62d5dc;
-$secondary-color: #e7e7e7;
-$alert-color: #f04124;
-$success-color: #43AC6A;
-$warning-color: #f08a24;
-$info-color: #a0d3e8;
+$primary-color: #059290;
+$secondary-color: #FFFF9D;
+$alert-color: #FF6138;
+$success-color: #BEEB9F;
+$warning-color: #FFFF9D;
+$info-color: #79BD8F;
 
 // We use these to control various global styles
 $body-bg: $white;
@@ -1385,12 +1385,12 @@ $topbar-bg-color: $oil;
 $topbar-bg: $topbar-bg-color;
 
 // Height and margin
-$topbar-height: rem-calc(45);
+$topbar-height: rem-calc(70);
 $topbar-margin-bottom: 0;
 
 // Controlling the styles for the title in the top bar
 $topbar-title-weight: $font-weight-normal;
-$topbar-title-font-size: rem-calc(17);
+$topbar-title-font-size: rem-calc(23);
 
 // Set the link colors and styles for top-level nav
 $topbar-link-color: $white;
@@ -1398,7 +1398,7 @@ $topbar-link-color-hover: $white;
 $topbar-link-color-active: $white;
 $topbar-link-color-active-hover: $white;
 $topbar-link-weight: $font-weight-normal;
-$topbar-link-font-size: rem-calc(13);
+$topbar-link-font-size: rem-calc(14);
 $topbar-link-hover-lightness: -10%; // Darken by 10%
 $topbar-link-bg: $topbar-bg;
 $topbar-link-bg-hover: $oil;
@@ -1432,7 +1432,7 @@ $topbar-dropdown-label-bg: $oil;
 
 // Top menu icon styles
 $topbar-menu-link-transform: uppercase;
-$topbar-menu-link-font-size: rem-calc(13);
+$topbar-menu-link-font-size: rem-calc(16);
 $topbar-menu-link-weight: $font-weight-bold;
 $topbar-menu-link-color: $white;
 $topbar-menu-icon-color: $white;

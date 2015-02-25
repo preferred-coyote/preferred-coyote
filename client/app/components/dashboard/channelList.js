@@ -17,14 +17,14 @@ var ChannelList = React.createClass({
   },
 
   render: function() {
-    var channelList = this.state.channels.length ? this.state.channels.map(function(channel) {
+    var channelList = this.state.channels.length ? this.state.channels.sort().map(function(channel) {
       // return <div><button className="button small">{channel}</button></div>;
-      return <li><Link to="channelView" params={{ channelName: channel }} className="button small">{channel}</Link></li>
+      return <li><Link to="channelView" params={{ channelName: channel }}>{channel.split('-').join(' ')}</Link></li>
     }) : 'No channels available.';
     return (
       <div className="row">
         <div className="large-12 columns">
-          <h1>Channel List</h1>
+          <h2 className="channel-header">Channel List</h2>
             <ul className="no-bullet">
               {channelList}
             </ul>
