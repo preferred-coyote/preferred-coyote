@@ -4,8 +4,8 @@ var Authentication = require('../../utils/Authentication');
 
 var CallView = React.createClass({
 
-	mixins: [Authentication],
-	
+  mixins: [Authentication],
+
   render: function() {
     return (
       <div className="row">
