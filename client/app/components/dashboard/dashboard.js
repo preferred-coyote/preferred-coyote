@@ -104,6 +104,7 @@ var Dashboard = React.createClass({
         <div className="small-4 columns">
 
 
+          <button type="submit" className="button small">Call Random User</button>
         </div>
         <div className="small-9 columns" id="primary">
           <RouteHandler />
