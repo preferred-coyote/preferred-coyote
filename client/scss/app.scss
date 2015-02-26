@@ -13,6 +13,11 @@
 
 body {
   -webkit-font-smoothing: antialiased;
+  background-color:#FFF2DA;
+}
+
+#homePageButton {
+	margin-top:12rem;
 }
 
 #sidebar {
@@ -34,4 +39,16 @@ body {
 .auto-margin {
   display:block;
   margin:0 auto;
+}
+
+#fromTheTop {
+  margin-top: 70px;
+}
+
+.profile {
+  border-radius: 50px;
+}
+
+#contactSubmit {
+  margin-left: 370px;
 }
