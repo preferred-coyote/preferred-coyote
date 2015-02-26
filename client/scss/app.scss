@@ -26,3 +26,11 @@ body {
 #callRandomUser {
 	margin-top:12rem;
 }
+.round {
+  @include border-radius(50%);
+}
+
+.auto-margin {
+  display:block;
+  margin:0 auto;
+}
