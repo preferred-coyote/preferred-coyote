@@ -33,6 +33,7 @@ var routes = (
     <Route name="pubnub" path="pubnub" handler={PubNub} />
 
     <Route name="dashboard" path="dashboard" handler={Dashboard}>
+      <DefaultRoute name="dashboardHome" handler={ChannelList} />
       <Route name="channelList" path="channels" handler={ChannelList} />
       <Route name="channelView" path="channel/:channelName" handler={ChannelView} />
       <Route name="call" path="call" handler={CallView} />

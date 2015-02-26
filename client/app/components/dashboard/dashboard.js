@@ -70,8 +70,6 @@ var data = {
 }
 
 var Interests = require('../profile/interests').Interests;
-var Authentication = require('../../utils/Authentication');
-
 
 var Dashboard = React.createClass({
 
@@ -85,18 +83,18 @@ var Dashboard = React.createClass({
 
   render: function() {
     return (
-      <div className="row">
-        <div className="small-4 columns">
-          <h2>{this.state.user.username} Profile</h2>
-          <img src={this.state.user.avatar} alt="PREFERRED COYOTE"/>
-          <h4>{this.state.user.location}</h4>
-          <h4>{this.state.user.gender}</h4>
+      <div>
+        <div className="medium-3 columns" id="sidebar">
+          <h3 className="username">@{this.state.user.username}</h3>
+          <img src={this.state.user.avatar} className="round avatar " alt="PREFERRED COYOTE"/>
           <p>{this.state.user.bio}</p>
-          <p><Interests interests={this.state.user.Interests} /></p>
-        </div>
-        <div className="small-4 columns">
-          <Link to="/pubnub" className="button" id="callRandomUser">Call Random User</Link>
-          <Link to="/dashboard/channels" className="button">Search Topics</Link>
+          <ul className="inline-list">
+            <li>{this.state.user.location}</li>
+            <li>{this.state.user.gender}</li>
+          </ul>
+          <Interests interests={this.state.user.Interests} />
+          <Link to="/pubnub" className="button info expand">Call Random User</Link>
+          <Link to="/dashboard/channels" className="button info expand">Search Topics</Link>
         </div>
         <div className="small-9 columns" id="primary">
           <RouteHandler />

@@ -4,7 +4,7 @@ var Interests = React.createClass({
   getInitialState: function() {
     return {
       data: this.props.interests.map(function(element) {
-        return (<div>{element.name}</div>);
+        return <li>{element.name}</li>;
       })
     };
   },
@@ -13,7 +13,9 @@ var Interests = React.createClass({
     return (
       <div>
         <h3>Interests</h3>
-        {this.state.data}
+        <ul className="inline-list">
+          {this.state.data}
+        </ul>
       </div>
     );
   }
