@@ -54,14 +54,15 @@ var App = React.createClass({
   getNav: function() {
     if (this.state.loggedIn) {
       return [
-        { to: 'profile', text: 'Profile' },
-        { to: 'pubnub', text: 'Call User'},
-        { to: 'dashboard', text: 'Dashboard'}
+        { to: 'dashboard', text: 'Dashboard'},
+        { to: 'profile', text: 'Edit Profile' },
       ];
     } else {
       return [
+        { to: 'about', text: 'About'},
         { to: 'login', text: 'Login' },
-        { to: 'signup', text: 'Signup' }
+        { to: 'signup', text: 'Signup' },
+        { to: 'contact', text: 'Contact'}
       ];
     }
   },
