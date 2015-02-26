@@ -6,7 +6,6 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
 
-
 var data = {
   "id": 2,
   "username": "Ghost",
@@ -82,6 +81,7 @@ var Dashboard = React.createClass({
   },
 
   render: function() {
+
     return (
       <div>
         <div className="medium-3 columns" id="sidebar">
@@ -93,8 +93,6 @@ var Dashboard = React.createClass({
             <li>{this.state.user.gender}</li>
           </ul>
           <Interests interests={this.state.user.Interests} />
-          <Link to="/pubnub" className="button info expand">Call Random User</Link>
-          <Link to="/dashboard/channels" className="button info expand">Search Topics</Link>
         </div>
         <div className="small-9 columns" id="primary">
           <RouteHandler />
