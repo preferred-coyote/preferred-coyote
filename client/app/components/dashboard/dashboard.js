@@ -93,7 +93,7 @@ var Dashboard = React.createClass({
             <li>{this.state.user.gender}</li>
           </ul>
           <Interests interests={this.state.user.Interests} />
-          <Link to="/pubnub" className="button info expand">Call Random User</Link>
+          <Link to="/pubnub" className="button info expand" id="callRandomUser">Call Random User</Link>
           <Link to="/dashboard/channels" className="button info expand">Search Topics</Link>
         </div>
         <div className="small-9 columns" id="primary">
