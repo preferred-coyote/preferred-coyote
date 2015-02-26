@@ -85,12 +85,6 @@ var Dashboard = React.createClass({
 
   render: function() {
     return (
-
-      <div>
-        <div className="small-3 columns" id="sidebar">
-          <h3 className="username">@jacksonhoose</h3>
-
-
       <div className="row">
         <div className="small-4 columns">
           <h2>{this.state.user.username} Profile</h2>
@@ -101,7 +95,7 @@ var Dashboard = React.createClass({
           <p><Interests interests={this.state.user.Interests} /></p>
         </div>
         <div className="small-4 columns">
-          <Link to="/pubnub" className="button">Call Random User</Link>
+          <Link to="/pubnub" className="button" id="callRandomUser">Call Random User</Link>
           <Link to="/dashboard/channels" className="button">Search Topics</Link>
         </div>
         <div className="small-9 columns" id="primary">
