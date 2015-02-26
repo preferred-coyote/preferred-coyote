@@ -11,6 +11,10 @@ Icon
 public/**/*
 public/js/*
 
+
+public
+public/js/*
+
 # Thumbnails
 ._*
 
