@@ -1159,9 +1159,12 @@ var Interests = require('../profile/interests').Interests;
 var Dashboard = React.createClass({displayName: "Dashboard",
 
   mixins: [Authentication],
-
+  
   getInitialState: function() {
+    var user = JSON.parse(window.localStorage.getItem('user'));
+
     return {
+      username: user.username,
       user: data
     };
   },
@@ -1171,7 +1174,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
-          React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
+          React.createElement("h3", {className: "username"}, "@", this.state.username), 
           React.createElement("img", {src: this.state.user.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
           React.createElement("p", null, this.state.user.bio), 
           React.createElement("ul", {className: "inline-list"}, 
@@ -1538,7 +1541,7 @@ var PubNub = React.createClass({displayName: "PubNub",
 
     return (
       React.createElement("div", null, 
-      	React.createElement("h1", null, "Hello ", this.state.user), 
+      	React.createElement("h1", null, "Hello @", this.state.user), 
       	React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "large-6 columns"}, 
   		      React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
