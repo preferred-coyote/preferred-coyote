@@ -21,6 +21,7 @@ var Dashboard = require('./components/dashboard/dashboard').Dashboard;
 var ChannelList = require('./components/dashboard/channelList').ChannelList;
 var ChannelView = require('./components/dashboard/channelView').ChannelView;
 var CallView = require('./components/dashboard/callView').CallView;
+var DashboardButtons = require('./components/dashboard/dashboardButtons').DashboardButtons
 
 var routes = (
   <Route name="conversely" path="/" handler={App}>
@@ -30,9 +31,10 @@ var routes = (
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
-    <Route name="pubnub" path="pubnub" handler={PubNub} />
 
     <Route name="dashboard" path="dashboard" handler={Dashboard}>
+      <DefaultRoute name="dashboardButtons" handler={DashboardButtons} />
+      <Route name="pubnub" path="pubnub" handler={PubNub} />
       <Route name="channelList" path="channels" handler={ChannelList} />
       <Route name="channelView" path="channel/:channelName" handler={ChannelView} />
       <Route name="call" path="call" handler={CallView} />

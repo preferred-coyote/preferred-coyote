@@ -6,7 +6,6 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
 
-
 var data = {
   "id": 2,
   "username": "Ghost",
@@ -77,27 +76,11 @@ var Dashboard = React.createClass({
 
   getInitialState: function() {
     return {
-      user: data,
-      buttonClick: false
+      user: data
     };
   },
 
-  toggleButtonClick: function() {
-    this.setState({
-      buttonClick: true
-    });
-  },
-
   render: function() {
-
-    var dashboardButtons = [
-      <Link to="/pubnub" onClick={this.toggleButtonClick} className="button info expand" id="callRandomUser">Call Random User</Link>, 
-      <Link to="/dashboard/channels" onClick={this.toggleButtonClick} className="button info expand">Search Topics</Link>
-    ];
-
-    if(this.state.buttonClick) {
-      dashboardButtons = "";
-    }
 
     return (
       <div>
@@ -110,9 +93,6 @@ var Dashboard = React.createClass({
             <li>{this.state.user.gender}</li>
           </ul>
           <Interests interests={this.state.user.Interests} />
-        </div>
-        <div className="medium-3 columns">
-          { dashboardButtons }
         </div>
         <div className="small-9 columns" id="primary">
           <RouteHandler />
