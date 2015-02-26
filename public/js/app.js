@@ -561,11 +561,28 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
   getInitialState: function() {
     return {
-      user: data
+      user: data,
+      buttonClick: false
     };
   },
 
+  toggleButtonClick: function() {
+    this.setState({
+      buttonClick: true
+    });
+  },
+
   render: function() {
+
+    var dashboardButtons = [
+      React.createElement(Link, {to: "/pubnub", onClick: this.toggleButtonClick, className: "button info expand", id: "callRandomUser"}, "Call Random User"), 
+      React.createElement(Link, {to: "/dashboard/channels", onClick: this.toggleButtonClick, className: "button info expand"}, "Search Topics")
+    ];
+
+    if(this.state.buttonClick) {
+      dashboardButtons = "";
+    }
+
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
@@ -576,9 +593,10 @@ var Dashboard = React.createClass({displayName: "Dashboard",
             React.createElement("li", null, this.state.user.location), 
             React.createElement("li", null, this.state.user.gender)
           ), 
-          React.createElement(Interests, {interests: this.state.user.Interests}), 
-          React.createElement(Link, {to: "/pubnub", className: "button info expand", id: "callRandomUser"}, "Call Random User"), 
-          React.createElement(Link, {to: "/dashboard/channels", className: "button info expand"}, "Search Topics")
+          React.createElement(Interests, {interests: this.state.user.Interests})
+        ), 
+        React.createElement("div", {className: "medium-3 columns"}, 
+          dashboardButtons 
         ), 
         React.createElement("div", {className: "small-9 columns", id: "primary"}, 
           React.createElement(RouteHandler, null)
@@ -1168,7 +1186,6 @@ var routes = (
     React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
-      React.createElement(DefaultRoute, {name: "dashboardHome", handler: ChannelList}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 
       React.createElement(Route, {name: "call", path: "call", handler: CallView})

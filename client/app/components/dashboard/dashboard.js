@@ -77,11 +77,28 @@ var Dashboard = React.createClass({
 
   getInitialState: function() {
     return {
-      user: data
+      user: data,
+      buttonClick: false
     };
   },
 
+  toggleButtonClick: function() {
+    this.setState({
+      buttonClick: true
+    });
+  },
+
   render: function() {
+
+    var dashboardButtons = [
+      <Link to="/pubnub" onClick={this.toggleButtonClick} className="button info expand" id="callRandomUser">Call Random User</Link>, 
+      <Link to="/dashboard/channels" onClick={this.toggleButtonClick} className="button info expand">Search Topics</Link>
+    ];
+
+    if(this.state.buttonClick) {
+      dashboardButtons = "";
+    }
+
     return (
       <div>
         <div className="medium-3 columns" id="sidebar">
@@ -93,8 +110,9 @@ var Dashboard = React.createClass({
             <li>{this.state.user.gender}</li>
           </ul>
           <Interests interests={this.state.user.Interests} />
-          <Link to="/pubnub" className="button info expand" id="callRandomUser">Call Random User</Link>
-          <Link to="/dashboard/channels" className="button info expand">Search Topics</Link>
+        </div>
+        <div className="medium-3 columns">
+          { dashboardButtons }
         </div>
         <div className="small-9 columns" id="primary">
           <RouteHandler />
