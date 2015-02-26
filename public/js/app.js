@@ -1168,7 +1168,6 @@ var routes = (
     React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
-      React.createElement(DefaultRoute, {name: "dashboardHome", handler: ChannelList}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 
       React.createElement(Route, {name: "call", path: "call", handler: CallView})
