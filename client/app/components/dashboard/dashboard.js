@@ -6,8 +6,6 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
 
-<<<<<<< HEAD
-=======
 
 var data = {
   "id": 2,

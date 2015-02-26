@@ -8,14 +8,13 @@
 # Icon must end with two \r
 Icon
 
-<<<<<<< HEAD
 public/**/*
 public/js/*
 
-=======
+
 public
 public/js/*
->>>>>>> Formatting cleanup
+
 # Thumbnails
 ._*
 
