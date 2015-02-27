@@ -46,7 +46,7 @@ var Home = React.createClass({
             </div>
           </li>
         </ul>
-        <Link to="/about" className="button info expand" id="homePageButton">About</Link>
+        <Link to="/about" className="button info expand" >About</Link>
         <Link to="/contact" className="button info expand">Contact</Link>
       </div>
     );
