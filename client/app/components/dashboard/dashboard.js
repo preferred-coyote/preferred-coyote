@@ -76,7 +76,8 @@ var Dashboard = React.createClass({
 
   getInitialState: function() {
     return {
-      user: data
+      user: data,
+      username: JSON.parse(window.localStorage.getItem('user')).username
     };
   },
 
@@ -85,7 +86,7 @@ var Dashboard = React.createClass({
     return (
       <div>
         <div className="medium-3 columns" id="sidebar">
-          <h3 className="username">@{this.state.user.username}</h3>
+          <h3 className="username">@{this.state.username}</h3>
           <img src={this.state.user.avatar} className="round avatar " alt="PREFERRED COYOTE"/>
           <p>{this.state.user.bio}</p>
           <ul className="inline-list">

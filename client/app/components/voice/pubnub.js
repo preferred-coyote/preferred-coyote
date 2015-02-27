@@ -35,7 +35,7 @@ var PubNub = React.createClass({
 
     return (
       <div>
-      	<h1>Hello {this.state.user}</h1>
+      	<h1>Hello @{this.state.user}</h1>
       	<div className="row">
           <div className="large-6 columns">
   		      <video width="250" autoPlay id='uservideo'></video>
