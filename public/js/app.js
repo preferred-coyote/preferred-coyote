@@ -1315,7 +1315,7 @@ var Home = React.createClass({displayName: "Home",
             )
           )
         ), 
-        React.createElement(Link, {to: "/about", className: "button info expand", id: "homePageButton"}, "About"), 
+        React.createElement(Link, {to: "/about", className: "button info expand"}, "About"), 
         React.createElement(Link, {to: "/contact", className: "button info expand"}, "Contact")
       )
     );
