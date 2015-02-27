@@ -5,10 +5,13 @@ var runSequence = require('run-sequence');
 var browserify = require('gulp-browserify');
 var run = require('gulp-run');
 var compass = require('gulp-compass');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 
 var paths = {
   src: {
-    // bower: './client/src/bower_components',
+    bower: './client/bower_components',
     // img: './client/src/img',
     scss: './client/scss',
     js: './client/app'
@@ -22,10 +25,27 @@ var paths = {
   karmaConf: __dirname + '/spec/_karma.conf.js'
 };
 
+var filesToUglify = [
+  paths.src.bower + '/jquery/dist/jquery.min.js',
+  paths.src.bower + '/foundation/js/foundation.min.js',
+  paths.src.bower + '/foundation/js/foundation/foundation.orbit.js',
+  paths.dist.public + '/js/app.bundled.js'
+];
+
 var handleError = function(err) {
   console.log(err.toString());
   this.emit('end');
 };
+
+gulp.task('uglify', function() {
+  gulp.src(filesToUglify)
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest(paths.dist.js));
+});
+
+gulp.task('javascript', function() {
+  runSequence('browserify', 'uglify');
+});
 
 gulp.task('lint', function() {});
 
@@ -48,6 +68,7 @@ gulp.task('browserify', function() {
       transform: ['reactify'],
     }))
     .on('error', handleError)
+    .pipe(rename('app.bundled.js'))
     .pipe(gulp.dest(paths.dist.js))
 });
 
@@ -66,12 +87,12 @@ gulp.task('karma', function(done) {
 
 // folders to watch
 gulp.task('watch', function() {
-  gulp.watch(paths.src.js + '/**/*.js', ['browserify']);
+  gulp.watch(paths.src.js + '/**/*.js', ['javascript']);
   gulp.watch(paths.src.scss + '/**/*.scss', ['scss']);
 });
 
 // build for deploys
-gulp.task('build', ['browserify', 'scss']);
+gulp.task('build', ['javascript', 'scss']);
 
 // Default Task
-gulp.task('default', ['lint', 'test', 'browserify', 'scss', 'watch']);
+gulp.task('default', ['lint', 'test', 'javascript', 'scss', 'watch']);
