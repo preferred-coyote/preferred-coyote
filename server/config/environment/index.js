@@ -1,4 +1,5 @@
 var path = require('path');
+var nconf = require('nconf');
 var _ = require('lodash');
 
 function requiredProcessEnv(name) {
@@ -8,17 +9,22 @@ function requiredProcessEnv(name) {
   return process.env[name];
 }
 
+// get environemnt variables
+nconf
+  .argv()
+  .env();
+
 /**
  * config across all environments
  */
 var all = {
-  env: process.env.NODE_ENV || 'development',
+  env: nconf.get('NODE_ENV') || 'development',
 
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 3000,
+  port: nconf.get('PORT') || 3000,
 
   //Secret for session, you will want to change this and make it an environment variable
   secret: {

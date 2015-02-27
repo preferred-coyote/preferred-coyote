@@ -37,6 +37,7 @@
     "morgan": "^1.5.1",
     "multer": "~0.1.7",
     "mysql": "^2.5.4",
+    "nconf": "^0.7.1",
     "node-jsx": "^0.12.4",
     "object-assign": "^2.0.0",
     "passport": "^0.2.1",
