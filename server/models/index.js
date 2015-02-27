@@ -4,10 +4,16 @@ var Sequelize = require("sequelize");
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || "development";
 var config    = require(__dirname + '/../../config/config.json')[env];
-var sequelize = new Sequelize('conversely-dev', 'root', 'root', {
-  host: 'localhost',
-  dialect: 'mysql'
-});
+
+if (env === 'development') {
+  var sequelize = new Sequelize('conversely-dev', 'root', 'root', {
+    host: 'localhost',
+    dialect: 'mysql'
+  });
+} else if (env === 'production') {
+  var sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL);
+}
+
 var db = {};
 
 fs
