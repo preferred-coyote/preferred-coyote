@@ -11,6 +11,7 @@ var userlist = {};
 var phone;
 
 var session;
+var connected = false;
 
 var PubNub = React.createClass({
 
@@ -38,11 +39,11 @@ var PubNub = React.createClass({
       	<h1>Hello @{this.state.user}</h1>
       	<div className="row">
           <div className="large-6 columns">
-  		      <video width="250" autoPlay id='uservideo'></video>
+            <video width="250" autoPlay id='uservideo'></video>
             {user}
           </div>
           <div className="large-6 columns">
-  		      <video width="250" autoPlay id='peervideo'></video>
+            <video width="250" autoPlay id='peervideo'></video>
             {peer}
           </div>
         </div>
@@ -50,8 +51,8 @@ var PubNub = React.createClass({
           {userlist}
         </ul>
         <button id="startCall" onClick={this.startCall}>Call!</button>
-		    <button id="nextUser" onClick={this.nextUser}>Next!</button>
-		    <button id="endCall" onClick={this.endAll}>Stop Call</button>
+        <button id="nextUser" onClick={this.nextUser}>Next!</button>
+        <button id="endCall" onClick={this.endAll}>Stop Call</button>
       </div>
     );
   },
@@ -59,14 +60,14 @@ var PubNub = React.createClass({
   //for "Call User" button, it hits getInitialSTate > render > ComponentDidMount
   //automatically
   //this allows us to get the user by going "this.state.user"
-	getInitialState: function() {
+  getInitialState: function() {
     var user = JSON.parse(window.localStorage.getItem('user'));
     return {
       user: user.username,
       peer: null,
       userlist: []
     };
-	},
+  },
 
   initializePhoneAndPubNub: function() {
     // Initializes both phone and pubnub
@@ -117,16 +118,16 @@ var PubNub = React.createClass({
       connect: function(userlist) {
 
         //getUsersAvailable returns a list of users currently in channel who are available
-				pubnubStore.getUsersAvailable(user, pubnub)
+        pubnubStore.getUsersAvailable(user, pubnub)
           .then(function(list){
 
           //findRandomUser selects one user randomly from userlist
-  				  return pubnubStore.findRandomUser(list);
+            return pubnubStore.findRandomUser(list);
           })
           .then(function(rando){
 
             // start call with random user selected
-  				  self.phoneUser(rando);
+            self.phoneUser(rando);
           });
       },
 
@@ -144,9 +145,9 @@ var PubNub = React.createClass({
         });
       }
     });
-	},
+  },
 
-	nextUser: function() {
+  nextUser: function() {
     this.endCall();
     var self = this;
     var user = this.state.user;
@@ -158,13 +159,13 @@ var PubNub = React.createClass({
         console.log('random user is: ', rando);
         session = phone.dial(rando);
       });
-	},
+  },
 
-	endCall: function() {
+  endCall: function() {
     var self = this;
     var user = this.state.user;
     console.log('in endCall, user is', user);
-		if (session) {
+    if (session) {
       console.log('in endCall, session exists');
       console.log('session is ', session);
       session.hangup();
@@ -174,7 +175,7 @@ var PubNub = React.createClass({
     this.setState({
       peer: null
     });
-	},
+  },
 
   endAll: function() {
     session.hangup();
@@ -184,23 +185,23 @@ var PubNub = React.createClass({
     })
   },
 
-	changePhoneState: function(user, state) {
+  changePhoneState: function(user, state) {
     // var pubnub = pubnubStore.pubnubInit();
-   	pubnub.state({
-    	channel: 'preferred-coyote',
-    	uuid: user,
-    	state: {available: state},
-    	callback: function() {
+    pubnub.state({
+      channel: 'preferred-coyote',
+      uuid: user,
+      state: {available: state},
+      callback: function() {
         pubnub.publish({
           channel: 'preferred-coyote',        
           message: 'Message posted'
         });
-    	}
-  	});
-	},
+      }
+    });
+  },
 
-	phoneUser: function(rando) {
-		var self = this;
+  phoneUser: function(rando) {
+    var self = this;
     var user = this.state.user;
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
@@ -215,6 +216,9 @@ var PubNub = React.createClass({
       //TODO: only receive session when user accepts
       //on click thingy
         //if so then run everything below:
+      if (connected) return session.hangup();
+      
+      session = session;
       self.changePhoneState(user, false);
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
@@ -226,6 +230,7 @@ var PubNub = React.createClass({
       session.connected(function(session){
         // set the peer that you've connected to
         self.changePhoneState(user, false); 
+        connected = true;
         self.setState({
           peer: session.number
         });
@@ -242,6 +247,7 @@ var PubNub = React.createClass({
       });
       session.ended(function(session) {
         // phone.hangup();
+        connected = false;
         self.changePhoneState(user, true);
         pubnub.publish({
           channel: 'preferred-coyote',        
@@ -249,7 +255,7 @@ var PubNub = React.createClass({
         });
       })
     });
-	}
+  }
 });
 
 module.exports.PubNub = PubNub;
