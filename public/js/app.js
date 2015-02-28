@@ -558,8 +558,6 @@ actions.updatePassword.preEmit = function(formData){
 };
 
 actions.editProfile.preEmit = function(formData){
-  console.log('MADE IT INTO ACTIONS');
-
   return new Promise(function(resolve, reject) {
     request
     .put('/api/user/editprofile')
@@ -572,7 +570,6 @@ actions.editProfile.preEmit = function(formData){
       searchable: formData.searchable
     })
     .end(function(data) {
-      console.log('we made it tot he end!');
       resolve(data);
     })
   })
@@ -1540,7 +1537,6 @@ var Profile = React.createClass({displayName: "Profile",
         return element[i].value;
       }
     }
-
   },
 
   editProfile: function(e) {

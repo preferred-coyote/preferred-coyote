@@ -88,7 +88,6 @@ var Profile = React.createClass({
         return element[i].value;
       }
     }
-
   },
 
   editProfile: function(e) {

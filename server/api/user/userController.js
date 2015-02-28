@@ -114,6 +114,7 @@ module.exports.show = function(req, res, next) {
   });
 };
 
+// edit user info
 module.exports.editProfile = function(req, res, next) {
 
   var username = req.body.username,
@@ -121,7 +122,7 @@ module.exports.editProfile = function(req, res, next) {
       gender = req.body.gender,
       summary = req.body.summary,
       searchable = req.body.searchable;
-      
+
   if (req.body) {
     User.find({
       where: {id: req.user[0].id}
