@@ -558,6 +558,7 @@ actions.updatePassword.preEmit = function(formData){
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 actions.editProfile.preEmit = function(formData){
   console.log('MADE IT INTO ACTIONS');
 
@@ -581,6 +582,8 @@ actions.editProfile.preEmit = function(formData){
 
 =======
 >>>>>>> merge
+=======
+>>>>>>> public
 
 module.exports = actions;
 
@@ -1510,6 +1513,7 @@ var Profile = React.createClass({displayName: "Profile",
   },
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   whatGender: function() {
     var element = document.getElementsByName('gender');
     for (var i = 0; i<element.length; i++) {
@@ -1534,6 +1538,8 @@ var Profile = React.createClass({displayName: "Profile",
 
 =======
 >>>>>>> merge
+=======
+>>>>>>> public
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
