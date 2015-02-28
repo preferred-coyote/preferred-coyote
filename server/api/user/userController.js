@@ -94,7 +94,6 @@ module.exports.create = function(req, res, next) {
 // view a user profile
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
-
   User.find({
     where: {
       id: id
@@ -115,32 +114,37 @@ module.exports.show = function(req, res, next) {
   });
 };
 
+module.exports.editProfile = function(req, res, next) {
+
+  var username = req.body.username,
+      location = req.body.location,
+      gender = req.body.gender,
+      summary = req.body.summary,
+      searchable = req.body.searchable;
+      
+  if (req.body) {
+    User.find({
+      where: {id: req.user[0].id}
+    }).then(function(user) {
+      user.update({
+        location: location,
+        gender: gender,
+        summary: summary,
+        searchable: searchable
+      }).success(function() {
+        res.status(200).json({message: 'PROFILE UPDATED!'});
+      });
+      return;
+    }).catch(function(err) {
+
+      });
+    } else {
+      res.status(300).json({message: 'fuck up'});
+    }
+};
+
 // update a user
 module.exports.updatePassword = function(req, res, next) {
-  //this is old code
-  /*
-  var id = req.params.id || req.user.id;
-
-
-  User.find(id).then(function(user) {
-    if (user) {
-      user.updateAttributes(req.body).then(function() {
-        return res.status(204).json({
-          message: 'User updated'
-        });
-      }).catch(function(err) {
-        return res.status(500).json({
-          message: 'Error updating resource'
-        });
-      })
-    }
-  }).catch(function(err) {
-    return res.status(500).json({
-      message: 'Error updating resource'
-    });
-  })
-  */
-
   //if we have a password and it's confirmed, try to update the password field
   if (req.user && req.user.id && req.body.newPassword && req.body.newPassword === req.body.newPasswordConfirmation){
 
