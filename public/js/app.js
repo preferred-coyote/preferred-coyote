@@ -510,7 +510,6 @@ actions.login.preEmit = function(creds) {
           reject('Incorrect username or password');
         }
         if (data.body && data.body.user) {
-          //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
@@ -570,7 +569,7 @@ actions.editProfile.preEmit = function(formData){
       searchable: formData.searchable
     })
     .end(function(data) {
-      window.localStorage.setItem('user', JSON.stringify(data.body.user));
+      window.localStorage.setItem('user', data.text);
       resolve(data);
     })
   })
@@ -1115,68 +1114,6 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
 
-var data = {
-  "id": 2,
-  "username": "Ghost",
-  "location": "San Francisco, CA",
-  "gender": "Male",
-  "bio": "Software Engineer at Hack Reactor",
-  "password": "password",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-  "Interests": [
-    {
-      "id": 5,
-      "name": "kink.com",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 5,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 4,
-      "name": "travel",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 4,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 10,
-      "name": "basketball",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 6,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 11,
-      "name": "javascript",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 7,
-        "UserId": 2
-      }
-    },
-  ]
-}
-
 var Interests = require('../profile/interests').Interests;
 
 var Dashboard = React.createClass({displayName: "Dashboard",
@@ -1185,8 +1122,8 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
   getInitialState: function() {
     return {
-      user: data,
-      username: JSON.parse(window.localStorage.getItem('user')).username
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
 
@@ -1195,14 +1132,13 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
-          React.createElement("h3", {className: "username"}, "@", this.state.username), 
-          React.createElement("img", {src: this.state.user.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
-          React.createElement("p", null, this.state.user.bio), 
+          React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
+          React.createElement("img", {src: this.state.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
+          React.createElement("p", null, this.state.user.summary), 
           React.createElement("ul", {className: "inline-list"}, 
             React.createElement("li", null, this.state.user.location), 
             React.createElement("li", null, this.state.user.gender)
-          ), 
-          React.createElement(Interests, {interests: this.state.user.Interests})
+          )
         ), 
         React.createElement("div", {className: "small-9 columns", id: "primary"}, 
           React.createElement(RouteHandler, null)
@@ -1455,70 +1391,8 @@ var Actions = require('../../actions/actions');
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
-var Interests = require('./interests').Interests;
 
 var Authentication = require('../../utils/Authentication');
-var data = {
-  "id": 2,
-  "username": "Ghost",
-  "location": "San Francisco, CA",
-  "gender": "Male",
-  "bio": "Software Engineer at Hack Reactor",
-  "password": "password",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-  "Interests": [
-    {
-      "id": 5,
-      "name": "kink.com",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 5,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 4,
-      "name": "travel",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 4,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 10,
-      "name": "basketball",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 6,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 11,
-      "name": "javascript",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 7,
-        "UserId": 2
-      }
-    },
-  ]
-}
 
 var Profile = React.createClass({displayName: "Profile",
 
@@ -1526,9 +1400,8 @@ var Profile = React.createClass({displayName: "Profile",
 
   getInitialState: function() {
     return {
-      username: JSON.parse(window.localStorage.getItem('user')).username,
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png',
-      user: data
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
 
@@ -1557,7 +1430,7 @@ var Profile = React.createClass({displayName: "Profile",
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "medium-4 columns"}, 
-        React.createElement("h1", null, "@", this.state.username), 
+        React.createElement("h1", null, this.state.user.username), 
         React.createElement("h2", null, "Basic Info"), 
           React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
             React.createElement("fieldset", null, 
@@ -1576,7 +1449,6 @@ var Profile = React.createClass({displayName: "Profile",
             ), 
             React.createElement("button", {type: "submit", className: "button small"}, "Edit Profile")
           ), 
-          React.createElement(Interests, {interests: this.state.user.Interests}), 
           React.createElement(Pass, null)
         )
       )
@@ -1587,7 +1459,7 @@ var Profile = React.createClass({displayName: "Profile",
 module.exports.Profile = Profile;
 
 
-},{"../../actions/actions":1,"../../utils/Authentication":28,"./info":15,"./interests":16,"./pass":17,"react":230}],19:[function(require,module,exports){
+},{"../../actions/actions":1,"../../utils/Authentication":28,"./info":15,"./pass":17,"react":230}],19:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -2182,10 +2054,9 @@ var userStore = Reflux.createStore({
     var self = this;
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('user')
+      user: JSON.parse(window.localStorage.getItem('user'))
     };
-
-    if (this.user.loggedIn && !this.user.username) {
+    if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
         .set('x-access-token', window.localStorage.getItem('token'))

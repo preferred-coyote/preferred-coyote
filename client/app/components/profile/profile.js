@@ -4,70 +4,8 @@ var Actions = require('../../actions/actions');
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
-var Interests = require('./interests').Interests;
 
 var Authentication = require('../../utils/Authentication');
-var data = {
-  "id": 2,
-  "username": "Ghost",
-  "location": "San Francisco, CA",
-  "gender": "Male",
-  "bio": "Software Engineer at Hack Reactor",
-  "password": "password",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-  "Interests": [
-    {
-      "id": 5,
-      "name": "kink.com",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 5,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 4,
-      "name": "travel",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 4,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 10,
-      "name": "basketball",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 6,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 11,
-      "name": "javascript",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 7,
-        "UserId": 2
-      }
-    },
-  ]
-}
 
 var Profile = React.createClass({
 
@@ -75,9 +13,8 @@ var Profile = React.createClass({
 
   getInitialState: function() {
     return {
-      username: JSON.parse(window.localStorage.getItem('user')).username,
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png',
-      user: data
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
 
@@ -106,7 +43,7 @@ var Profile = React.createClass({
     return (
       <div className="row">
         <div className="medium-4 columns">
-        <h1>@{this.state.username}</h1>
+        <h1>{this.state.user.username}</h1>
         <h2>Basic Info</h2>
           <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" enctype="multipart/form-data" method="POST">
             <fieldset>
@@ -125,7 +62,6 @@ var Profile = React.createClass({
             </fieldset>
             <button type="submit" className="button small">Edit Profile</button>
           </form>
-          <Interests interests={this.state.user.Interests} />
           <Pass />
         </div>
       </div>

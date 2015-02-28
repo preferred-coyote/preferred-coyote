@@ -23,7 +23,6 @@ actions.login.preEmit = function(creds) {
           reject('Incorrect username or password');
         }
         if (data.body && data.body.user) {
-          //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
@@ -83,7 +82,7 @@ actions.editProfile.preEmit = function(formData){
       searchable: formData.searchable
     })
     .end(function(data) {
-      window.localStorage.setItem('user', JSON.stringify(data.body.user));
+      window.localStorage.setItem('user', data.text);
       resolve(data);
     })
   })

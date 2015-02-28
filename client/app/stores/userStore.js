@@ -10,10 +10,9 @@ var userStore = Reflux.createStore({
     var self = this;
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('user')
+      user: JSON.parse(window.localStorage.getItem('user'))
     };
-
-    if (this.user.loggedIn && !this.user.username) {
+    if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
         .set('x-access-token', window.localStorage.getItem('token'))
