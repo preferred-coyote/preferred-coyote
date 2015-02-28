@@ -12,7 +12,6 @@ var userStore = Reflux.createStore({
       loggedIn: !!window.localStorage.getItem('token'),
       user: JSON.parse(window.localStorage.getItem('user'))
     };
-    console.log(this.user);
     if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')

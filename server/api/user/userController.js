@@ -136,7 +136,6 @@ module.exports.editProfile = function(req, res, next) {
         summary: summary,
         searchable: searchable
       }).success(function() {
-        console.log('IN EDIT PROFILE, THIS IS THE USER', user);
         res.status(200).json(user);
       });
       return;

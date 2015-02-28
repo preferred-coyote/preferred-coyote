@@ -13,8 +13,6 @@ var actions = Reflux.createActions([
 ]);
 
 actions.login.preEmit = function(creds) {
-  console.log(creds);
-  console.log('BEFORE NEW PROMISE');
   return new Promise(function(resolve, reject) {
     request
       .post('/api/auth/login')
@@ -25,8 +23,6 @@ actions.login.preEmit = function(creds) {
           reject('Incorrect username or password');
         }
         if (data.body && data.body.user) {
-          console.log('IN ACTIONS LOGIN', data.body)
-          //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
