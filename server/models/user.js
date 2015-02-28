@@ -7,7 +7,11 @@ module.exports = function(sequelize, DataTypes) {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     profile: DataTypes.TEXT,
-    avatar: DataTypes.STRING
+    avatar: DataTypes.STRING,
+    location: DataTypes.STRING,
+    gender: DataTypes.STRING,
+    summary: DataTypes.TEXT,
+    searchable: DataTypes.BOOLEAN
   }, {
     instanceMethods: {
       comparePasswords: function(candidatePassword) {

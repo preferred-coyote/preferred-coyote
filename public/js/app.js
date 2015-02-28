@@ -494,9 +494,9 @@ var actions = Reflux.createActions([
   'login',
   'logout',
   'signup',
-  'updatePassword'
+  'updatePassword',
   // , 'createProfile',
-  // 'updateProfile'
+  'editProfile'
 ]);
 
 actions.login.preEmit = function(creds) {
@@ -510,7 +510,6 @@ actions.login.preEmit = function(creds) {
           reject('Incorrect username or password');
         }
         if (data.body && data.body.user) {
-          //window.sessionStorage.token = data.body.token;
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
@@ -556,6 +555,25 @@ actions.updatePassword.preEmit = function(formData){
     });
   })
 };
+
+actions.editProfile.preEmit = function(formData){
+  return new Promise(function(resolve, reject) {
+    request
+    .put('/api/user/editprofile')
+    .set('x-access-token', window.localStorage.getItem('token') || '')
+    .set('Content-Type', 'application/json')
+    .send({
+      location: formData.location,
+      gender: formData.gender,
+      summary: formData.summary,
+      searchable: formData.searchable
+    })
+    .end(function(data) {
+      window.localStorage.setItem('user', data.text);
+      resolve(data);
+    })
+  })
+}
 
 
 module.exports = actions;
@@ -1096,68 +1114,6 @@ var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
 
-var data = {
-  "id": 2,
-  "username": "Ghost",
-  "location": "San Francisco, CA",
-  "gender": "Male",
-  "bio": "Software Engineer at Hack Reactor",
-  "password": "password",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-  "Interests": [
-    {
-      "id": 5,
-      "name": "kink.com",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 5,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 4,
-      "name": "travel",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 4,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 10,
-      "name": "basketball",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 6,
-        "UserId": 2
-      }
-    },
-    {
-      "id": 11,
-      "name": "javascript",
-      "createdAt": "2015-02-16T22:51:16.000Z",
-      "updatedAt": "2015-02-16T22:51:16.000Z",
-      "InterestsUsers": {
-        "createdAt": "2015-02-16T22:51:16.000Z",
-        "updatedAt": "2015-02-16T22:51:16.000Z",
-        "InterestId": 7,
-        "UserId": 2
-      }
-    },
-  ]
-}
-
 var Interests = require('../profile/interests').Interests;
 
 var Dashboard = React.createClass({displayName: "Dashboard",
@@ -1166,7 +1122,8 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
   getInitialState: function() {
     return {
-      user: data
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
 
@@ -1176,13 +1133,12 @@ var Dashboard = React.createClass({displayName: "Dashboard",
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
           React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
-          React.createElement("img", {src: this.state.user.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
-          React.createElement("p", null, this.state.user.bio), 
+          React.createElement("img", {src: this.state.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
+          React.createElement("p", null, this.state.user.summary), 
           React.createElement("ul", {className: "inline-list"}, 
             React.createElement("li", null, this.state.user.location), 
             React.createElement("li", null, this.state.user.gender)
-          ), 
-          React.createElement(Interests, {interests: this.state.user.Interests})
+          )
         ), 
         React.createElement("div", {className: "small-9 columns", id: "primary"}, 
           React.createElement(RouteHandler, null)
@@ -1315,7 +1271,7 @@ var Home = React.createClass({displayName: "Home",
             )
           )
         ), 
-        React.createElement(Link, {to: "/about", className: "button info expand", id: "homePageButton"}, "About"), 
+        React.createElement(Link, {to: "/about", className: "button info expand"}, "About"), 
         React.createElement(Link, {to: "/contact", className: "button info expand"}, "Contact")
       )
     );
@@ -1350,11 +1306,12 @@ var Info = React.createClass({displayName: "Info",
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("h2", null, this.props.username), 
-        React.createElement("h2", null, this.props.realname), 
-        React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"}), 
-        React.createElement("div", null, 
-          React.createElement("a", {href: "#", className: "button tiny"}, "Change Avatar")
+        React.createElement("div", {className: "row"}, 
+          React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"})
+        ), 
+        React.createElement("div", {className: "row"}, 
+          React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
+          React.createElement("input", {type: "file", name: "avatar", id: "avatar"})
         )
       )
     );
@@ -1410,13 +1367,9 @@ var Pass = React.createClass({displayName: "Pass",
   render: function() {
     return (
       React.createElement("div", null, 
+        React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
-          React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
-          React.createElement("input", {type: "file", name: "avatar", id: "avatar"}), 
-          React.createElement("label", {for: "profile"}, "Update profile"), 
-          React.createElement("textarea", {name: "profile", id: "profile"}), 
           React.createElement("fieldset", null, 
-              React.createElement("legend", null, "Change Password"), 
               React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
               React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
               React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
@@ -1434,44 +1387,11 @@ module.exports.Pass = Pass;
 },{"../../actions/actions":1,"react":230}],18:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var data = {
-"id": 2,
-"username": "Ghost",
-"password": "password",
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-"Interests": [
-{
-"id": 5,
-"name": "kink.com",
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"InterestsUsers": {
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"InterestId": 5,
-"UserId": 2
-}
-},
-{
-"id": 4,
-"name": "travel",
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"InterestsUsers": {
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"InterestId": 4,
-"UserId": 2
-}
-}
-]
-}
+var Actions = require('../../actions/actions');
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
-var Interests = require('./interests').Interests;
+
 var Authentication = require('../../utils/Authentication');
 
 var Profile = React.createClass({displayName: "Profile",
@@ -1480,21 +1400,55 @@ var Profile = React.createClass({displayName: "Profile",
 
   getInitialState: function() {
     return {
-      user: data
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
+  },
+
+  whatGender: function() {
+    var element = document.getElementsByName('gender');
+    for (var i = 0; i<element.length; i++) {
+      if (element[i].checked) {
+        return element[i].value;
+      }
+    }
+  },
+
+  editProfile: function(e) {
+    var gender = this.whatGender();
+    e.preventDefault();
+    Actions.editProfile({
+      username: this.state.username,
+      location: this.refs.location.getDOMNode().value.trim(),
+      gender: gender,
+      summary: this.refs.summary.getDOMNode().value.trim(),
+      searchable: document.getElementById('searchable').checked
+    });
   },
 
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement(Info, {username: this.state.user.username, avatarimg: this.state.user.avatar}), 
-          React.createElement("form", null, 
-            React.createElement("input", {type: "checkbox", name: "searchable", id: "checkbox1", value: "searchable", defaultChecked: true}, 
-              React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
-            )
+        React.createElement("div", {className: "medium-4 columns"}, 
+        React.createElement("h1", null, this.state.user.username), 
+        React.createElement("h2", null, "Basic Info"), 
+          React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
+            React.createElement("fieldset", null, 
+              React.createElement(Info, {avatarimg: this.state.avatar}), 
+              React.createElement("label", {htmlFOR: "location"}, "Location"), 
+                React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: "location"}), 
+              React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
+              React.createElement("label", {for: "profile"}, "Summary"), 
+                React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: "I like Neil Degrasse Tyson and hockey."}), 
+              React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
+                React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
+              )
+            ), 
+            React.createElement("button", {type: "submit", className: "button small"}, "Edit Profile")
           ), 
-          React.createElement(Interests, {interests: this.state.user.Interests}), 
           React.createElement(Pass, null)
         )
       )
@@ -1505,7 +1459,7 @@ var Profile = React.createClass({displayName: "Profile",
 module.exports.Profile = Profile;
 
 
-},{"../../utils/Authentication":28,"./info":15,"./interests":16,"./pass":17,"react":230}],19:[function(require,module,exports){
+},{"../../actions/actions":1,"../../utils/Authentication":28,"./info":15,"./pass":17,"react":230}],19:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1577,7 +1531,7 @@ var PubNub = React.createClass({displayName: "PubNub",
 
     return (
       React.createElement("div", null, 
-      	React.createElement("h1", null, "Hello ", this.state.user), 
+      	React.createElement("h1", null, "Hello @", this.state.user), 
       	React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "large-6 columns"}, 
   		      React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
@@ -2100,10 +2054,9 @@ var userStore = Reflux.createStore({
     var self = this;
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('user')
+      user: JSON.parse(window.localStorage.getItem('user'))
     };
-
-    if (this.user.loggedIn && !this.user.username) {
+    if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
         .set('x-access-token', window.localStorage.getItem('token'))
