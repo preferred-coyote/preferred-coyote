@@ -121,8 +121,7 @@ module.exports.show = function(req, res, next) {
 // edit user info
 module.exports.editProfile = function(req, res, next) {
 
-  var username = req.body.username,
-      location = req.body.location,
+  var location = req.body.location,
       gender = req.body.gender,
       summary = req.body.summary,
       searchable = req.body.searchable;
@@ -137,11 +136,11 @@ module.exports.editProfile = function(req, res, next) {
         summary: summary,
         searchable: searchable
       }).success(function() {
-        res.status(200).json({message: 'PROFILE UPDATED!'});
+        console.log('IN EDIT PROFILE, THIS IS THE USER', user);
+        res.status(200).json(user);
       });
       return;
     }).catch(function(err) {
-
       });
     } else {
       res.status(300).json({message: 'fuck up'});
