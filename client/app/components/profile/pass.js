@@ -16,13 +16,9 @@ var Pass = React.createClass({
   render: function() {
     return (
       <div>
+        <h2>Change Password</h2>
         <form onSubmit={this.updatePassword} className="form" role="form" action="/api/user/profile/password" enctype="multipart/form-data" method="PUT">
-          <label for="avatar">Upload a new avatar</label>
-          <input type="file" name="avatar" id="avatar" />
-          <label for="profile">Update profile</label>
-          <textarea name="profile" id="profile"></textarea>
           <fieldset>
-              <legend>Change Password</legend>
               <input type="password" name="oldpassword" placeholder="Confirm old password" ref="oldPassword"/>
               <input type="password" name="newpassword" placeholder="New password" ref="newPassword"/>
               <input type="password" name="newpassword" placeholder="New password" ref="newPasswordConfirmation"/>

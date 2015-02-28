@@ -4,11 +4,12 @@ var Info = React.createClass({
   render: function() {
     return (
       <div>
-        <h2>{this.props.username}</h2>
-        <h2>{this.props.realname}</h2>
-        <img src={this.props.avatarimg} alt="PREFERRED COYOTE"/>
-        <div>
-          <a href="#" className="button tiny">Change Avatar</a>
+        <div className="row">
+          <img src={this.props.avatarimg} alt="PREFERRED COYOTE"/>
+        </div>
+        <div className="row">
+          <label for="avatar">Upload a new avatar</label>
+          <input type="file" name="avatar" id="avatar" />
         </div>
       </div>
     );

@@ -94,7 +94,6 @@ module.exports.create = function(req, res, next) {
 // view a user profile
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
-
   User.find({
     attributes: ['username', 'createdAt', 'profile', 'avatar'],
 
@@ -119,9 +118,39 @@ module.exports.show = function(req, res, next) {
   });
 };
 
-// update a user
-module.exports.updatePassword = function(req, res, next) {
 
+// update a user
+module.exports.editProfile = function(req, res, next) {
+
+  var username = req.body.username,
+      location = req.body.location,
+      gender = req.body.gender,
+      summary = req.body.summary,
+      searchable = req.body.searchable;
+      
+  if (req.body) {
+    User.find({
+      where: {id: req.user[0].id}
+    }).then(function(user) {
+      user.update({
+        location: location,
+        gender: gender,
+        summary: summary,
+        searchable: searchable
+      }).success(function() {
+        res.status(200).json({message: 'PROFILE UPDATED!'});
+      });
+      return;
+    }).catch(function(err) {
+
+      });
+    } else {
+      res.status(300).json({message: 'fuck up'});
+    }
+};
+
+
+module.exports.updatePassword = function(req, res, next) {
   //if we have a password and it's confirmed, try to update the password field
   if (req.user && req.user.id && req.body.newPassword && req.body.newPassword === req.body.newPasswordConfirmation){
 

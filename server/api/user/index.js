@@ -11,9 +11,12 @@ module.exports = function(app) {
    * we can get it ahead of time to reduce code duplication
    * and simplify controller logic.
    */
+
   router.param('id', function(req, res, next, id) {
     // find user
-    User.find(id).then(function(user) {
+    User.find({where:
+      {id: id}
+    }).then(function(user) {
       // no user found
       if (!user) {
         res.status(404).json({
@@ -58,9 +61,10 @@ module.exports = function(app) {
   // create a user
   router.post('/user', userController.create);
   // get a specific user
-  router.get('/user/:id', userController.show);
+  router.get('/user/editprofile', userController.editProfile);
   // update a specific user
-  //router.put('/user/:id', userController.update);
+  router.put('/user/editprofile', userController.editProfile);
+  // update password
   router.put('/user/profile/password', userController.updatePassword);
 
   // mount router onto /api
