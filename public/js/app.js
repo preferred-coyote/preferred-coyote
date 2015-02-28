@@ -570,6 +570,7 @@ actions.editProfile.preEmit = function(formData){
       searchable: formData.searchable
     })
     .end(function(data) {
+      console.log(data);
       window.localStorage.setItem('user', JSON.stringify(data.body.user));
       resolve(data);
     })

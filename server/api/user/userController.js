@@ -129,7 +129,7 @@ module.exports.editProfile = function(req, res, next) {
 
   if (req.body) {
     User.find({
-      where: {id: req.user[0].id}
+      where: {id: req.user.id}
     }).then(function(user) {
       user.update({
         location: location,
