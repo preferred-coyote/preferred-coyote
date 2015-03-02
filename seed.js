@@ -3,7 +3,6 @@ var User = models.User;
 var Interest = models.Interest;
 var Promise = require('bluebird');
 
-
 Promise.join(User.create({
   username: 'Jackson',
   password: 'password'
