@@ -40,6 +40,8 @@ var Login = React.createClass({
       this.setState({
         error: 'Incorrect username or password'
       });
+
+      // this.transitionTo('profile');
     }
   },
 
@@ -60,7 +62,6 @@ var Login = React.createClass({
       <div className="row">
         <div className="large-12 columns">
           <h2>Login</h2>
-          {error}
           <form className="form" onSubmit={this.login} role="form" action="/api/auth/login" method="POST">
             <label htmlFor="username">Username</label>
     	      <input type="text" name="username" ref="username" id="username" placeholder="username" />
@@ -70,6 +71,7 @@ var Login = React.createClass({
               Login
             </button>
           </form>
+          { error }
         </div>
       </div>
     );

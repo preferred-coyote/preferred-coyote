@@ -19,9 +19,6 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
-        if (data.status === 404) {
-          reject('Incorrect username or password');
-        }
         if (data.body && data.body.user) {
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
@@ -51,6 +48,7 @@ actions.signup.preEmit = function(creds) {
   });
 };
 
+<<<<<<< HEAD
 actions.updatePassword.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
@@ -87,6 +85,7 @@ actions.editProfile.preEmit = function(formData){
     })
   })
 }
+
 
 
 module.exports = actions;

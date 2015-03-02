@@ -94,6 +94,7 @@ module.exports.create = function(req, res, next) {
 // view a user profile
 module.exports.show = function(req, res, next) {
   var id = req.params.id;
+
   User.find({
     attributes: ['username', 'createdAt', 'profile', 'avatar'],
 
@@ -193,4 +194,25 @@ module.exports.updatePassword = function(req, res, next) {
     return;
   }
 
+};
+// update a user
+module.exports.update = function(req, res, next) {
+  var id = req.params.id || req.user.id;
+  User.find(id).then(function(user) {
+    if (user) {
+      user.updateAttributes(req.body).then(function() {
+        return res.status(204).json({
+          message: 'User updated'
+        });
+      }).catch(function(err) {
+        return res.status(500).json({
+          message: 'Error updating resource'
+        });
+      })
+    }
+  }).catch(function(err) {
+    return res.status(500).json({
+      message: 'Error updating resource'
+    });
+  });
 };

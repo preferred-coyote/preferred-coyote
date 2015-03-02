@@ -1,6 +1,4 @@
 var Reflux = require('reflux');
-var request = require('superagent');
-var _ = require('lodash');
 var actions = require('../actions/actions');
 
 var userStore = Reflux.createStore({
@@ -35,9 +33,7 @@ var userStore = Reflux.createStore({
       self.user.loggedIn = true;
       self.trigger(self.user.loggedIn);
     }).catch(function(err) {
-      if (err === 'Incorrect username or password') {
-        self.trigger(false);
-      }
+      console.log('error authenticating', err);
     })
   },
 
@@ -50,8 +46,8 @@ var userStore = Reflux.createStore({
         self.user.loggedIn = true;
         window.localStorage.setItem('token', data.body.token);
         //writes user to local Storage on signup. this happen sin actions for login.
-        window.localStorage.setItem('user', JSON.stringify(data.body.user));       
-        
+        window.localStorage.setItem('user', JSON.stringify(data.body.user));
+
       } else if (data.status === 409){
         //username already exists
         self.user.loggedIn = false;

@@ -66,6 +66,9 @@ module.exports = function(app) {
   router.put('/user/editprofile', userController.editProfile);
   // update password
   router.put('/user/profile/password', userController.updatePassword);
+  router.put('/user/profile', userController.update);
+
+  router.put('/user/:id', userController.update);
 
   // mount router onto /api
   app.use('/api', router);
