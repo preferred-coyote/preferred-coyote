@@ -48,7 +48,6 @@ actions.signup.preEmit = function(creds) {
   });
 };
 
-<<<<<<< HEAD
 actions.updatePassword.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
