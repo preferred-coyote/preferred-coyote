@@ -64,12 +64,12 @@
     "gulp-watch": "^4.1.1",
     "react-tools": "^0.12.2",
     "reactify": "^1.0.0",
-    "run-sequence": "^1.0.2"
+    "run-sequence": "^1.0.2",
+    "karma": "^0.12.31",
+    "jshint-stylish": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "jshint-stylish": "^1.0.0",
-    "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.7",
     "karma-cli": "0.0.4",
