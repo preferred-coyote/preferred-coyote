@@ -7,10 +7,6 @@ nconf
 
 var match = nconf.get('CLEARDB_DATABASE_URL').match(/mysql:\/\/([^:]+):([^@]+)@([^:]+)\/(.+)\?/);
 
-if (match) {
-  var config = ;
-}
-
 module.exports = {
   db: {
     user: match[1],
