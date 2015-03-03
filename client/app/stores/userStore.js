@@ -3,12 +3,18 @@ var request = require('superagent');
 var _ = require('lodash');
 var actions = require('../actions/actions');
 
+var Router = require('react-router');
+
 var userStore = Reflux.createStore({
+
   listenables: actions,
+
+  mixins: [ Router.Navigation],
 
   init: function() {
     var self = this;
     this.user = {
+      profileCreated: !!window.localStorage.getItem('profileCreated'),
       loggedIn: !!window.localStorage.getItem('token'),
       user: JSON.parse(window.localStorage.getItem('user'))
     };
@@ -62,7 +68,7 @@ var userStore = Reflux.createStore({
 
     })
   },
-
+  
   isLoggedIn: function() {
     return this.user && this.user.loggedIn;
   },
@@ -76,8 +82,24 @@ var userStore = Reflux.createStore({
 
   getUserData: function() {
     return this.user;
-  }
+  },
 
+  isCreated: function() {
+    return window.localStorage.profileCreated;
+  },
+
+  createProfile: function(user) {
+    var self = this;
+    user.then(function(user) {
+      self.user = user;
+      self.user.profileCreated = true;
+      console.log("HELLO it worked! REDIRECT TIME");
+      self.trigger(self.user.profileCreated);
+    }).catch(function(err) {
+      console.log('HELLO, this failed');
+      self.trigger(false);
+    })
+  }
 });
 
 module.exports = userStore;

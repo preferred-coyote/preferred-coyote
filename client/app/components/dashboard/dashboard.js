@@ -5,7 +5,7 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
-
+var userStore = require('../../stores/userStore');
 var Interests = require('../profile/interests').Interests;
 
 var Dashboard = React.createClass({
@@ -15,6 +15,7 @@ var Dashboard = React.createClass({
   getInitialState: function() {
     return {
       user: JSON.parse(window.localStorage.user),
+      // user: userStore.getUserData(),
       avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },

@@ -17,6 +17,7 @@ var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
 var Profile = require('./components/profile/profile').Profile;
 var PubNub = require('./components/voice/pubnub').PubNub;
+var CreateProfile = require('./components/profile/createprofile').CreateProfile;
 // var pubnub = require('./stores/pubnubStore');
 
 var Dashboard = require('./components/dashboard/dashboard').Dashboard;
@@ -34,6 +35,7 @@ var routes = (
     <Route name="profile" path="profile" handler={Profile} />
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
+    <Route name="createprofile" path="createprofile" handler={CreateProfile} />
 
     <Route name="dashboard" path="dashboard" handler={Dashboard}>
       <DefaultRoute name="dashboardButtons" handler={DashboardButtons} />

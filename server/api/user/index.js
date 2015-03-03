@@ -60,6 +60,8 @@ module.exports = function(app) {
   router.get('/user', userController.list);
   // create a user
   router.post('/user', userController.create);
+  // create user profile
+  router.put('/user/createprofile', userController.createProfile);
   // get a specific user
   router.get('/user/editprofile', userController.editProfile);
   // update a specific user

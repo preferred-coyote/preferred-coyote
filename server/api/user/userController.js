@@ -118,6 +118,37 @@ module.exports.show = function(req, res, next) {
   });
 };
 
+// create user info
+module.exports.createProfile = function(req, res, next) {
+  var location = req.body.location,
+      gender = req.body.gender,
+      summary = req.body.summary,
+      searchable = req.body.searchable,
+      profileCreated = req.body.profileCreated
+
+  if (req.body) {
+    User.find({
+      where: {id: req.user[0].id}
+    }).then(function(user) {
+      user.update({
+        location: location,
+        gender: gender,
+        summary: summary,
+        searchable: searchable,
+        profileCreated: profileCreated
+      }).success(function() {
+        res.status(200).json(user);
+      });
+      return;
+    }).catch(function(err) {
+      });
+    } else {
+      res.status(300).json({message: 'fuck up'});
+    }
+};
+
+
+
 // edit user info
 module.exports.editProfile = function(req, res, next) {
 
