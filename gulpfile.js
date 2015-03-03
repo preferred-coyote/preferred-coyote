@@ -25,6 +25,7 @@ var paths = {
   karmaConf: __dirname + '/spec/_karma.conf.js'
 };
 
+// files to concat into final build
 var filesToUglify = [
   paths.src.bower + '/jquery/dist/jquery.min.js',
   paths.src.bower + '/foundation/js/foundation.min.js',
