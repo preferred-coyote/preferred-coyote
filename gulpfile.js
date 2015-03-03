@@ -8,6 +8,7 @@ var compass = require('gulp-compass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var clean = require('gulp-clean');
 
 var paths = {
   src: {
@@ -39,13 +40,18 @@ var handleError = function(err) {
 };
 
 gulp.task('uglify', function() {
-  gulp.src(filesToUglify)
+  return gulp.src(filesToUglify)
     .pipe(concat('app.js'))
     .pipe(gulp.dest(paths.dist.js));
 });
 
+gulp.task('clean', function() {
+  return gulp.src(paths.dist.public)
+    .pipe(clean());
+});
+
 gulp.task('javascript', function(callback) {
-  runSequence('browserify', 'uglify', callback);
+  runSequence('clean', 'browserify', 'uglify', callback);
 });
 
 gulp.task('lint', function() {});
@@ -53,7 +59,7 @@ gulp.task('lint', function() {});
 gulp.task('test', function() {});
 
 gulp.task('scss', function() {
-  gulp.src(paths.src.scss + '/app.scss')
+  return gulp.src(paths.src.scss + '/app.scss')
     .pipe(compass({
       css: paths.dist.css,
       sass: paths.src.scss
@@ -63,7 +69,7 @@ gulp.task('scss', function() {
 });
 
 gulp.task('browserify', function() {
-  gulp.src(paths.src.js + '/app.js')
+  return gulp.src(paths.src.js + '/app.js')
     .pipe(browserify({
       debug: false, // disable source maps
       transform: ['reactify'],
