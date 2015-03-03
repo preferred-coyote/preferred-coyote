@@ -16,8 +16,11 @@ module.exports = {
       dialect: 'mysql',
       protocol: 'mysql',
       host: match[3],
-      port: 5572,
-      logging: false
+      port: 3306,
+      logging: false,
+      dialectOptions: {
+        ssl: true
+      }
     }
   }
 };

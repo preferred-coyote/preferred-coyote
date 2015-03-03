@@ -11,7 +11,11 @@ if (env === 'development') {
     dialect: 'mysql'
   });
 } else if (env === 'production') {
-  var sequelize = new Sequelize(config.db.base, config.db.user, config.db.pass, config.db.options);
+  var sequelize = new Sequelize(config.db.base, config.db.user, config.db.pass, config.db.options)
+    .authenticate().complete(function(err) {
+      if (err) return console.log('Unable to connect');
+      console.log('Successfully connected to clearDB');
+    });
 }
 
 var db = {};
