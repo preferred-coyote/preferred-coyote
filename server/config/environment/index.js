@@ -23,6 +23,8 @@ var all = {
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
+  postgres: nconf.get('HEROKU_POSTGRESQL_BLACK_URL'),
+
   // Server port
   port: nconf.get('PORT') || 3000,
 
