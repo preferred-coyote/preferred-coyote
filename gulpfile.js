@@ -44,8 +44,8 @@ gulp.task('uglify', function() {
     .pipe(gulp.dest(paths.dist.js));
 });
 
-gulp.task('javascript', function() {
-  runSequence('browserify', 'uglify');
+gulp.task('javascript', function(callback) {
+  runSequence('browserify', 'uglify', callback);
 });
 
 gulp.task('lint', function() {});
