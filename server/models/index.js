@@ -11,8 +11,9 @@ if (env === 'development') {
     dialect: 'mysql'
   });
 } else if (env === 'production') {
-  console.log(config.postgres);
-  var sequelize = new Sequelize(config.postgres);
+  var sequelize = new Sequelize(config.db, {
+    dialect: 'mysql'
+  });
 }
 
 var db = {};
