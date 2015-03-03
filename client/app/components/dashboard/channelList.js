@@ -17,7 +17,6 @@ var ChannelList = React.createClass({
 
   render: function() {
     var channelList = this.state.channels.length ? this.state.channels.sort().map(function(channel) {
-      // return <div><button className="button small">{channel}</button></div>;
       return <li><Link to="channelView" params={{ channelName: channel }} className="button small">{channel.split('-').join(' ')}</Link></li>
     }) : 'No channels available.';
     return (
