@@ -5,6 +5,26 @@ nconf
   .argv()
   .env();
 
+var match = nconf.get('CLEARDB_DATABASE_URL').match(/mysql:\/\/([^:]+):([^@]+)@([^:]+)\/(.+)\?/);
+
+if (match) {
+  var config = ;
+}
+
 module.exports = {
-  db: nconf.get('CLEARDB_DATABASE_URL')
+  db: {
+    user: match[1],
+    pass: match[2],
+    base: match[4],
+    options: {
+      dialect: 'mysql',
+      protocol: 'mysql',
+      host: match[3],
+      port: 3306,
+      logging: false,
+      dialectOptions: {
+        ssl: true
+      }
+    }
+  }
 };

@@ -11,9 +11,7 @@ if (env === 'development') {
     dialect: 'mysql'
   });
 } else if (env === 'production') {
-  var sequelize = new Sequelize(config.db, {
-    dialect: 'mysql'
-  });
+  var sequelize = new Sequelize(config.db.base, config.db.user, config.db.pass, config.db.options);
 }
 
 var db = {};
