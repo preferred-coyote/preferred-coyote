@@ -32,19 +32,26 @@ var channelStore = Reflux.createStore({
   },
 
   phoneInit: function(user) {
-    var user = user || JSON.parse(localStorage.getItem('user')).username;
-    console.log('user is: ', user);
-    return PHONE({
-      number        : user,
-      publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-      subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-      media : { audio : true, video : true },
-      ssl           : false
-    });
+    var user = user || 'call' + JSON.parse(localStorage.getItem('user')).username;
+    console.log('in channelStore phoneInit, user is: ', user);
+    
+    return new Promise(function(resolve, reject) {
+      var newPhone = PHONE({
+        number        : user,
+        publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+        subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
+        media : { audio : true, video : true },
+        ssl           : false
+      });
+
+      if (newPhone) resolve(newPhone);
+      else reject(null);
+    })
   },
 
   pubnubInit: function(channel) {
     var user = JSON.parse(localStorage.getItem('user'));
+    console.log('in channelStore pubnubInit, user is: ', user.username);
     return PUBNUB.init({
       uuid          : user.username,
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',

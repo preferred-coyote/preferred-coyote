@@ -35,7 +35,7 @@ var ChannelView = React.createClass({
 
   getUsers: function(user, pubnub, channel) {
     var self = this;
-    channelStore.getUsersAvailable(user, pubnub, channel).then(function(templist){
+    channelStore.getUsersAvailable(user, pubnub, channel).then(function(templist) {
       templist = Object.keys(templist);
       self.setState({
         userlist: templist
@@ -87,13 +87,14 @@ var ChannelView = React.createClass({
 
   render: function() {
     var self = this;
-    var userList = this.state.userlist.length ? this.state.userlist.map(function(user) {
-      return <li><Link to="call" query={{ peer: user }} className="button small">{user}</Link></li>
+    var userList = this.state.userlist.length ? this.state.userlist.map(function(peer) {
+      var privateChannel = self.state.user + peer;
+      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small" key={peer.id}>{peer}</Link></li>
     }) : 'No users available.';
 
     var callsList = this.state.calls.length ? this.state.calls.map(function(peer) {
       var privateChannel = peer + self.state.user;
-      return <li><Link to="call" query={{ peer: peer, channel : privateChannel}} className="button small">{peer} is Calling!</Link></li>
+      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small" key={peer.id}>{peer} is Calling!</Link></li>
     }) : null;
 
     return (

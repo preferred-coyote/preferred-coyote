@@ -478,6 +478,8 @@ var CallView = React.createClass({displayName: "CallView",
     var peer = this.getQuery().peer;
     var channel = this.getQuery().channel || user + this.getQuery().peer;
     return {
+      callUser: 'call' + user,
+      callPeer: 'call' + peer,
       user: user,
       peer: peer,
       channel: channel,
@@ -496,6 +498,7 @@ var CallView = React.createClass({displayName: "CallView",
     }
     // self.handshake(user, peer, channel);
     // self.initializePhone(user);
+    self.startCall();
   },
 
   render: function() {
@@ -510,12 +513,13 @@ var CallView = React.createClass({displayName: "CallView",
           )
         ), 
         React.createElement("div", {className: "row"}, 
-          React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
-          React.createElement("video", {width: "250", autoPlay: true, id: "peervideo"})
+          React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream"}), 
+          React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream"}), 
+          React.createElement("div", {id: "testvideo"})
         ), 
         React.createElement("div", {className: "row"}, 
           React.createElement("ul", {className: "button-group round"}, 
-            React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.startCall, className: "button"}, "Call!")), 
+            React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.makeCall, className: "button"}, "Call!")), 
             React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.endCall, className: "button"}, "Stop Call"))
           )
         ), 
@@ -539,6 +543,10 @@ var CallView = React.createClass({displayName: "CallView",
     );
   },
 
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// PUBNUB CHANNEL ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
   handshake: function(user, peer, channel) {
     var peer = peer || this.state.peer;
     var channel = channel || this.state.channel;
@@ -553,10 +561,12 @@ var CallView = React.createClass({displayName: "CallView",
     var message = this.refs.message.getDOMNode().value.trim();
     var channel = this.state.channel;
     var user = this.state.user;
+    
     pubnub.publish({
       channel: channel,        
       message: user + ': ' + message
     });
+
     this.refs.message.getDOMNode().value = '';
   },
 
@@ -572,9 +582,8 @@ var CallView = React.createClass({displayName: "CallView",
           channel: channel,        
           message: user + ' has joined the channel.'
         });
-        console.log('before handshake');
+
         self.handshake();
-        console.log('after handshake');
       },
       
       state: {
@@ -590,75 +599,202 @@ var CallView = React.createClass({displayName: "CallView",
       heartbeat: 10,
       callback: function(message, env, channel) {
         if (self.isMounted()) {
-          // console.log('before set state');
           self.setState({
             messages: self.state.messages.concat(message)
           });
-          // console.log('after set state');
         }
       }
     });
   },
 
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// PUBNUB PHONE /////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
   startCall: function() {
     var self = this;
     var user = self.state.user;
     var peer = self.state.peer;
-    var phone = phone;
-    self.initializePhone(user);
-    self.phoneUser(user, peer, phone);
+    var callUser = self.state.callUser;
+    var callPeer = self.state.callPeer;
+    // phone = phone;
+    self.initializePhone().then(function(phone) {
+      // self.phoneUser(user, peer, callUser, callPeer);
+      console.log('initialized!');
+      self.pickUp();
+      // document.getElementById('callbutton').className.replace(/\bdisabled\b/,'');
+    })
   },
 
-  initializePhone: function(user) {
+  initializePhone: function() {
+    var user = this.state.user;
+    var callUser = this.state.callUser;
+    var self = this;
+    console.log('in initializePhone, user is: ', user);
+    console.log('in initializePhone, callUser is: ', callUser);
+    console.log('in initializePhone, phone is: ', phone);
+    return new Promise(function(resolve, reject) {
+      channelStore.phoneInit(callUser).then(function(newPhone) {
+        phone = newPhone;
+        console.log('in initializePhone promise, phone is:', phone );
+      });
+      resolve(phone);
+    });
+  },
+
+  makeCall: function(user, peer, callUser, callPeer) {
+    var self = this;
     var user = user || this.state.user;
-    var self = this;
-    phone = channelStore.phoneInit(user);
-  },
-
-  phoneUser: function(user, peer) {
-    var self = this;
-    var userid = user || this.state.user;
-    var peerid = peer || this.state.peer;
+    var peer = peer || this.state.peer;
+    var callUser = callUser || this.state.callUser;
+    var callPeer = callPeer || this.state.callPeer;
     var channel = this.state.channel;
 
-    phone.ready(function() {
-      console.log(self.state.peer);
-      session = phone.dial(self.state.peer);
+    session = phone.dial(callPeer);
       pubnub.publish({
         channel: self.state.channel,        
         message: self.state.user + ' is trying to dial.'
       });
-    });
 
-    phone.receive(function(session) {
-      session = session ? session : null;
-      console.log(session);
-      var peervideo = document.getElementById('peervideo');
-      var uservideo = document.getElementById('uservideo');
+  },
+
+  pickUp: function(user, peer, callUser, callPeer) {
+    var self = this;
+    var user = user || this.state.user;
+    var peer = peer || this.state.peer;
+    var callUser = callUser || this.state.callUser;
+    var callPeer = callPeer || this.state.callPeer;
+    var channel = this.state.channel;
+
+    phone.receive(function(newSession) {
+      console.log('in phone.receive, newSession is: ', newSession);
+
+      session = newSession;
+
+      var peervideo = self.refs.peervideostream.getDOMNode();
+      var uservideo = self.refs.uservideostream.getDOMNode();
+
+      console.log('in phone receive, channel is: ', channel);
+      console.log('in phone receive, user is: ', user);
+      console.log('in phone receive, callUser is: ', callUser);
+
       pubnub.publish({
-          channel: self.state.channel,        
-          message: self.state.user + ' is receiving a call.'
-        });
+        channel: self.state.channel,        
+        message: self.state.user + ' is receiving a call.'
+      });
 
-      session.connected(function(session) {
+      console.log('in phone receive, should have published message');
+
+      newSession.connected(function(newSession) {
         // set the peer that you've connected to
+        console.log('in phone connected, channel is: ', channel);
+        console.log('in phone connected, user is: ', user);
+        console.log('in phone connected, callUser is: ', callUser);
+
         pubnub.publish({
           channel: self.state.channel,        
           message: self.state.user + ' is now connected.'
         });
-        peervideo.src = session.video.src;
-        peervideo.play();
+
+        console.log('connection status in connected: ', newSession);
+        console.log('uservideo: ', uservideo);
+
+        console.log('status is: ', newSession.status);
+        console.log('peervideo: ', peervideo);
+        console.log('session.video: ', newSession.video);
+        
         uservideo.src = phone.video.src;
-        uservideo.play();
+        peervideo.src = '';
+        peervideo.src = newSession.video.src;
+
       });
       
-      session.ended(function(session) {
+      newSession.ended(function(newSession) {
         pubnub.publish({
           channel: self.state.channel,        
           message: self.state.user + ' has disconnected.'
         });
       });
+
     });
+  },
+
+  phoneUser: function(user, peer, callUser, callPeer) {
+    var self = this;
+    var user = user || this.state.user;
+    var peer = peer || this.state.peer;
+    var callUser = callUser || this.state.callUser;
+    var callPeer = callPeer || this.state.callPeer;
+    var channel = this.state.channel;
+    console.log('in phoneUser');
+
+    phone.ready(function() {
+      console.log('in phone ready, peer is: ', peer);
+      console.log('in phone ready, callPeer is: ', callPeer);
+      console.log('in phone ready, channel is: ', channel);
+      console.log('in phone ready, user is: ', user);
+      console.log('in phone ready, callUser is: ', callUser);
+
+      var session = phone.dial(callPeer);
+      pubnub.publish({
+        channel: self.state.channel,        
+        message: self.state.user + ' is trying to dial.'
+      });
+      console.log('in phone ready, should have published message');
+    });
+
+    phone.receive(function(newSession) {
+      console.log('in phone.receive, newSession is: ', newSession);
+
+      session = newSession;
+
+      var peervideo = self.refs.peervideostream.getDOMNode();
+      var uservideo = self.refs.uservideostream.getDOMNode();
+
+      console.log('in phone receive, channel is: ', channel);
+      console.log('in phone receive, user is: ', user);
+      console.log('in phone receive, callUser is: ', callUser);
+
+      pubnub.publish({
+        channel: self.state.channel,        
+        message: self.state.user + ' is receiving a call.'
+      });
+
+      console.log('in phone receive, should have published message');
+
+      newSession.connected(function(newSession) {
+        // set the peer that you've connected to
+        console.log('in phone connected, channel is: ', channel);
+        console.log('in phone connected, user is: ', user);
+        console.log('in phone connected, callUser is: ', callUser);
+
+        pubnub.publish({
+          channel: self.state.channel,        
+          message: self.state.user + ' is now connected.'
+        });
+
+        console.log('connection status in connected: ', newSession);
+        console.log('uservideo: ', uservideo);
+
+        console.log('status is: ', newSession.status);
+        console.log('peervideo: ', peervideo);
+        console.log('session.video: ', newSession.video);
+        
+        uservideo.src = phone.video.src;
+        peervideo.src = '';
+        peervideo.src = newSession.video.src;
+
+      });
+      
+      newSession.ended(function(newSession) {
+        pubnub.publish({
+          channel: self.state.channel,        
+          message: self.state.user + ' has disconnected.'
+        });
+      });
+
+    });
+
   },
 
   endCall: function() {
@@ -747,7 +883,7 @@ var ChannelView = React.createClass({displayName: "ChannelView",
 
   getUsers: function(user, pubnub, channel) {
     var self = this;
-    channelStore.getUsersAvailable(user, pubnub, channel).then(function(templist){
+    channelStore.getUsersAvailable(user, pubnub, channel).then(function(templist) {
       templist = Object.keys(templist);
       self.setState({
         userlist: templist
@@ -799,13 +935,14 @@ var ChannelView = React.createClass({displayName: "ChannelView",
 
   render: function() {
     var self = this;
-    var userList = this.state.userlist.length ? this.state.userlist.map(function(user) {
-      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: user}, className: "button small"}, user))
+    var userList = this.state.userlist.length ? this.state.userlist.map(function(peer) {
+      var privateChannel = self.state.user + peer;
+      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small", key: peer.id}, peer))
     }) : 'No users available.';
 
     var callsList = this.state.calls.length ? this.state.calls.map(function(peer) {
       var privateChannel = peer + self.state.user;
-      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel : privateChannel}, className: "button small"}, peer, " is Calling!"))
+      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small", key: peer.id}, peer, " is Calling!"))
     }) : null;
 
     return (
@@ -1573,19 +1710,26 @@ var channelStore = Reflux.createStore({
   },
 
   phoneInit: function(user) {
-    var user = user || JSON.parse(localStorage.getItem('user')).username;
-    console.log('user is: ', user);
-    return PHONE({
-      number        : user,
-      publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
-      subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
-      media : { audio : true, video : true },
-      ssl           : false
-    });
+    var user = user || 'call' + JSON.parse(localStorage.getItem('user')).username;
+    console.log('in channelStore phoneInit, user is: ', user);
+    
+    return new Promise(function(resolve, reject) {
+      var newPhone = PHONE({
+        number        : user,
+        publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
+        subscribe_key : 'sub-c-2bcfffc6-b3d1-11e4-9a8b-0619f8945a4f',
+        media : { audio : true, video : true },
+        ssl           : false
+      });
+
+      if (newPhone) resolve(newPhone);
+      else reject(null);
+    })
   },
 
   pubnubInit: function(channel) {
     var user = JSON.parse(localStorage.getItem('user'));
+    console.log('in channelStore pubnubInit, user is: ', user.username);
     return PUBNUB.init({
       uuid          : user.username,
       publish_key   : 'pub-c-d0f394d5-41a9-47aa-ae8d-5629f6cb46c7',
