@@ -18,7 +18,6 @@ var Login = React.createClass({
 
   statics: {
     willTransitionTo: function(transition) {
-
       if (userStore.isLoggedIn()) {
         transition.redirect('dashboard');
       }

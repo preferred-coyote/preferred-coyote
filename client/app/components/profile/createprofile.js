@@ -14,17 +14,9 @@ var CreateProfile = React.createClass({
 
   mixins: [
     Authentication,
-    Reflux.listenTo(userStore, "onCreate"),
+    Reflux.listenTo(userStore, 'onCreate'),
     Router.Navigation
-    ],
-
-  // statics: {
-  //   willTransitionTo: function(transition) {
-  //     if(userStore.isCreated()) {
-  //       transition.redirect('dashboard');
-  //     }
-  //   }
-  // },
+  ],
 
   getInitialState: function() {
     return {
@@ -35,16 +27,18 @@ var CreateProfile = React.createClass({
   },
 
   onCreate: function(isCreated) {
+    console.log('ONCREATED IN CREATEPROFILE HAS BEEN CALLED! HUZZAH!', isCreated);
     if(isCreated) {
+      console.log('profile created');
       this.transitionTo('dashboard');
     } else {
-        this.setState({createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE'});
+      this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }
   },
 
   whatGender: function() {
     var element = document.getElementsByName('gender');
-    for (var i = 0; i<element.length; i++) {
+    for (var i = 0; i < element.length; i++) {
       if (element[i].checked) {
         return element[i].value;
       }
@@ -55,7 +49,6 @@ var CreateProfile = React.createClass({
     var gender = this.whatGender();
     e.preventDefault();
     Actions.createProfile({
-      username: this.state.username,
       location: this.refs.location.getDOMNode().value.trim(),
       gender: gender,
       summary: this.refs.summary.getDOMNode().value.trim(),

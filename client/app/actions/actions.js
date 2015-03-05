@@ -103,6 +103,8 @@ actions.createProfile.preEmit = function(formData){
     })
     .end(function(data) {
       window.localStorage.setItem('profileCreated', true);
+      console.log('is this data.body???', data.body);
+      window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
     });
   });

@@ -593,6 +593,8 @@ actions.createProfile.preEmit = function(formData){
     })
     .end(function(data) {
       window.localStorage.setItem('profileCreated', true);
+      console.log('is this data.body???', data.body);
+      window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
 <<<<<<< HEAD
     })
@@ -792,7 +794,6 @@ var Login = React.createClass({displayName: "Login",
 
   statics: {
     willTransitionTo: function(transition) {
-
       if (userStore.isLoggedIn()) {
         transition.redirect('dashboard');
       }
@@ -1444,17 +1445,9 @@ var CreateProfile = React.createClass({displayName: "CreateProfile",
 
   mixins: [
     Authentication,
-    Reflux.listenTo(userStore, "onCreate"),
+    Reflux.listenTo(userStore, 'onCreate'),
     Router.Navigation
-    ],
-
-  // statics: {
-  //   willTransitionTo: function(transition) {
-  //     if(userStore.isCreated()) {
-  //       transition.redirect('dashboard');
-  //     }
-  //   }
-  // },
+  ],
 
   getInitialState: function() {
     return {
@@ -1465,16 +1458,18 @@ var CreateProfile = React.createClass({displayName: "CreateProfile",
   },
 
   onCreate: function(isCreated) {
+    console.log('ONCREATED IN CREATEPROFILE HAS BEEN CALLED! HUZZAH!', isCreated);
     if(isCreated) {
+      console.log('profile created');
       this.transitionTo('dashboard');
     } else {
-        this.setState({createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE'});
+      this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }
   },
 
   whatGender: function() {
     var element = document.getElementsByName('gender');
-    for (var i = 0; i<element.length; i++) {
+    for (var i = 0; i < element.length; i++) {
       if (element[i].checked) {
         return element[i].value;
       }
@@ -1500,7 +1495,6 @@ var Pass = React.createClass({displayName: "Pass",
       newPasswordConfirmation: this.refs.newPasswordConfirmation.getDOMNode().value.trim()
 =======
     Actions.createProfile({
-      username: this.state.username,
       location: this.refs.location.getDOMNode().value.trim(),
       gender: gender,
       summary: this.refs.summary.getDOMNode().value.trim(),
@@ -2357,11 +2351,13 @@ var userStore = Reflux.createStore({
 
   init: function() {
     var self = this;
+    
     this.user = {
       profileCreated: !!window.localStorage.getItem('profileCreated'),
       loggedIn: !!window.localStorage.getItem('token'),
       user: JSON.parse(window.localStorage.getItem('user'))
     };
+
     if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
@@ -2395,14 +2391,15 @@ var userStore = Reflux.createStore({
     var self = this;
     signinPromise.then(function(data){
       //set user obj and loggedIn to true if status code 201
-      if (data.status === 201){
+      console.log('signup', data.body);
+      
+      if (data.body.user){
         self.user = data.body.user;
         self.user.loggedIn = true;
         window.localStorage.setItem('token', data.body.token);
-        //writes user to local Storage on signup. this happen sin actions for login.
         window.localStorage.setItem('user', JSON.stringify(data.body.user));       
         
-      } else if (data.status === 409){
+      } else {
         //username already exists
         self.user.loggedIn = false;
 
@@ -2414,6 +2411,7 @@ var userStore = Reflux.createStore({
   },
   
   isLoggedIn: function() {
+    console.log('USER!!!!!!!!!!!!!!: ', this.user);
     return this.user && this.user.loggedIn;
   },
 
@@ -2434,13 +2432,13 @@ var userStore = Reflux.createStore({
 
   createProfile: function(user) {
     var self = this;
-    user.then(function(user) {
-      self.user = user;
+
+    user.then(function(data) {
+      self.user = data.body;
+      self.user.loggedIn = true;
       self.user.profileCreated = true;
-      console.log("HELLO it worked! REDIRECT TIME");
-      self.trigger(self.user.profileCreated);
+      self.trigger(self.user);
     }).catch(function(err) {
-      console.log('HELLO, this failed');
       self.trigger(false);
     })
   }
