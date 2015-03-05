@@ -1,22 +1,15 @@
 /** @jsx React.DOM */
 var React = require('react');
-var Interests = require('./interests').Interests;
 var Actions = require('../../actions/actions');
-
-var Reflux = require('reflux');
-
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 
 var Authentication = require('../../utils/Authentication');
-var Actions = require('../../actions/actions');
-var userStore = require('../../stores/userStore');
+
 var Profile = React.createClass({
 
-  mixins: [
-    Authentication
-  ],
+  mixins: [Authentication],
 
   getInitialState: function() {
     return {
@@ -46,8 +39,6 @@ var Profile = React.createClass({
     });
   },
 
-
-
   render: function() {
     return (
       <div className="row">
@@ -71,9 +62,7 @@ var Profile = React.createClass({
             </fieldset>
             <button type="submit" className="button small">Edit Profile</button>
           </form>
-
           <Pass />
-
         </div>
       </div>
     );

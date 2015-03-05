@@ -506,10 +506,14 @@ var actions = Reflux.createActions([
   'editProfile'
 =======
   'getInterests',
-  'updateInterests'
+  'updateInterests',
   // , 'createProfile',
+<<<<<<< HEAD
   // 'updateProfile'
 >>>>>>> Users can now add interests
+=======
+  'editProfile'
+>>>>>>> Put add interests form on dashboard
 ]);
 
 actions.login.preEmit = function(creds) {
@@ -524,9 +528,12 @@ actions.login.preEmit = function(creds) {
         }
         if (data.body && data.body.user) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
           //window.sessionStorage.token = data.body.token;
 >>>>>>> Users can now add interests
+=======
+>>>>>>> Put add interests form on dashboard
           window.localStorage.setItem('token', data.body.token);
           window.localStorage.setItem('user', JSON.stringify(data.body.user));
           resolve(data.body.user);
@@ -1658,8 +1665,11 @@ module.exports.CallView = CallView;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> public
+=======
+>>>>>>> Put add interests form on dashboard
 },{"../../utils/Authentication":28,"react/addons":69}],8:[function(require,module,exports){
 =======
 },{"../../utils/Authentication":29,"react/addons":70}],8:[function(require,module,exports){
@@ -1692,8 +1702,17 @@ module.exports.CallView = CallView;
 =======
 },{"../../stores/channelStore":23,"../../utils/Authentication":28,"react":230,"react-router":55,"react/addons":69,"reflux":231}],8:[function(require,module,exports){
 >>>>>>> public
+<<<<<<< HEAD
 >>>>>>> public
+<<<<<<< HEAD
 >>>>>>> public
+=======
+=======
+=======
+},{"../../stores/channelStore":23,"../../utils/Authentication":28,"react":230,"react-router":55,"react/addons":69,"reflux":231}],8:[function(require,module,exports){
+>>>>>>> Put add interests form on dashboard
+>>>>>>> Put add interests form on dashboard
+>>>>>>> Put add interests form on dashboard
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1938,14 +1957,16 @@ module.exports.ChannelView = ChannelView;
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
-var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
 =======
 >>>>>>> public
+=======
+>>>>>>> Put add interests form on dashboard
 <<<<<<< HEAD
 var userStore = require('../../stores/userStore');
 =======
@@ -2011,6 +2032,12 @@ var data = {
     },
   ]
 }
+=======
+var Reflux = require('reflux');
+var Actions = require('../../actions/actions');
+var userStore = require('../../stores/userStore');
+var Authentication = require('../../utils/Authentication');
+>>>>>>> Put add interests form on dashboard
 
 >>>>>>> Users can now add interests
 <<<<<<< HEAD
@@ -2024,18 +2051,54 @@ var Interests = require('../profile/interests').Interests;
 
 var Dashboard = React.createClass({displayName: "Dashboard",
 
-  mixins: [Authentication],
+  mixins: [
+    Authentication,
+    Reflux.listenTo(userStore, "onInterestsUpdated")
+  ],
 
   getInitialState: function() {
     return {
+<<<<<<< HEAD
 <<<<<<< HEAD
       user: JSON.parse(window.localStorage.user),
       avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
 =======
       user: data
 >>>>>>> Users can now add interests
+=======
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png',
+      interests: [],
+      text: ''
+>>>>>>> Put add interests form on dashboard
     };
   },
+
+  componentDidMount: function() {
+    Actions.getInterests();
+
+  },
+
+
+  onInterestsUpdated: function(newInterests) {
+    console.log("The new interests here", newInterests);
+    this.setState({interests: newInterests.map(function(interest){return interest.name})});
+  },
+
+  onInputChange: function(e) {
+    this.setState({text: e.target.value});
+    console.log('input change');
+  },
+
+  handleInterestSubmit: function(e) {
+    e.preventDefault();
+    var updatedInterests = this.state.interests.concat([this.state.text]);
+    console.log("Handling update interests submit", updatedInterests);
+    Actions.updateInterests(updatedInterests);
+    this.setState({interests: updatedInterests});
+  },
+
+
 
   render: function() {
 
@@ -2043,6 +2106,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
           React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
+<<<<<<< HEAD
 <<<<<<< HEAD
           React.createElement("img", {src: this.state.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
           React.createElement("p", null, this.state.user.summary), 
@@ -2053,12 +2117,25 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 =======
           React.createElement("img", {src: this.state.user.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
           React.createElement("p", null, this.state.user.bio), 
+=======
+          React.createElement("img", {src: this.state.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
+          React.createElement("p", null, this.state.user.summary), 
+>>>>>>> Put add interests form on dashboard
           React.createElement("ul", {className: "inline-list"}, 
             React.createElement("li", null, this.state.user.location), 
             React.createElement("li", null, this.state.user.gender)
           ), 
+<<<<<<< HEAD
           React.createElement(Interests, {interests: this.state.user.Interests})
 >>>>>>> Users can now add interests
+=======
+
+          React.createElement(Interests, {interests: this.state.interests}), 
+          React.createElement("form", {onSubmit: this.handleInterestSubmit}, 
+            React.createElement("input", {onChange: this.onInputChange, value: this.state.text})
+          )
+
+>>>>>>> Put add interests form on dashboard
         ), 
         React.createElement("div", {className: "small-9 columns", id: "primary"}, 
           React.createElement(RouteHandler, null)
@@ -2079,6 +2156,7 @@ module.exports.Dashboard = Dashboard;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 },{"../../utils/Authentication":28,"../profile/interests":16,"react":230,"react-router":55}],11:[function(require,module,exports){
 =======
 },{"../../stores/userStore":28,"../../utils/Authentication":29,"../profile/interests":17,"react":231,"react-router":56}],11:[function(require,module,exports){
@@ -2091,6 +2169,8 @@ module.exports.Dashboard = Dashboard;
 >>>>>>> Users can now add interests
 =======
 >>>>>>> public
+=======
+>>>>>>> Put add interests form on dashboard
 },{"../../utils/Authentication":28,"../profile/interests":16,"react":230,"react-router":55}],11:[function(require,module,exports){
 =======
 },{"../../stores/userStore":28,"../../utils/Authentication":29,"../profile/interests":17,"react":231,"react-router":56}],11:[function(require,module,exports){
@@ -2113,8 +2193,17 @@ module.exports.Dashboard = Dashboard;
 =======
 },{"../../utils/Authentication":28,"../profile/interests":16,"react":230,"react-router":55}],11:[function(require,module,exports){
 >>>>>>> public
+<<<<<<< HEAD
 >>>>>>> public
+<<<<<<< HEAD
 >>>>>>> public
+=======
+=======
+=======
+},{"../../actions/actions":1,"../../stores/userStore":27,"../../utils/Authentication":28,"../profile/interests":16,"react":230,"react-router":55,"reflux":231}],11:[function(require,module,exports){
+>>>>>>> Put add interests form on dashboard
+>>>>>>> Put add interests form on dashboard
+>>>>>>> Put add interests form on dashboard
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Authentication = require('../../utils/Authentication');
@@ -2391,12 +2480,16 @@ var Info = React.createClass({displayName: "Info",
     return (
       React.createElement("div", null, 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Put add interests form on dashboard
         React.createElement("div", {className: "row"}, 
           React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"})
         ), 
         React.createElement("div", {className: "row"}, 
           React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
           React.createElement("input", {type: "file", name: "avatar", id: "avatar"})
+<<<<<<< HEAD
 =======
         React.createElement("h2", null, this.props.username), 
         React.createElement("h2", null, this.props.realname), 
@@ -2404,6 +2497,8 @@ var Info = React.createClass({displayName: "Info",
         React.createElement("div", null, 
           React.createElement("a", {href: "#", className: "button tiny"}, "Change Avatar")
 >>>>>>> Users can now add interests
+=======
+>>>>>>> Put add interests form on dashboard
         )
       )
     );
@@ -2622,12 +2717,10 @@ var Pass = React.createClass({displayName: "Pass",
           React.createElement("fieldset", null, 
 =======
       React.createElement("div", null, 
+        React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
-          React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
-          React.createElement("input", {type: "file", name: "avatar", id: "avatar"}), 
-          React.createElement("label", {for: "profile"}, "Update profile"), 
-          React.createElement("textarea", {name: "profile", id: "profile"}), 
           React.createElement("fieldset", null, 
+<<<<<<< HEAD
               React.createElement("legend", null, "Change Password"), 
 >>>>>>> Users can now add interests
               React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
@@ -2814,6 +2907,8 @@ var Pass = React.createClass({displayName: "Pass",
         React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
           React.createElement("fieldset", null, 
+=======
+>>>>>>> Put add interests form on dashboard
               React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
               React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
               React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
@@ -2913,102 +3008,76 @@ var Profile = React.createClass({displayName: "Profile",
 },{"../../actions/actions":1,"react":230}],18:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
+var Interests = require('./interests').Interests;
+var Actions = require('../../actions/actions');
+
 var Reflux = require('reflux');
 
-var data = {
-"id": 2,
-"username": "Ghost",
-"password": "password",
-"createdAt": "2015-02-16T22:51:16.000Z",
-"updatedAt": "2015-02-16T22:51:16.000Z",
-"avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
-"Interests": [
-  {
-  "id": 5,
-  "name": "kink.com",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "InterestsUsers": {
-    "createdAt": "2015-02-16T22:51:16.000Z",
-    "updatedAt": "2015-02-16T22:51:16.000Z",
-    "InterestId": 5,
-    "UserId": 2
-  }
-  },
-  {
-  "id": 4,
-  "name": "travel",
-  "createdAt": "2015-02-16T22:51:16.000Z",
-  "updatedAt": "2015-02-16T22:51:16.000Z",
-  "InterestsUsers": {
-    "createdAt": "2015-02-16T22:51:16.000Z",
-    "updatedAt": "2015-02-16T22:51:16.000Z",
-    "InterestId": 4,
-    "UserId": 2
-  }
-  }
-]
-};
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
-var Interests = require('./interests').Interests;
+
 var Authentication = require('../../utils/Authentication');
 var Actions = require('../../actions/actions');
 var userStore = require('../../stores/userStore');
 var Profile = React.createClass({displayName: "Profile",
 
   mixins: [
-    Authentication,
-    Reflux.listenTo(userStore, "onInterestsUpdated")
+    Authentication
   ],
 
   getInitialState: function() {
     return {
-      user: data,
-      interests: [],
-      text: '',
+      user: JSON.parse(window.localStorage.user),
+      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
 
-  componentDidMount: function() {
-    Actions.getInterests();
-
+  whatGender: function() {
+    var element = document.getElementsByName('gender');
+    for (var i = 0; i<element.length; i++) {
+      if (element[i].checked) {
+        return element[i].value;
+      }
+    }
   },
 
-  onInterestsUpdated: function(newInterests) {
-    console.log("The new interests here", newInterests);
-    this.setState({interests: newInterests.map(function(interest){return interest.name})});
-  },
-
-  onInputChange: function(e) {
-    this.setState({text: e.target.value});
-    console.log('input change');
-  },
-
-  handleInterestSubmit: function(e) {
+  editProfile: function(e) {
+    var gender = this.whatGender();
     e.preventDefault();
-    var updatedInterests = this.state.interests.concat([this.state.text]);
-    console.log("Handling update interests submit", updatedInterests);
-    Actions.updateInterests(updatedInterests);
-    this.setState({interests: updatedInterests});
+    Actions.editProfile({
+      username: this.state.username,
+      location: this.refs.location.getDOMNode().value.trim(),
+      gender: gender,
+      summary: this.refs.summary.getDOMNode().value.trim(),
+      searchable: document.getElementById('searchable').checked
+    });
   },
+
 
 
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement(Info, {username: this.state.user.username, avatarimg: this.state.user.avatar}), 
-          React.createElement("form", null, 
-            React.createElement("input", {type: "checkbox", name: "searchable", id: "checkbox1", value: "searchable", defaultChecked: true}, 
-              React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
-            )
-          ), 
-
-          React.createElement(Interests, {interests: this.state.interests}), 
-          React.createElement("form", {onSubmit: this.handleInterestSubmit}, 
-            React.createElement("input", {onChange: this.onInputChange, value: this.state.text})
+        React.createElement("div", {className: "medium-4 columns"}, 
+        React.createElement("h1", null, this.state.user.username), 
+        React.createElement("h2", null, "Basic Info"), 
+          React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
+            React.createElement("fieldset", null, 
+              React.createElement(Info, {avatarimg: this.state.avatar}), 
+              React.createElement("label", {htmlFOR: "location"}, "Location"), 
+                React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: "location"}), 
+              React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
+                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
+              React.createElement("label", {for: "profile"}, "Summary"), 
+                React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: "I like Neil Degrasse Tyson and hockey."}), 
+              React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
+                React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
+              )
+            ), 
+            React.createElement("button", {type: "submit", className: "button small"}, "Edit Profile")
           ), 
 
           React.createElement(Pass, null)
@@ -3217,10 +3286,14 @@ var PubNub = React.createClass({displayName: "PubNub",
     return (
       React.createElement("div", null, 
 <<<<<<< HEAD
+<<<<<<< HEAD
       	React.createElement("h1", null, "Hello @", this.state.user), 
 =======
       	React.createElement("h1", null, "Hello ", this.state.user), 
 >>>>>>> Users can now add interests
+=======
+      	React.createElement("h1", null, "Hello @", this.state.user), 
+>>>>>>> Put add interests form on dashboard
       	React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "large-6 columns"}, 
             React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
@@ -4061,11 +4134,15 @@ var userStore = Reflux.createStore({
     var self = this;
     this.user = {
       loggedIn: !!window.localStorage.getItem('token'),
-      user: window.localStorage.getItem('user')
+      user: JSON.parse(window.localStorage.getItem('user'))
     };
+<<<<<<< HEAD
 
     if (this.user.loggedIn && !this.user.username) {
 >>>>>>> Users can now add interests
+=======
+    if (this.user.loggedIn && !this.user.user.username) {
+>>>>>>> Put add interests form on dashboard
       request
         .post('/api/auth/check')
         .set('x-access-token', window.localStorage.getItem('token'))

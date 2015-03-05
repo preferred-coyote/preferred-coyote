@@ -8,8 +8,11 @@ var actions = Reflux.createActions([
   'logout',
   'signup',
   'updatePassword',
+<<<<<<< HEAD
+=======
   'getInterests',
-  'updateInterests',
+  'updateInterests'
+>>>>>>> Users can now add interests
   // , 'createProfile',
   'editProfile'
 ]);
@@ -21,7 +24,6 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
-        console.log('IN ACTIONS, LOGIN', data.body);
         if (data.status === 404) {
           reject('Incorrect username or password');
         }
@@ -72,6 +74,7 @@ actions.updatePassword.preEmit = function(formData){
   })
 };
 
+<<<<<<< HEAD
 actions.editProfile.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
@@ -82,16 +85,15 @@ actions.editProfile.preEmit = function(formData){
       location: formData.location,
       gender: formData.gender,
       summary: formData.summary,
-      searchable: formData.searchable,
-      profileCreated: formData.profileCreated
+      searchable: formData.searchable
     })
     .end(function(data) {
-      window.localStorage.setItem('profileCreated', true);
-      console.log('is this data.body???', data);
-      window.localStorage.setItem('user', JSON.stringify(data.body));
+      window.localStorage.setItem('user', data.text);
       resolve(data);
-    });
-
+    })
+  })
+}
+=======
 actions.getInterests.preEmit = function() {
   return new Promise(function(resolve, reject) {
     request
@@ -117,6 +119,7 @@ actions.updateInterests.preEmit = function(interestsArray) {
       })
   });
 };
+>>>>>>> Users can now add interests
 
 
 module.exports = actions;

@@ -14,14 +14,11 @@ module.exports = function(app) {
 
   router.param('id', function(req, res, next, id) {
     // find user
-<<<<<<< HEAD
+
     User.find({where:
       {id: id}
     }).then(function(user) {
-=======
-    res.json({message:'fuck you'})
-    User.find(id).then(function(user) {
->>>>>>> Users can now add interests
+
       // no user found
       if (!user) {
         res.status(404).json({
@@ -39,6 +36,8 @@ module.exports = function(app) {
       });
     })
   });
+
+
 
   /**
    * protect post/update/delete routes
