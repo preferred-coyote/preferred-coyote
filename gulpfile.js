@@ -8,11 +8,12 @@ var compass = require('gulp-compass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var image = require('gulp-image');
 
 var paths = {
   src: {
     bower: './client/bower_components',
-    // img: './client/src/img',
+    img: './client/img',
     scss: './client/scss',
     js: './client/app'
   },
@@ -48,7 +49,9 @@ gulp.task('javascript', function() {
 });
 
 gulp.task('image', function() {
-  // gulp.src('')
+  return gulp.src(paths.src.img + '/**/*')
+    .pipe(image())
+    .pipe(gulp.dest(paths.dist.img));
 });
 
 gulp.task('lint', function() {});
