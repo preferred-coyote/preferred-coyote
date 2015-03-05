@@ -59,14 +59,16 @@ var CallView = React.createClass({
         <div className="row">
           <div className="large-10 columns">
             <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://33.media.tumblr.com/avatar_7c7464817624_128.png" className="medium-4 columns"></video>
-            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://33.media.tumblr.com/avatar_7c7464817624_128.png" className="medium-4 columns"></video>
+            <div className="medium-4 columns">
+              <span className="icon-volume-mute medium-1 columns" id="lefticon"></span>
+              <span className="icon-volume-mute2 medium-1 columns" id="righticon"></span>
+              <ul className="button-group stack" id="callbuttons">
+                <li><a href="#" onClick={this.makeCall} className="button"><span className="icon-phone"></span>Call!</a></li>
+                <li><a href="#" onClick={this.endCall} className="button"><span className="icon-phone-hang-up"></span>Stop Call</a></li>
+              </ul>
+            </div>
+            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://avatars3.githubusercontent.com/u/2119948?v=3&s=400" className="medium-4 columns"></video>
           </div>
-        </div>
-        <div className="row">
-          <ul className="button-group round">
-            <li><a href="#" onClick={this.makeCall} className="button">Call!</a></li>
-            <li><a href="#" onClick={this.endCall} className="button">Stop Call</a></li>
-          </ul>
         </div>
         <div className="row">
           <div className="large-10 columns">
@@ -77,11 +79,11 @@ var CallView = React.createClass({
               </ul>
             </div>
             <div className="row">
-              <div className="medium-10 columns">
+              <div className="large-10 columns">
                 <input type="text" placeholder="Message" ref="message" onKeyPress={this.sendMessage} id="inputmessage"></input>
               </div>
-              <div className="medium-2 columns">
-                <button className="button" onClick={this.sendMessage} id="sendbutton">Send</button>
+              <div className="large-2 columns">
+                <button className="button small expand" onClick={this.sendMessage} id="sendbutton">Send</button>
               </div>
             </div>
           </div>
@@ -231,8 +233,10 @@ var CallView = React.createClass({
           message: self.state.user + ' is now connected.'
         });
         
-        // uservideo.src = phone.video.src;
+        //uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
+
+        self.showConnect();
 
       });
       
@@ -302,6 +306,13 @@ var CallView = React.createClass({
   endCall: function() {
     session.hangup();
     phone.hangup();
+  },
+
+  showConnect: function() {
+    var lefticon = document.getElementById('lefticon');
+    lefticon.className = 'icon-volume-high2 medium-1 columns';
+    var righticon = document.getElementById('righticon');
+    righticon.className = 'icon-volume-high medium-1 columns';
   }
 
 });
