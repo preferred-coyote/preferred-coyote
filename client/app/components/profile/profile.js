@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 var React = require('react');
-<<<<<<< HEAD
+
 var Actions = require('../../actions/actions');
-=======
+
 var Reflux = require('reflux');
 
 var data = {
@@ -39,7 +39,7 @@ var data = {
   }
 ]
 };
->>>>>>> Users can now add interests
+
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
@@ -56,7 +56,7 @@ var Profile = React.createClass({
 
   getInitialState: function() {
     return {
-<<<<<<< HEAD
+
       user: JSON.parse(window.localStorage.user),
       avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
@@ -83,7 +83,7 @@ var Profile = React.createClass({
     });
   },
 
-=======
+
       user: data,
       interests: [],
       text: '',
@@ -114,7 +114,7 @@ var Profile = React.createClass({
   },
 
 
->>>>>>> Users can now add interests
+
   render: function() {
     return (
       <div className="row">
@@ -138,15 +138,14 @@ var Profile = React.createClass({
             </fieldset>
             <button type="submit" className="button small">Edit Profile</button>
           </form>
-<<<<<<< HEAD
-=======
+
 
           <Interests interests={this.state.interests} />
           <form onSubmit={this.handleInterestSubmit}>
             <input onChange={this.onInputChange} value={this.state.text} />
           </form>
 
->>>>>>> Users can now add interests
+
           <Pass />
 
         </div>
