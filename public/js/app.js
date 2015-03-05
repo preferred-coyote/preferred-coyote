@@ -506,6 +506,7 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
+        console.log('IN ACTIONS, LOGIN', data.body);
         if (data.status === 404) {
           reject('Incorrect username or password');
         }
@@ -593,7 +594,7 @@ actions.createProfile.preEmit = function(formData){
     })
     .end(function(data) {
       window.localStorage.setItem('profileCreated', true);
-      console.log('is this data.body???', data.body);
+      console.log('is this data.body???', data);
       window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
 <<<<<<< HEAD
@@ -1268,7 +1269,7 @@ var Header = React.createClass({displayName: "Header",
   },
 
   onLoggedIn: function(user) {
-    var user = userStore.getUserData();
+    var user = user || userStore.getUserData();
 
     this.setState({
       loggedIn: user.loggedIn
@@ -2375,6 +2376,7 @@ var userStore = Reflux.createStore({
   },
 
   login: function(user) {
+    console.log("IN LOGIN", user);
     var self = this;
     user.then(function(user) {
       self.user = user;
@@ -2411,7 +2413,6 @@ var userStore = Reflux.createStore({
   },
   
   isLoggedIn: function() {
-    console.log('USER!!!!!!!!!!!!!!: ', this.user);
     return this.user && this.user.loggedIn;
   },
 
@@ -2431,14 +2432,18 @@ var userStore = Reflux.createStore({
   },
 
   createProfile: function(user) {
+    console.log('IN CREATE PROFILE', user);
     var self = this;
 
     user.then(function(data) {
+      console.log('what is returned in data?', data.body);
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
       self.trigger(self.user);
     }).catch(function(err) {
+      console.log('WHAT\'S THE ERROR INC REATE PROFILE?', err);
+
       self.trigger(false);
     })
   }

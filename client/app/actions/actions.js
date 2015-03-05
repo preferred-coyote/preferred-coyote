@@ -19,6 +19,7 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
+        console.log('IN ACTIONS, LOGIN', data.body);
         if (data.status === 404) {
           reject('Incorrect username or password');
         }
@@ -103,7 +104,7 @@ actions.createProfile.preEmit = function(formData){
     })
     .end(function(data) {
       window.localStorage.setItem('profileCreated', true);
-      console.log('is this data.body???', data.body);
+      console.log('is this data.body???', data);
       window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
     });

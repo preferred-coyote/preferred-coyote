@@ -126,9 +126,11 @@ module.exports.createProfile = function(req, res, next) {
       searchable = req.body.searchable,
       profileCreated = req.body.profileCreated
 
+  var currentUser = req.user[0] || req.user;
+
   if (req.body) {
     User.find({
-      where: {id: req.user[0].id}
+      where: {id: currentUser.id}
     }).then(function(user) {
       user.update({
         location: location,
@@ -143,7 +145,7 @@ module.exports.createProfile = function(req, res, next) {
     }).catch(function(err) {
       });
     } else {
-      res.status(300).json({message: 'fuck up'});
+      res.status(300).json({message: 'There was an error in creating the profile.'});
     }
 };
 
@@ -173,7 +175,7 @@ module.exports.editProfile = function(req, res, next) {
     }).catch(function(err) {
       });
     } else {
-      res.status(300).json({message: 'fuck up'});
+      res.status(300).json({message: 'There was an error in editing the profile.'});
     }
 };
 

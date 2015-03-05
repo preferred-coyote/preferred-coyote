@@ -37,6 +37,7 @@ var userStore = Reflux.createStore({
   },
 
   login: function(user) {
+    console.log("IN LOGIN", user);
     var self = this;
     user.then(function(user) {
       self.user = user;
@@ -73,7 +74,6 @@ var userStore = Reflux.createStore({
   },
   
   isLoggedIn: function() {
-    console.log('USER!!!!!!!!!!!!!!: ', this.user);
     return this.user && this.user.loggedIn;
   },
 
@@ -93,14 +93,18 @@ var userStore = Reflux.createStore({
   },
 
   createProfile: function(user) {
+    console.log('IN CREATE PROFILE', user);
     var self = this;
 
     user.then(function(data) {
+      console.log('what is returned in data?', data.body);
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
       self.trigger(self.user);
     }).catch(function(err) {
+      console.log('WHAT\'S THE ERROR INC REATE PROFILE?', err);
+
       self.trigger(false);
     })
   }
