@@ -103,10 +103,11 @@ gulp.task('karma', function(done) {
 gulp.task('watch', function() {
   gulp.watch(paths.src.js + '/**/*.js', ['javascript']);
   gulp.watch(paths.src.scss + '/**/*.scss', ['scss']);
+  gulp.watch(paths.src.img + '/**/*', ['image']);
 });
 
 // build for deploys
 gulp.task('build', ['image', 'javascript', 'scss']);
 
 // Default Task
-gulp.task('default', ['lint', 'test', 'javascript', 'scss', 'watch']);
+gulp.task('default', ['image', 'lint', 'test', 'javascript', 'scss', 'watch']);
