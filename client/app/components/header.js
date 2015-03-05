@@ -18,7 +18,7 @@ var Header = React.createClass({
   },
 
   onLoggedIn: function(user) {
-    var user = userStore.getUserData();
+    var user = user || userStore.getUserData();
 
     this.setState({
       loggedIn: user.loggedIn

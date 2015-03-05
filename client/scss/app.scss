@@ -13,7 +13,19 @@
 
 body {
   -webkit-font-smoothing: antialiased;
-  background-color:#FFF2DA;
+  background-color:#175AA6;
+}
+
+body {
+  background-size:cover;
+  background-position: center center;
+  background-image:url('/img/home_bg.jpg');
+}
+
+.playfair {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: italic;
 }
 
 #homePageButton {
@@ -27,6 +39,21 @@ body {
 
 #primary {
   background-color:#FFF2DA;
+}
+
+.button {
+  &.shadow {
+    @include box-shadow(0 0 30px rgba(0, 0, 0, .1));
+    @include single-transition(all);
+    position: relative;
+    &:focus {
+      top:2px;
+    }
+  }
+}
+
+.text-white {
+  color:$white;
 }
 
 #callRandomUser {
@@ -63,3 +90,59 @@ body {
   margin-left: 30px;
 }
 
+//callView styles
+#messagearea {
+  height: 200px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  word-wrap: break-word;
+  background-color: #ffffff;
+  padding: 5px 8px 5px 8px;
+}
+
+#inputmessage {
+  margin-top: 5px;
+}
+
+header.top-bar {
+  @include box-shadow(0 20px 40px rgba(0, 0, 0, .05));
+}
+
+.lets-talk-about {
+  margin-top:150px;
+  margin-bottom:0;
+  font-size:72px;
+  &+.lets-talk-about {
+    margin-top:-20px;
+    margin-bottom:.5em;
+    font-size:72px;
+    font-weight:700;
+  }
+}
+
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}

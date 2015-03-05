@@ -9,11 +9,12 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
+var image = require('gulp-image');
 
 var paths = {
   src: {
     bower: './client/bower_components',
-    // img: './client/src/img',
+    img: './client/img',
     scss: './client/scss',
     js: './client/app'
   },
@@ -52,6 +53,12 @@ gulp.task('clean', function() {
 
 gulp.task('javascript', function(callback) {
   runSequence('clean', 'browserify', 'uglify', callback);
+});
+
+gulp.task('image', function() {
+  return gulp.src(paths.src.img + '/**/*')
+    .pipe(image())
+    .pipe(gulp.dest(paths.dist.img));
 });
 
 gulp.task('lint', function() {});
@@ -99,7 +106,7 @@ gulp.task('watch', function() {
 });
 
 // build for deploys
-gulp.task('build', ['javascript', 'scss']);
+gulp.task('build', ['image', 'javascript', 'scss']);
 
 // Default Task
 gulp.task('default', ['lint', 'test', 'javascript', 'scss', 'watch']);

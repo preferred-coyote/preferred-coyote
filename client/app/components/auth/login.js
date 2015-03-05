@@ -18,7 +18,6 @@ var Login = React.createClass({
 
   statics: {
     willTransitionTo: function(transition) {
-
       if (userStore.isLoggedIn()) {
         transition.redirect('dashboard');
       }
@@ -35,8 +34,7 @@ var Login = React.createClass({
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
       this.transitionTo('dashboard');
-    } else {
-      //update UI, username or password wrong
+    } else {      //update UI, username or password wrong
       this.setState({
         error: 'Incorrect username or password'
       });
@@ -60,13 +58,14 @@ var Login = React.createClass({
 
     return (
       <div className="row">
-        <div className="large-12 columns">
-          <h2>Login</h2>
+        <div className="large-8 large-centered columns">
+          <h2 className="lets-talk-about text-white text-center">Login</h2>
+          {error}
           <form className="form" onSubmit={this.login} role="form" action="/api/auth/login" method="POST">
-            <label htmlFor="username">Username</label>
-    	      <input type="text" name="username" ref="username" id="username" placeholder="username" />
-            <label htmlFor="password">Password</label>
-    	      <input type="password" name="password" ref="password" id="password" />
+            <label htmlFor="username" className="text-white text-center">Username</label>
+    	      <input type="text" name="username" className="round" ref="username" id="username" placeholder="username" />
+            <label htmlFor="password" className="text-center text-white">Password</label>
+    	      <input type="password" className="round" name="password" ref="password" id="password" />
     	      <button type="submit" className="button button-primary">
               Login
             </button>

@@ -14,9 +14,11 @@ module.exports = function(app) {
 
   router.param('id', function(req, res, next, id) {
     // find user
+
     User.find({where:
       {id: id}
     }).then(function(user) {
+
       // no user found
       if (!user) {
         res.status(404).json({
@@ -34,6 +36,8 @@ module.exports = function(app) {
       });
     })
   });
+
+
 
   /**
    * protect post/update/delete routes
@@ -60,6 +64,8 @@ module.exports = function(app) {
   router.get('/user', userController.list);
   // create a user
   router.post('/user', userController.create);
+  // create user profile
+  // router.put('/user/createprofile', userController.createProfile);
   // get a specific user
   router.get('/user/editprofile', userController.editProfile);
   // update a specific user
