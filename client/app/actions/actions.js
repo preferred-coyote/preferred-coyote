@@ -8,7 +8,8 @@ var actions = Reflux.createActions([
   'logout',
   'signup',
   'updatePassword',
-  // 'createProfile',
+  'getInterests',
+  'updateInterests'
   'editProfile'
 ]);
 
@@ -70,25 +71,6 @@ actions.updatePassword.preEmit = function(formData){
   })
 };
 
-// actions.editProfile.preEmit = function(formData){
-//   return new Promise(function(resolve, reject) {
-//     request
-//     .put('/api/user/editprofile')
-//     .set('x-access-token', window.localStorage.getItem('token') || '')
-//     .set('Content-Type', 'application/json')
-//     .send({
-//       location: formData.location,
-//       gender: formData.gender,
-//       summary: formData.summary,
-//       searchable: formData.searchable
-//     })
-//     .end(function(data) {
-//       window.localStorage.setItem('user', JSON.stringify(data.body.user));
-//       resolve(data);
-//     })
-//   });
-// };
-
 actions.editProfile.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
@@ -108,6 +90,30 @@ actions.editProfile.preEmit = function(formData){
       window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
     });
+
+actions.getInterests.preEmit = function() {
+  return new Promise(function(resolve, reject) {
+    request
+      .get('/api/profile/interests')
+      .set('x-access-token', window.localStorage.getItem('token') || '')
+      .end(function(response){
+        resolve(response.body.interests);
+      })
+  })
+};
+
+actions.updateInterests.preEmit = function(interestsArray) {
+  return new Promise(function(resolve, reject) {
+    request
+      .put('/api/profile/interests')
+      .set('x-access-token', window.localStorage.getItem('token') || '')
+      .set('Content-Type', 'application/json')
+      .send({
+        interests: interestsArray
+      })
+      .end(function(response) {
+        resolve(response.body.interests);
+      })
   });
 };
 

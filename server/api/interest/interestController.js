@@ -18,14 +18,18 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.show = function(req, res, next) {
-  var id = req.params.id;
+  console.log("GETTING USER INTERESTS");
+
+  var id = req.user.id;
+  console.log("THE USER ID", id);
   Interest.find({
     where: {
       id: id
     },
     include: [DB.User]
   }).then(function(interests) {
-    res.json(interests);
+    //interests === null if interests havent been added
+    res.json({interests: interests});
   }).catch(function(err) {
     console.log(err);
     res.status(500).end();
@@ -33,8 +37,9 @@ module.exports.show = function(req, res, next) {
 };
 
 module.exports.update = function(req, res, next) {
-  var user = req.params.id; // TODO: this should be the authenticated user (req.user)
+  var user = req.user.id;
   var interests = req.body.interests;
+  //console.log("UPDATE INTERESTS", interests);
 
   /**
    * Find or create all interests and return

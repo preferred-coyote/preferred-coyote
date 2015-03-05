@@ -1,18 +1,62 @@
 /** @jsx React.DOM */
 var React = require('react');
+<<<<<<< HEAD
 var Actions = require('../../actions/actions');
+=======
+var Reflux = require('reflux');
+
+var data = {
+"id": 2,
+"username": "Ghost",
+"password": "password",
+"createdAt": "2015-02-16T22:51:16.000Z",
+"updatedAt": "2015-02-16T22:51:16.000Z",
+"avatar": "https://33.media.tumblr.com/avatar_7c7464817624_128.png",
+"Interests": [
+  {
+  "id": 5,
+  "name": "kink.com",
+  "createdAt": "2015-02-16T22:51:16.000Z",
+  "updatedAt": "2015-02-16T22:51:16.000Z",
+  "InterestsUsers": {
+    "createdAt": "2015-02-16T22:51:16.000Z",
+    "updatedAt": "2015-02-16T22:51:16.000Z",
+    "InterestId": 5,
+    "UserId": 2
+  }
+  },
+  {
+  "id": 4,
+  "name": "travel",
+  "createdAt": "2015-02-16T22:51:16.000Z",
+  "updatedAt": "2015-02-16T22:51:16.000Z",
+  "InterestsUsers": {
+    "createdAt": "2015-02-16T22:51:16.000Z",
+    "updatedAt": "2015-02-16T22:51:16.000Z",
+    "InterestId": 4,
+    "UserId": 2
+  }
+  }
+]
+};
+>>>>>>> Users can now add interests
 
 var Info = require('./info').Info;
 var Pass = require('./pass').Pass;
 
 var Authentication = require('../../utils/Authentication');
-
+var Actions = require('../../actions/actions');
+var userStore = require('../../stores/userStore');
 var Profile = React.createClass({
 
-  mixins: [Authentication],
+  mixins: [
+    Authentication,
+    Reflux.listenTo(userStore, "onInterestsUpdated")
+  ],
 
   getInitialState: function() {
     return {
+<<<<<<< HEAD
       user: JSON.parse(window.localStorage.user),
       avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
@@ -39,6 +83,38 @@ var Profile = React.createClass({
     });
   },
 
+=======
+      user: data,
+      interests: [],
+      text: '',
+    };
+  },
+
+  componentDidMount: function() {
+    Actions.getInterests();
+
+  },
+
+  onInterestsUpdated: function(newInterests) {
+    console.log("The new interests here", newInterests);
+    this.setState({interests: newInterests.map(function(interest){return interest.name})});
+  },
+
+  onInputChange: function(e) {
+    this.setState({text: e.target.value});
+    console.log('input change');
+  },
+
+  handleInterestSubmit: function(e) {
+    e.preventDefault();
+    var updatedInterests = this.state.interests.concat([this.state.text]);
+    console.log("Handling update interests submit", updatedInterests);
+    Actions.updateInterests(updatedInterests);
+    this.setState({interests: updatedInterests});
+  },
+
+
+>>>>>>> Users can now add interests
   render: function() {
     return (
       <div className="row">
@@ -62,7 +138,17 @@ var Profile = React.createClass({
             </fieldset>
             <button type="submit" className="button small">Edit Profile</button>
           </form>
+<<<<<<< HEAD
+=======
+
+          <Interests interests={this.state.interests} />
+          <form onSubmit={this.handleInterestSubmit}>
+            <input onChange={this.onInputChange} value={this.state.text} />
+          </form>
+
+>>>>>>> Users can now add interests
           <Pass />
+
         </div>
       </div>
     );
