@@ -119,7 +119,7 @@ module.exports.show = function(req, res, next) {
 };
 
 // create user info
-module.exports.createProfile = function(req, res, next) {
+module.exports.editProfile = function(req, res, next) {
   var location = req.body.location,
       gender = req.body.gender,
       summary = req.body.summary,
@@ -148,37 +148,6 @@ module.exports.createProfile = function(req, res, next) {
       res.status(300).json({message: 'There was an error in creating the profile.'});
     }
 };
-
-
-
-// edit user info
-module.exports.editProfile = function(req, res, next) {
-
-  var location = req.body.location,
-      gender = req.body.gender,
-      summary = req.body.summary,
-      searchable = req.body.searchable;
-
-  if (req.body) {
-    User.find({
-      where: {id: req.user.id}
-    }).then(function(user) {
-      user.update({
-        location: location,
-        gender: gender,
-        summary: summary,
-        searchable: searchable
-      }).success(function() {
-        res.status(200).json(user);
-      });
-      return;
-    }).catch(function(err) {
-      });
-    } else {
-      res.status(300).json({message: 'There was an error in editing the profile.'});
-    }
-};
-
 
 module.exports.updatePassword = function(req, res, next) {
   //if we have a password and it's confirmed, try to update the password field

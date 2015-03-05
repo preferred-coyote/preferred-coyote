@@ -8,7 +8,7 @@ var actions = Reflux.createActions([
   'logout',
   'signup',
   'updatePassword',
-  'createProfile',
+  // 'createProfile',
   'editProfile'
 ]);
 
@@ -70,29 +70,29 @@ actions.updatePassword.preEmit = function(formData){
   })
 };
 
+// actions.editProfile.preEmit = function(formData){
+//   return new Promise(function(resolve, reject) {
+//     request
+//     .put('/api/user/editprofile')
+//     .set('x-access-token', window.localStorage.getItem('token') || '')
+//     .set('Content-Type', 'application/json')
+//     .send({
+//       location: formData.location,
+//       gender: formData.gender,
+//       summary: formData.summary,
+//       searchable: formData.searchable
+//     })
+//     .end(function(data) {
+//       window.localStorage.setItem('user', JSON.stringify(data.body.user));
+//       resolve(data);
+//     })
+//   });
+// };
+
 actions.editProfile.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
     .put('/api/user/editprofile')
-    .set('x-access-token', window.localStorage.getItem('token') || '')
-    .set('Content-Type', 'application/json')
-    .send({
-      location: formData.location,
-      gender: formData.gender,
-      summary: formData.summary,
-      searchable: formData.searchable
-    })
-    .end(function(data) {
-      window.localStorage.setItem('user', JSON.stringify(data.body.user));
-      resolve(data);
-    })
-  });
-};
-
-actions.createProfile.preEmit = function(formData){
-  return new Promise(function(resolve, reject) {
-    request
-    .put('/api/user/createprofile')
     .set('x-access-token', window.localStorage.getItem('token') || '')
     .set('Content-Type', 'application/json')
     .send({

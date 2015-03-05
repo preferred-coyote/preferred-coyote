@@ -92,19 +92,15 @@ var userStore = Reflux.createStore({
     return window.localStorage.profileCreated;
   },
 
-  createProfile: function(user) {
-    console.log('IN CREATE PROFILE', user);
+  editProfile: function(user) {
     var self = this;
 
     user.then(function(data) {
-      console.log('what is returned in data?', data.body);
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
       self.trigger(self.user);
     }).catch(function(err) {
-      console.log('WHAT\'S THE ERROR INC REATE PROFILE?', err);
-
       self.trigger(false);
     })
   }

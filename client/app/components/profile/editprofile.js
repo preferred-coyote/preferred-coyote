@@ -6,11 +6,11 @@ var Reflux = require('reflux');
 var Actions = require('../../actions/actions');
 var userStore = require('../../stores/userStore');
 // var profileStore = require('../../stores/profileStore');
-
+var Pass = require('./pass').Pass;
 var Info = require('./info').Info;
 var Authentication = require('../../utils/Authentication');
 
-var CreateProfile = React.createClass({
+var EditProfile = React.createClass({
 
   mixins: [
     Authentication,
@@ -27,9 +27,7 @@ var CreateProfile = React.createClass({
   },
 
   onCreate: function(isCreated) {
-    console.log('ONCREATED IN CREATEPROFILE HAS BEEN CALLED! HUZZAH!', isCreated);
     if(isCreated) {
-      console.log('profile created');
       this.transitionTo('dashboard');
     } else {
       this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
@@ -45,10 +43,10 @@ var CreateProfile = React.createClass({
     }
   },
 
-  createProfile: function(e) {
+  editProfile: function(e) {
     var gender = this.whatGender();
     e.preventDefault();
-    Actions.createProfile({
+    Actions.editProfile({
       location: this.refs.location.getDOMNode().value.trim(),
       gender: gender,
       summary: this.refs.summary.getDOMNode().value.trim(),
@@ -60,10 +58,10 @@ var CreateProfile = React.createClass({
   render: function() {
     return (
       <div className="row">
-        <h1>@{this.state.user.username}: Create Profile</h1>
+        <h1>@{this.state.user.username}: Edit Profile</h1>
         <div className="medium-6 columns">
         <h2>Basic Info</h2>
-          <form className="form" onSubmit={this.createProfile} role="form" action="/api/user/editprofile" enctype="multipart/form-data" method="POST">
+          <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" enctype="multipart/form-data" method="POST">
             <fieldset>
               <Info avatarimg={this.state.avatar} />
               <label htmlFOR="location">Location</label>
@@ -72,18 +70,19 @@ var CreateProfile = React.createClass({
                 <input type="radio" ref='gender' name="gender" value="Male" id="gender"/><label for="gender">Male</label>
                 <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label for="gender">Female</label>
                 <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label for="gender">Other</label>
-              <label for="CreateProfile">Summary</label>
+              <label for="EditProfile">Summary</label>
                 <textarea name="summary" ref='summary' id="summary" placeholder= {this.state.user.summary}></textarea>
               <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
                 <label for="checkbox1">Allow Users to Find Me</label>
               </input>
             </fieldset>
-            <button type="submit" className="button small">Create Profile</button>
+            <button type="submit" className="button small">Edit Profile</button>
           </form>
+          <Pass />
         </div>
       </div>
     );
   }
 });
 
-module.exports.CreateProfile = CreateProfile;
+module.exports.EditProfile = EditProfile;

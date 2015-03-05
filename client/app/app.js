@@ -15,9 +15,8 @@ var About = require('./components/about').About;
 var Contact = require('./components/contact').Contact;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
-var Profile = require('./components/profile/profile').Profile;
 var PubNub = require('./components/voice/pubnub').PubNub;
-var CreateProfile = require('./components/profile/createprofile').CreateProfile;
+var EditProfile = require('./components/profile/editprofile').EditProfile;
 // var pubnub = require('./stores/pubnubStore');
 
 var Dashboard = require('./components/dashboard/dashboard').Dashboard;
@@ -32,10 +31,9 @@ var routes = (
     <Route name="about" path="about" handler={About} />
     <Route name="contact" path="contact" handler={Contact} />
     <Route name="signup" path="signup" handler={Signup} />
-    <Route name="profile" path="profile" handler={Profile} />
+    <Route name="editprofile" path="editprofile" handler={EditProfile} />
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
-    <Route name="createprofile" path="createprofile" handler={CreateProfile} />
 
     <Route name="dashboard" path="dashboard" handler={Dashboard}>
       <DefaultRoute name="dashboardButtons" handler={DashboardButtons} />
