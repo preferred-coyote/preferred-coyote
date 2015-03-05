@@ -231,7 +231,7 @@ var CallView = React.createClass({
           message: self.state.user + ' is now connected.'
         });
         
-        uservideo.src = phone.video.src;
+        // uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
       });
@@ -283,7 +283,7 @@ var CallView = React.createClass({
           message: self.state.user + ' is now connected.'
         });
         
-        uservideo.src = phone.video.src;
+        // uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
       });

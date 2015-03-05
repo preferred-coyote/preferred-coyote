@@ -88,6 +88,24 @@ var userStore = Reflux.createStore({
     return this.user;
   },
 
+  getInterests: function(getInterestsPromise) {
+    var self = this;
+    getInterestsPromise.then(function(interests) {
+      self.userInterests = interests;
+      console.log("THE USER INTERESTS", interests);
+      self.trigger(interests);
+    })
+  },
+
+  updateInterests: function(updateInterestsPromise) {
+    var self = this;
+    updateInterestsPromise.then(function(interests) {
+      self.userInterests = interests;
+      console.log("Updated interests store", interests);
+      self.trigger(interests);
+    })
+  },
+
   isCreated: function() {
     return window.localStorage.profileCreated;
   },
