@@ -3,15 +3,23 @@ var request = require('superagent');
 var _ = require('lodash');
 var actions = require('../actions/actions');
 
+var Router = require('react-router');
+
 var userStore = Reflux.createStore({
+
   listenables: actions,
+
+  mixins: [ Router.Navigation],
 
   init: function() {
     var self = this;
+    
     this.user = {
+      profileCreated: !!window.localStorage.getItem('profileCreated'),
       loggedIn: !!window.localStorage.getItem('token'),
       user: JSON.parse(window.localStorage.getItem('user'))
     };
+
     if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
@@ -29,6 +37,7 @@ var userStore = Reflux.createStore({
   },
 
   login: function(user) {
+    console.log("IN LOGIN", user);
     var self = this;
     user.then(function(user) {
       self.user = user;
@@ -45,14 +54,15 @@ var userStore = Reflux.createStore({
     var self = this;
     signinPromise.then(function(data){
       //set user obj and loggedIn to true if status code 201
-      if (data.status === 201){
+      console.log('signup', data.body);
+      
+      if (data.body.user){
         self.user = data.body.user;
         self.user.loggedIn = true;
         window.localStorage.setItem('token', data.body.token);
-        //writes user to local Storage on signup. this happen sin actions for login.
         window.localStorage.setItem('user', JSON.stringify(data.body.user));       
         
-      } else if (data.status === 409){
+      } else {
         //username already exists
         self.user.loggedIn = false;
 
@@ -62,7 +72,7 @@ var userStore = Reflux.createStore({
 
     })
   },
-
+  
   isLoggedIn: function() {
     return this.user && this.user.loggedIn;
   },
@@ -76,8 +86,24 @@ var userStore = Reflux.createStore({
 
   getUserData: function() {
     return this.user;
-  }
+  },
 
+  isCreated: function() {
+    return window.localStorage.profileCreated;
+  },
+
+  editProfile: function(user) {
+    var self = this;
+
+    user.then(function(data) {
+      self.user = data.body;
+      self.user.loggedIn = true;
+      self.user.profileCreated = true;
+      self.trigger(self.user);
+    }).catch(function(err) {
+      self.trigger(false);
+    })
+  }
 });
 
 module.exports = userStore;

@@ -11,7 +11,8 @@ module.exports = function(sequelize, DataTypes) {
     location: DataTypes.STRING,
     gender: DataTypes.STRING,
     summary: DataTypes.TEXT,
-    searchable: DataTypes.BOOLEAN
+    searchable: DataTypes.BOOLEAN,
+    profileCreated: DataTypes.BOOLEAN
   }, {
     instanceMethods: {
       comparePasswords: function(candidatePassword) {

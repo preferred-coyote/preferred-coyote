@@ -8,7 +8,7 @@ var actions = Reflux.createActions([
   'logout',
   'signup',
   'updatePassword',
-  // , 'createProfile',
+  // 'createProfile',
   'editProfile'
 ]);
 
@@ -19,6 +19,7 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
+        console.log('IN ACTIONS, LOGIN', data.body);
         if (data.status === 404) {
           reject('Incorrect username or password');
         }
@@ -69,6 +70,25 @@ actions.updatePassword.preEmit = function(formData){
   })
 };
 
+// actions.editProfile.preEmit = function(formData){
+//   return new Promise(function(resolve, reject) {
+//     request
+//     .put('/api/user/editprofile')
+//     .set('x-access-token', window.localStorage.getItem('token') || '')
+//     .set('Content-Type', 'application/json')
+//     .send({
+//       location: formData.location,
+//       gender: formData.gender,
+//       summary: formData.summary,
+//       searchable: formData.searchable
+//     })
+//     .end(function(data) {
+//       window.localStorage.setItem('user', JSON.stringify(data.body.user));
+//       resolve(data);
+//     })
+//   });
+// };
+
 actions.editProfile.preEmit = function(formData){
   return new Promise(function(resolve, reject) {
     request
@@ -79,14 +99,17 @@ actions.editProfile.preEmit = function(formData){
       location: formData.location,
       gender: formData.gender,
       summary: formData.summary,
-      searchable: formData.searchable
+      searchable: formData.searchable,
+      profileCreated: formData.profileCreated
     })
     .end(function(data) {
-      window.localStorage.setItem('user', data.text);
+      window.localStorage.setItem('profileCreated', true);
+      console.log('is this data.body???', data);
+      window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
-    })
-  })
-}
+    });
+  });
+};
 
 
 module.exports = actions;
