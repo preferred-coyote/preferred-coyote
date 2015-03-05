@@ -99,7 +99,7 @@ gulp.task('watch', function() {
 });
 
 // build for deploys
-gulp.task('build', ['javascript', 'scss']);
+gulp.task('build', ['image', 'javascript', 'scss']);
 
 // Default Task
 gulp.task('default', ['lint', 'test', 'javascript', 'scss', 'watch']);
