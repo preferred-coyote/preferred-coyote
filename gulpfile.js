@@ -47,6 +47,10 @@ gulp.task('javascript', function() {
   runSequence('browserify', 'uglify');
 });
 
+gulp.task('image', function() {
+  // gulp.src('')
+});
+
 gulp.task('lint', function() {});
 
 gulp.task('test', function() {});

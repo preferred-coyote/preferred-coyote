@@ -59,9 +59,8 @@ var App = React.createClass({
       ];
     } else {
       return [
-        { to: 'about', text: 'About'},
         { to: 'login', text: 'Login' },
-        { to: 'signup', text: 'Signup' },
+        { to: 'about', text: 'About'},
         { to: 'contact', text: 'Contact'}
       ];
     }
@@ -80,7 +79,6 @@ var App = React.createClass({
       <div className="wrapper">
         <Header appName="Converse.ly">
           <li className="divider"></li>
-          <li><Link to="index">Home</Link></li>
           {buttons}
           {this.state.loggedIn ? <li><a href="#" onClick={this.logout}>Logout</a></li> : ''}
         </Header>

@@ -28,6 +28,7 @@ var Signup = React.createClass({
 
   signup: function(e) {
     e.preventDefault();
+
     Actions.signup({
       username: this.refs.username.getDOMNode().value.trim(),
       password: this.refs.password.getDOMNode().value.trim()
@@ -37,15 +38,15 @@ var Signup = React.createClass({
   render: function() {
     return (
       <div className="row">
-        <div className="large-12 columns">
-          <h1>Sign Up</h1>
+        <div className="large-8 large-centered columns">
+          <h1 className="lets-talk-about text-white text-center">Sign Up</h1>
           <div>
             {this.state.signupMessage}
           </div>
         	<form className="form" onSubmit={this.signup} role="form" action="/api/auth/signup" method="POST">
-    	      <label htmlFor="username">Username</label>
+    	      <label htmlFor="username" className="text-center text-white">Username</label>
             <input type="text" id="username" name="username" ref="username" placeholder="username"/>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className="text-center text-white">Password</label>
     	      <input id="password" type="password" ref="password" name="password" />
     	      <button type="submit" className="button">Signup</button>
           </form>

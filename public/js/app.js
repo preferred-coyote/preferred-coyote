@@ -495,11 +495,7 @@ var actions = Reflux.createActions([
   'logout',
   'signup',
   'updatePassword',
-<<<<<<< HEAD
   // , 'createProfile',
-=======
-  // 'createProfile',
->>>>>>> Can edit and create profile
   'editProfile'
 ]);
 
@@ -510,7 +506,6 @@ actions.login.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
-        console.log('IN ACTIONS, LOGIN', data.body);
         if (data.status === 404) {
           reject('Incorrect username or password');
         }
@@ -561,28 +556,7 @@ actions.updatePassword.preEmit = function(formData){
   })
 };
 
-// actions.editProfile.preEmit = function(formData){
-//   return new Promise(function(resolve, reject) {
-//     request
-//     .put('/api/user/editprofile')
-//     .set('x-access-token', window.localStorage.getItem('token') || '')
-//     .set('Content-Type', 'application/json')
-//     .send({
-//       location: formData.location,
-//       gender: formData.gender,
-//       summary: formData.summary,
-//       searchable: formData.searchable
-//     })
-//     .end(function(data) {
-//       window.localStorage.setItem('user', JSON.stringify(data.body.user));
-//       resolve(data);
-//     })
-//   });
-// };
-
 actions.editProfile.preEmit = function(formData){
-<<<<<<< HEAD
-=======
   return new Promise(function(resolve, reject) {
     request
     .put('/api/user/editprofile')
@@ -592,60 +566,20 @@ actions.editProfile.preEmit = function(formData){
       location: formData.location,
       gender: formData.gender,
       summary: formData.summary,
-<<<<<<< HEAD
       searchable: formData.searchable
     })
     .end(function(data) {
-      window.localStorage.setItem('user', JSON.stringify(data.body.user));
+      window.localStorage.setItem('user', data.text);
       resolve(data);
-    })
-  });
-};
-
-actions.createProfile.preEmit = function(formData){
->>>>>>> WIP transitions
-  return new Promise(function(resolve, reject) {
-    request
-    .put('/api/user/createprofile')
-    .set('x-access-token', window.localStorage.getItem('token') || '')
-    .set('Content-Type', 'application/json')
-    .send({
-      location: formData.location,
-      gender: formData.gender,
-      summary: formData.summary,
-=======
->>>>>>> Can edit and create profile
-      searchable: formData.searchable,
-      profileCreated: formData.profileCreated
-    })
-    .end(function(data) {
-      window.localStorage.setItem('profileCreated', true);
-      console.log('is this data.body???', data);
-      window.localStorage.setItem('user', JSON.stringify(data.body));
-      resolve(data);
-<<<<<<< HEAD
     })
   })
 }
-=======
-    });
-  });
-};
->>>>>>> WIP transitions
 
 
 module.exports = actions;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"bluebird":29,"reflux":231,"superagent":251}],2:[function(require,module,exports){
-=======
-},{"bluebird":30,"reflux":232,"superagent":252}],2:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"bluebird":29,"reflux":231,"superagent":251}],2:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 
 var About = React.createClass({displayName: "About",
@@ -698,15 +632,7 @@ var About = React.createClass({displayName: "About",
 module.exports.About = About;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230}],3:[function(require,module,exports){
-=======
-},{"react":231}],3:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react":230}],3:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 var React = require('react');
 var Reflux = require('reflux');
@@ -764,13 +690,12 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: 'editprofile', text: 'Edit Profile' },
+        { to: 'profile', text: 'Edit Profile' },
       ];
     } else {
       return [
-        { to: 'about', text: 'About'},
         { to: 'login', text: 'Login' },
-        { to: 'signup', text: 'Signup' },
+        { to: 'about', text: 'About'},
         { to: 'contact', text: 'Contact'}
       ];
     }
@@ -789,7 +714,6 @@ var App = React.createClass({displayName: "App",
       React.createElement("div", {className: "wrapper"}, 
         React.createElement(Header, {appName: "Converse.ly"}, 
           React.createElement("li", {className: "divider"}), 
-          React.createElement("li", null, React.createElement(Link, {to: "index"}, "Home")), 
           buttons, 
           this.state.loggedIn ? React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.logout}, "Logout")) : ''
         ), 
@@ -804,15 +728,7 @@ var App = React.createClass({displayName: "App",
 module.exports.App = App;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"../stores/userStore":27,"./header":12,"./user":20,"react":230,"react-router":55,"reflux":231}],4:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"../stores/userStore":28,"./header":12,"./user":21,"react":231,"react-router":56,"reflux":232}],4:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"../stores/userStore":27,"./header":12,"./user":20,"react":230,"react-router":55,"reflux":231}],4:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 var React = require('react');
 var Router = require('react-router');
@@ -833,6 +749,7 @@ var Login = React.createClass({displayName: "Login",
 
   statics: {
     willTransitionTo: function(transition) {
+
       if (userStore.isLoggedIn()) {
         transition.redirect('dashboard');
       }
@@ -849,7 +766,8 @@ var Login = React.createClass({displayName: "Login",
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
       this.transitionTo('dashboard');
-    } else {      //update UI, username or password wrong
+    } else {
+      //update UI, username or password wrong
       this.setState({
         error: 'Incorrect username or password'
       });
@@ -871,14 +789,14 @@ var Login = React.createClass({displayName: "Login",
 
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement("h2", null, "Login"), 
+        React.createElement("div", {className: "large-8 large-centered columns"}, 
+          React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Login"), 
           error, 
           React.createElement("form", {className: "form", onSubmit: this.login, role: "form", action: "/api/auth/login", method: "POST"}, 
-            React.createElement("label", {htmlFor: "username"}, "Username"), 
-    	      React.createElement("input", {type: "text", name: "username", ref: "username", id: "username", placeholder: "username"}), 
-            React.createElement("label", {htmlFor: "password"}, "Password"), 
-    	      React.createElement("input", {type: "password", name: "password", ref: "password", id: "password"}), 
+            React.createElement("label", {htmlFor: "username", className: "text-white text-center"}, "Username"), 
+    	      React.createElement("input", {type: "text", name: "username", className: "round", ref: "username", id: "username", placeholder: "username"}), 
+            React.createElement("label", {htmlFor: "password", className: "text-center text-white"}, "Password"), 
+    	      React.createElement("input", {type: "password", className: "round", name: "password", ref: "password", id: "password"}), 
     	      React.createElement("button", {type: "submit", className: "button button-primary"}, 
               "Login"
             )
@@ -892,15 +810,7 @@ var Login = React.createClass({displayName: "Login",
 module.exports.Login = Login;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../actions/actions":1,"../../stores/loginStore":24,"../../stores/userStore":27,"../ui/button":19,"react":230,"react-router":55,"reflux":231}],5:[function(require,module,exports){
-=======
-},{"../../actions/actions":1,"../../stores/loginStore":25,"../../stores/userStore":28,"../ui/button":20,"react":231,"react-router":56,"reflux":232}],5:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../actions/actions":1,"../../stores/loginStore":24,"../../stores/userStore":27,"../ui/button":19,"react":230,"react-router":55,"reflux":231}],5:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 var React = require('react');
 var Router = require('react-router');
@@ -923,11 +833,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-<<<<<<< HEAD
       this.transitionTo('profile');
-=======
-      this.transitionTo('editprofile');
->>>>>>> Can edit and create profile
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }
@@ -935,6 +841,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   signup: function(e) {
     e.preventDefault();
+
     Actions.signup({
       username: this.refs.username.getDOMNode().value.trim(),
       password: this.refs.password.getDOMNode().value.trim()
@@ -944,15 +851,15 @@ var Signup = React.createClass({displayName: "Signup",
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement("h1", null, "Sign Up"), 
+        React.createElement("div", {className: "large-8 large-centered columns"}, 
+          React.createElement("h1", {className: "lets-talk-about text-white text-center"}, "Sign Up"), 
           React.createElement("div", null, 
             this.state.signupMessage
           ), 
         	React.createElement("form", {className: "form", onSubmit: this.signup, role: "form", action: "/api/auth/signup", method: "POST"}, 
-    	      React.createElement("label", {htmlFor: "username"}, "Username"), 
+    	      React.createElement("label", {htmlFor: "username", className: "text-center text-white"}, "Username"), 
             React.createElement("input", {type: "text", id: "username", name: "username", ref: "username", placeholder: "username"}), 
-            React.createElement("label", {htmlFor: "password"}, "Password"), 
+            React.createElement("label", {htmlFor: "password", className: "text-center text-white"}, "Password"), 
     	      React.createElement("input", {id: "password", type: "password", ref: "password", name: "password"}), 
     	      React.createElement("button", {type: "submit", className: "button"}, "Signup")
           )
@@ -965,15 +872,7 @@ var Signup = React.createClass({displayName: "Signup",
 module.exports.Signup = Signup;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../actions/actions":1,"../../stores/signupStore":26,"../../stores/userStore":27,"react":230,"react-router":55,"reflux":231}],6:[function(require,module,exports){
-=======
-},{"../../actions/actions":1,"../../stores/signupStore":27,"../../stores/userStore":28,"react":231,"react-router":56,"reflux":232}],6:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../actions/actions":1,"../../stores/signupStore":26,"../../stores/userStore":27,"react":230,"react-router":55,"reflux":231}],6:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 
 var Contact = React.createClass({displayName: "Contact",
@@ -1039,15 +938,7 @@ var Contact = React.createClass({displayName: "Contact",
 module.exports.Contact = Contact;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230}],7:[function(require,module,exports){
-=======
-},{"react":231}],7:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react":230}],7:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Authentication = require('../../utils/Authentication');
@@ -1069,15 +960,7 @@ var CallView = React.createClass({displayName: "CallView",
 
 module.exports.CallView = CallView;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../utils/Authentication":28,"react/addons":69}],8:[function(require,module,exports){
-=======
-},{"../../utils/Authentication":29,"react/addons":70}],8:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../utils/Authentication":28,"react/addons":69}],8:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1117,15 +1000,7 @@ var ChannelList = React.createClass({displayName: "ChannelList",
 module.exports.ChannelList = ChannelList;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../utils/Authentication":28,"react":230,"react-router":55}],9:[function(require,module,exports){
-=======
-},{"../../utils/Authentication":29,"react":231,"react-router":56}],9:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../utils/Authentication":28,"react":230,"react-router":55}],9:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1229,15 +1104,7 @@ var ChannelView = React.createClass({displayName: "ChannelView",
 module.exports.ChannelView = ChannelView;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../stores/channelStore":23,"../../utils/Authentication":28,"react":230,"react-router":55,"reflux":231}],10:[function(require,module,exports){
-=======
-},{"../../stores/channelStore":24,"../../utils/Authentication":29,"react":231,"react-router":56,"reflux":232}],10:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../stores/channelStore":23,"../../utils/Authentication":28,"react":230,"react-router":55,"reflux":231}],10:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1245,7 +1112,7 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Authentication = require('../../utils/Authentication');
 var Link = require('react-router').Link;
-var userStore = require('../../stores/userStore');
+
 var Interests = require('../profile/interests').Interests;
 
 var Dashboard = React.createClass({displayName: "Dashboard",
@@ -1255,7 +1122,6 @@ var Dashboard = React.createClass({displayName: "Dashboard",
   getInitialState: function() {
     return {
       user: JSON.parse(window.localStorage.user),
-      // user: userStore.getUserData(),
       avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
     };
   },
@@ -1284,15 +1150,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 module.exports.Dashboard = Dashboard;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../utils/Authentication":28,"../profile/interests":16,"react":230,"react-router":55}],11:[function(require,module,exports){
-=======
-},{"../../stores/userStore":28,"../../utils/Authentication":29,"../profile/interests":17,"react":231,"react-router":56}],11:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../stores/userStore":27,"../../utils/Authentication":28,"../profile/interests":17,"react":230,"react-router":55}],11:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Authentication = require('../../utils/Authentication');
@@ -1314,15 +1172,7 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
 
 module.exports.DashboardButtons = DashboardButtons;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../utils/Authentication":28,"react-router":55,"react/addons":69}],12:[function(require,module,exports){
-=======
-},{"../../utils/Authentication":29,"react-router":56,"react/addons":70}],12:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../utils/Authentication":28,"react-router":55,"react/addons":69}],12:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -1343,7 +1193,7 @@ var Header = React.createClass({displayName: "Header",
   },
 
   onLoggedIn: function(user) {
-    var user = user || userStore.getUserData();
+    var user = userStore.getUserData();
 
     this.setState({
       loggedIn: user.loggedIn
@@ -1371,65 +1221,30 @@ var Header = React.createClass({displayName: "Header",
 module.exports.Header = Header;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../stores/userStore":27,"react-router":55,"react/addons":69,"reflux":231}],13:[function(require,module,exports){
-=======
-},{"../stores/userStore":28,"react-router":56,"react/addons":70,"reflux":232}],13:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../stores/userStore":27,"react-router":55,"react/addons":69,"reflux":231}],13:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react/addons');
 var Link = require('react-router').Link;
-
 var About = require('./about').About;
 
 
 var Home = React.createClass({displayName: "Home",
 
-  componentDidMount: function() {
-    $(document).foundation();
-  },
-
   render: function() {
     return (
-      React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "medium-4 columns"}, 
-          React.createElement("h1", null, "Conversely"), 
-          React.createElement("h2", null, "Lets talk about")
-        ), 
-        React.createElement("ul", {"data-orbit": true, "data-options": "-webkit-transition: all 2s ease-in-out;-moz-transition: all 2s ease-in-out;-ms-transition: all 2s ease-in-out;-o-transition: all 2s ease-in-out;transition: all 2s ease-in-out;easing:linear;animation:slide;pause_on_hover:false;animation_speed:1000;slide_number:false;navigation_arrows:false;bullets:false;timer_speed: 1000;"}, 
-          React.createElement("li", {"data-orbit-slide": "headline-1"}, 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "orbitText"}, "BASKETBALL")
-            )
-          ), 
-          React.createElement("li", {"data-orbit-slide": "headline-2"}, 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "orbitText"}, "LITERATURE")
-            )
-          ), 
-          React.createElement("li", {"data-orbit-slide": "headline-3"}, 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "orbitText"}, "KINK.COM")
-            )
-          ), 
-          React.createElement("li", {"data-orbit-slide": "headline-2"}, 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "orbitText"}, "STRING THEORY")
-            )
-          ), 
-          React.createElement("li", {"data-orbit-slide": "headline-2"}, 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "orbitText"}, "PALEO DIETS")
-            )
+      React.createElement("div", null, 
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "medium-12 columns"}, 
+            React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Lets talk about"), 
+            React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
           )
         ), 
-        React.createElement(Link, {to: "/about", className: "button info expand"}, "About"), 
-        React.createElement(Link, {to: "/contact", className: "button info expand"}, "Contact")
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-6 small-centered columns"}, 
+            React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
+          )
+        )
       )
     );
   }
@@ -1438,15 +1253,7 @@ var Home = React.createClass({displayName: "Home",
 module.exports.Home = Home;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./about":2,"react-router":55,"react/addons":69}],14:[function(require,module,exports){
-=======
-},{"./about":2,"react-router":56,"react/addons":70}],14:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./about":2,"react-router":55,"react/addons":69}],14:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 
 var NotFound = React.createClass({displayName: "NotFound",
@@ -1464,8 +1271,6 @@ var NotFound = React.createClass({displayName: "NotFound",
 module.exports.NotFound = NotFound;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230}],15:[function(require,module,exports){
 var React = require('react');
 
@@ -1511,58 +1316,7 @@ var Interests = React.createClass({displayName: "Interests",
     );
   }
 });
-=======
-},{"react":231}],15:[function(require,module,exports){
-=======
-},{"react":230}],15:[function(require,module,exports){
->>>>>>> Can edit and create profile
-/** @jsx React.DOM */
-var React = require('react');
-var Router = require('react-router');
-var Reflux = require('reflux');
 
-var Actions = require('../../actions/actions');
-var userStore = require('../../stores/userStore');
-// var profileStore = require('../../stores/profileStore');
-var Pass = require('./pass').Pass;
-var Info = require('./info').Info;
-var Authentication = require('../../utils/Authentication');
-
-var EditProfile = React.createClass({displayName: "EditProfile",
-
-  mixins: [
-    Authentication,
-    Reflux.listenTo(userStore, 'onCreate'),
-    Router.Navigation
-  ],
-
-  getInitialState: function() {
-    return {
-      createProfileMessage: '',
-      user: JSON.parse(window.localStorage.user),
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
-    }
-  },
-
-  onCreate: function(isCreated) {
-    if(isCreated) {
-      this.transitionTo('dashboard');
-    } else {
-      this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
-    }
-  },
-
-  whatGender: function() {
-    var element = document.getElementsByName('gender');
-    for (var i = 0; i < element.length; i++) {
-      if (element[i].checked) {
-        return element[i].value;
-      }
-    }
-  },
->>>>>>> WIP transitions
-
-<<<<<<< HEAD
 module.exports.Interests = Interests;
 
 
@@ -1574,32 +1328,16 @@ var Pass = React.createClass({displayName: "Pass",
 
   updatePassword: function(e){
     e.preventDefault();
-<<<<<<< HEAD
     Actions.updatePassword({
       oldPassword: this.refs.oldPassword.getDOMNode().value.trim(),
       newPassword: this.refs.newPassword.getDOMNode().value.trim(),
       newPasswordConfirmation: this.refs.newPasswordConfirmation.getDOMNode().value.trim()
-=======
-    Actions.createProfile({
-=======
-  editProfile: function(e) {
-    var gender = this.whatGender();
-    e.preventDefault();
-    Actions.editProfile({
->>>>>>> Can edit and create profile
-      location: this.refs.location.getDOMNode().value.trim(),
-      gender: gender,
-      summary: this.refs.summary.getDOMNode().value.trim(),
-      searchable: document.getElementById('searchable').checked,
-      profileCreated: true
->>>>>>> WIP transitions
     });
 
   },
 
   render: function() {
     return (
-<<<<<<< HEAD
       React.createElement("div", null, 
         React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
@@ -1609,142 +1347,16 @@ var Pass = React.createClass({displayName: "Pass",
               React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
           ), 
           React.createElement("button", {type: "submit", className: "button small"}, "Update")
-=======
-      React.createElement("div", {className: "row"}, 
-        React.createElement("h1", null, "@", this.state.user.username, ": Edit Profile"), 
-        React.createElement("div", {className: "medium-6 columns"}, 
-        React.createElement("h2", null, "Basic Info"), 
-          React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
-            React.createElement("fieldset", null, 
-              React.createElement(Info, {avatarimg: this.state.avatar}), 
-              React.createElement("label", {htmlFOR: "location"}, "Location"), 
-                React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: this.state.user.location}), 
-              React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
-              React.createElement("label", {for: "EditProfile"}, "Summary"), 
-                React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: this.state.user.summary}), 
-              React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
-                React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
-              )
-            ), 
-<<<<<<< HEAD
-            React.createElement("button", {type: "submit", className: "button small"}, "Create Profile")
-          )
->>>>>>> WIP transitions
-=======
-            React.createElement("button", {type: "submit", className: "button small"}, "Edit Profile")
-          ), 
-          React.createElement(Pass, null)
->>>>>>> Can edit and create profile
         )
       )
     );
   }
 });
 
-<<<<<<< HEAD
 module.exports.Pass = Pass;
 
 
-<<<<<<< HEAD
 },{"../../actions/actions":1,"react":230}],18:[function(require,module,exports){
-=======
-},{"../../actions/actions":1,"../../stores/userStore":28,"../../utils/Authentication":29,"./info":16,"react":231,"react-router":56,"reflux":232}],16:[function(require,module,exports){
-=======
-module.exports.EditProfile = EditProfile;
-
-
-},{"../../actions/actions":1,"../../stores/userStore":27,"../../utils/Authentication":28,"./info":16,"./pass":18,"react":230,"react-router":55,"reflux":231}],16:[function(require,module,exports){
->>>>>>> Can edit and create profile
-var React = require('react');
-
-var Info = React.createClass({displayName: "Info",
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        React.createElement("div", {className: "row"}, 
-          React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"})
-        ), 
-        React.createElement("div", {className: "row"}, 
-          React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
-          React.createElement("input", {type: "file", name: "avatar", id: "avatar"})
-        )
-      )
-    );
-  }
-});
-
-module.exports.Info = Info;
-
-
-},{"react":230}],17:[function(require,module,exports){
-var React = require('react');
-
-var Interests = React.createClass({displayName: "Interests",
-  getInitialState: function() {
-    return {
-      data: this.props.interests.map(function(element) {
-        return React.createElement("li", null, element.name);
-      })
-    };
-  },
-
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        React.createElement("h3", null, "Interests"), 
-        React.createElement("ul", {className: "inline-list"}, 
-          this.state.data
-        )
-      )
-    );
-  }
-});
-
-module.exports.Interests = Interests;
-
-
-},{"react":230}],18:[function(require,module,exports){
-var React = require('react');
-var Actions = require('../../actions/actions');
-
-var Pass = React.createClass({displayName: "Pass",
-
-  updatePassword: function(e){
-    e.preventDefault();
-    Actions.updatePassword({
-      oldPassword: this.refs.oldPassword.getDOMNode().value.trim(),
-      newPassword: this.refs.newPassword.getDOMNode().value.trim(),
-      newPasswordConfirmation: this.refs.newPasswordConfirmation.getDOMNode().value.trim()
-    });
-
-  },
-
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        React.createElement("h2", null, "Change Password"), 
-        React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
-          React.createElement("fieldset", null, 
-              React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
-              React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
-              React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
-          ), 
-          React.createElement("button", {type: "submit", className: "button small"}, "Update")
-        )
-      )
-    );
-  }
-});
-
-module.exports.Pass = Pass;
-
-
-<<<<<<< HEAD
-},{"../../actions/actions":1,"react":231}],19:[function(require,module,exports){
->>>>>>> WIP transitions
 /** @jsx React.DOM */
 var React = require('react');
 var Actions = require('../../actions/actions');
@@ -1819,14 +1431,7 @@ var Profile = React.createClass({displayName: "Profile",
 module.exports.Profile = Profile;
 
 
-<<<<<<< HEAD
 },{"../../actions/actions":1,"../../utils/Authentication":28,"./info":15,"./pass":17,"react":230}],19:[function(require,module,exports){
-=======
-},{"../../actions/actions":1,"../../utils/Authentication":29,"./info":16,"./pass":18,"react":231}],20:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../actions/actions":1,"react":230}],19:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1844,15 +1449,7 @@ var Button = React.createClass({displayName: "Button",
 module.exports.Button = Button;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230}],20:[function(require,module,exports){
-=======
-},{"react":231}],21:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react":230}],20:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react/addons');
 var User = React.createClass({displayName: "User",
   render: function() {
@@ -1868,15 +1465,7 @@ var User = React.createClass({displayName: "User",
 module.exports.User = User;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react/addons":69}],21:[function(require,module,exports){
-=======
-},{"react/addons":70}],22:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react/addons":69}],21:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -2133,15 +1722,7 @@ var PubNub = React.createClass({displayName: "PubNub",
 
 module.exports.PubNub = PubNub;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../../stores/pubnubStore":25,"../../stores/userStore":27,"react-router":55,"react/addons":69,"reflux":231}],22:[function(require,module,exports){
-=======
-},{"../../stores/pubnubStore":26,"../../stores/userStore":28,"react-router":56,"react/addons":70,"reflux":232}],23:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../../stores/pubnubStore":25,"../../stores/userStore":27,"react-router":55,"react/addons":69,"reflux":231}],22:[function(require,module,exports){
->>>>>>> Can edit and create profile
 'use strict';
 
 var React = require('react');
@@ -2159,11 +1740,8 @@ var About = require('./components/about').About;
 var Contact = require('./components/contact').Contact;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
+var Profile = require('./components/profile/profile').Profile;
 var PubNub = require('./components/voice/pubnub').PubNub;
-<<<<<<< HEAD
-=======
-var EditProfile = require('./components/profile/editprofile').EditProfile;
->>>>>>> Can edit and create profile
 // var pubnub = require('./stores/pubnubStore');
 
 var Dashboard = require('./components/dashboard/dashboard').Dashboard;
@@ -2178,16 +1756,9 @@ var routes = (
     React.createElement(Route, {name: "about", path: "about", handler: About}), 
     React.createElement(Route, {name: "contact", path: "contact", handler: Contact}), 
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
-    React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
+    React.createElement(Route, {name: "profile", path: "profile", handler: Profile}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
     React.createElement(Route, {name: "logout", path: "logout", handler: Login}), 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    React.createElement(Route, {name: "createprofile", path: "createprofile", handler: CreateProfile}), 
->>>>>>> WIP transitions
-=======
->>>>>>> Can edit and create profile
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
       React.createElement(DefaultRoute, {name: "dashboardButtons", handler: DashboardButtons}), 
@@ -2209,15 +1780,7 @@ Router.run(routes, Router.HistoryLocation, function(Handler, state) {
 module.exports = routes;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./components/about":2,"./components/app":3,"./components/auth/login":4,"./components/auth/signup":5,"./components/contact":6,"./components/dashboard/callView":7,"./components/dashboard/channelList":8,"./components/dashboard/channelView":9,"./components/dashboard/dashboard":10,"./components/dashboard/dashboardButtons":11,"./components/home":13,"./components/notFound":14,"./components/profile/profile":18,"./components/voice/pubnub":21,"react":230,"react-router":55}],23:[function(require,module,exports){
-=======
-},{"./components/about":2,"./components/app":3,"./components/auth/login":4,"./components/auth/signup":5,"./components/contact":6,"./components/dashboard/callView":7,"./components/dashboard/channelList":8,"./components/dashboard/channelView":9,"./components/dashboard/dashboard":10,"./components/dashboard/dashboardButtons":11,"./components/home":13,"./components/notFound":14,"./components/profile/createprofile":15,"./components/profile/profile":19,"./components/voice/pubnub":22,"react":231,"react-router":56}],24:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./components/about":2,"./components/app":3,"./components/auth/login":4,"./components/auth/signup":5,"./components/contact":6,"./components/dashboard/callView":7,"./components/dashboard/channelList":8,"./components/dashboard/channelView":9,"./components/dashboard/dashboard":10,"./components/dashboard/dashboardButtons":11,"./components/home":13,"./components/notFound":14,"./components/profile/editprofile":15,"./components/voice/pubnub":21,"react":230,"react-router":55}],23:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('reflux');
 var actions = require('../actions/actions');
 var userStore = require('./userStore');
@@ -2295,15 +1858,7 @@ var channelStore = Reflux.createStore({
 module.exports = channelStore;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"./userStore":27,"reflux":231}],24:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"./userStore":28,"reflux":232}],25:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"./userStore":27,"reflux":231}],24:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('reflux');
 var actions = require('../actions/actions');
 
@@ -2340,15 +1895,7 @@ var loginStore = Reflux.createStore({
 module.exports = loginStore;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"reflux":231}],25:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"reflux":232}],26:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"reflux":231}],25:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('reflux');
 var actions = require('../actions/actions');
 var userStore = require('./userStore');
@@ -2429,15 +1976,7 @@ var pubnubStore = Reflux.createStore({
 module.exports = pubnubStore;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"./userStore":27,"reflux":231}],26:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"./userStore":28,"reflux":232}],27:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"./userStore":27,"reflux":231}],26:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('reflux');
 var actions = require('../actions/actions');
 
@@ -2474,37 +2013,21 @@ var signupStore = Reflux.createStore({
 module.exports = signupStore;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"reflux":231}],27:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"reflux":232}],28:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"reflux":231}],27:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('reflux');
 var request = require('superagent');
 var _ = require('lodash');
 var actions = require('../actions/actions');
 
-var Router = require('react-router');
-
 var userStore = Reflux.createStore({
-
   listenables: actions,
-
-  mixins: [ Router.Navigation],
 
   init: function() {
     var self = this;
-    
     this.user = {
-      profileCreated: !!window.localStorage.getItem('profileCreated'),
       loggedIn: !!window.localStorage.getItem('token'),
       user: JSON.parse(window.localStorage.getItem('user'))
     };
-
     if (this.user.loggedIn && !this.user.user.username) {
       request
         .post('/api/auth/check')
@@ -2522,7 +2045,6 @@ var userStore = Reflux.createStore({
   },
 
   login: function(user) {
-    console.log("IN LOGIN", user);
     var self = this;
     user.then(function(user) {
       self.user = user;
@@ -2539,15 +2061,14 @@ var userStore = Reflux.createStore({
     var self = this;
     signinPromise.then(function(data){
       //set user obj and loggedIn to true if status code 201
-      console.log('signup', data.body);
-      
-      if (data.body.user){
+      if (data.status === 201){
         self.user = data.body.user;
         self.user.loggedIn = true;
         window.localStorage.setItem('token', data.body.token);
+        //writes user to local Storage on signup. this happen sin actions for login.
         window.localStorage.setItem('user', JSON.stringify(data.body.user));       
         
-      } else {
+      } else if (data.status === 409){
         //username already exists
         self.user.loggedIn = false;
 
@@ -2557,7 +2078,7 @@ var userStore = Reflux.createStore({
 
     })
   },
-  
+
   isLoggedIn: function() {
     return this.user && this.user.loggedIn;
   },
@@ -2571,38 +2092,14 @@ var userStore = Reflux.createStore({
 
   getUserData: function() {
     return this.user;
-  },
-
-  isCreated: function() {
-    return window.localStorage.profileCreated;
-  },
-
-  editProfile: function(user) {
-    var self = this;
-
-    user.then(function(data) {
-      self.user = data.body;
-      self.user.loggedIn = true;
-      self.user.profileCreated = true;
-      self.trigger(self.user);
-    }).catch(function(err) {
-      self.trigger(false);
-    })
   }
+
 });
 
 module.exports = userStore;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/actions":1,"lodash":31,"reflux":231,"superagent":251}],28:[function(require,module,exports){
-=======
-},{"../actions/actions":1,"lodash":32,"react-router":56,"reflux":232,"superagent":252}],29:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/actions":1,"lodash":31,"react-router":55,"reflux":231,"superagent":251}],28:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var userStore = require('../stores/userStore');
 
 module.exports = {
@@ -2616,15 +2113,7 @@ module.exports = {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../stores/userStore":27}],29:[function(require,module,exports){
-=======
-},{"../stores/userStore":28}],30:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../stores/userStore":27}],29:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process,global){
 /* @preserve
  * The MIT License (MIT)
@@ -7320,15 +6809,7 @@ module.exports = ret;
 },{"./es5.js":14}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
 }).call(this,require("oMfpAn"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"oMfpAn":30}],30:[function(require,module,exports){
-=======
-},{"oMfpAn":31}],31:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"oMfpAn":30}],30:[function(require,module,exports){
->>>>>>> Can edit and create profile
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -7393,19 +6874,11 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],31:[function(require,module,exports){
-=======
-},{}],32:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],31:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (global){
 /**
  * @license
- * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern -d -o ./index.js`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
@@ -7418,7 +6891,7 @@ process.chdir = function (dir) {
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '3.2.0';
+  var VERSION = '3.1.0';
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -8133,6 +7606,7 @@ process.chdir = function (dir) {
         setTimeout = context.setTimeout,
         splice = arrayProto.splice,
         Uint8Array = isNative(Uint8Array = context.Uint8Array) && Uint8Array,
+        unshift = arrayProto.unshift,
         WeakMap = isNative(WeakMap = context.WeakMap) && WeakMap;
 
     /** Used to clone array buffers. */
@@ -8184,7 +7658,7 @@ process.chdir = function (dir) {
     /*------------------------------------------------------------------------*/
 
     /**
-     * Creates a `lodash` object which wraps `value` to enable implicit chaining.
+     * Creates a `lodash` object which wraps `value` to enable intuitive chaining.
      * Methods that operate on and return arrays, collections, and functions can
      * be chained together. Methods that return a boolean or single value will
      * automatically end the chain returning the unwrapped value. Explicit chaining
@@ -8203,31 +7677,29 @@ process.chdir = function (dir) {
      * `concat`, `join`, `pop`, `push`, `reverse`, `shift`, `slice`, `sort`, `splice`,
      * and `unshift`
      *
-     * The wrapper methods that support shortcut fusion are:
-     * `compact`, `drop`, `dropRight`, `dropRightWhile`, `dropWhile`, `filter`,
-     * `first`, `initial`, `last`, `map`, `pluck`, `reject`, `rest`, `reverse`,
-     * `slice`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `toArray`,
-     * and `where`
+     * The wrapper functions that support shortcut fusion are:
+     * `drop`, `dropRight`, `dropRightWhile`, `dropWhile`, `filter`, `first`,
+     * `initial`, `last`, `map`, `pluck`, `reject`, `rest`, `reverse`, `slice`,
+     * `take`, `takeRight`, `takeRightWhile`, `takeWhile`, and `where`
      *
-     * The chainable wrapper methods are:
+     * The chainable wrapper functions are:
      * `after`, `ary`, `assign`, `at`, `before`, `bind`, `bindAll`, `bindKey`,
-     * `callback`, `chain`, `chunk`, `commit`, `compact`, `concat`, `constant`,
-     * `countBy`, `create`, `curry`, `debounce`, `defaults`, `defer`, `delay`,
-     * `difference`, `drop`, `dropRight`, `dropRightWhile`, `dropWhile`, `fill`,
-     * `filter`, `flatten`, `flattenDeep`, `flow`, `flowRight`, `forEach`,
-     * `forEachRight`, `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `functions`,
-     * `groupBy`, `indexBy`, `initial`, `intersection`, `invert`, `invoke`, `keys`,
-     * `keysIn`, `map`, `mapValues`, `matches`, `memoize`, `merge`, `mixin`,
-     * `negate`, `noop`, `omit`, `once`, `pairs`, `partial`, `partialRight`,
-     * `partition`, `pick`, `plant`, `pluck`, `property`, `propertyOf`, `pull`,
-     * `pullAt`, `push`, `range`, `rearg`, `reject`, `remove`, `rest`, `reverse`,
-     * `shuffle`, `slice`, `sort`, `sortBy`, `sortByAll`, `splice`, `spread`,
-     * `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`, `throttle`,
-     * `thru`, `times`, `toArray`, `toPlainObject`, `transform`, `union`, `uniq`,
-     * `unshift`, `unzip`, `values`, `valuesIn`, `where`, `without`, `wrap`, `xor`,
-     * `zip`, and `zipObject`
+     * `callback`, `chain`, `chunk`, `compact`, `concat`, `constant`, `countBy`,
+     * `create`, `curry`, `debounce`, `defaults`, `defer`, `delay`, `difference`,
+     * `drop`, `dropRight`, `dropRightWhile`, `dropWhile`, `filter`, `flatten`,
+     * `flattenDeep`, `flow`, `flowRight`, `forEach`, `forEachRight`, `forIn`,
+     * `forInRight`, `forOwn`, `forOwnRight`, `functions`, `groupBy`, `indexBy`,
+     * `initial`, `intersection`, `invert`, `invoke`, `keys`, `keysIn`, `map`,
+     * `mapValues`, `matches`, `memoize`, `merge`, `mixin`, `negate`, `noop`,
+     * `omit`, `once`, `pairs`, `partial`, `partialRight`, `partition`, `pick`,
+     * `pluck`, `property`, `propertyOf`, `pull`, `pullAt`, `push`, `range`,
+     * `rearg`, `reject`, `remove`, `rest`, `reverse`, `shuffle`, `slice`, `sort`,
+     * `sortBy`, `sortByAll`, `splice`, `take`, `takeRight`, `takeRightWhile`,
+     * `takeWhile`, `tap`, `throttle`, `thru`, `times`, `toArray`, `toPlainObject`,
+     * `transform`, `union`, `uniq`, `unshift`, `unzip`, `values`, `valuesIn`,
+     * `where`, `without`, `wrap`, `xor`, `zip`, and `zipObject`
      *
-     * The wrapper methods that are **not** chainable by default are:
+     * The wrapper functions that are **not** chainable by default are:
      * `attempt`, `camelCase`, `capitalize`, `clone`, `cloneDeep`, `deburr`,
      * `endsWith`, `escape`, `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`,
      * `findLast`, `findLastIndex`, `findLastKey`, `findWhere`, `first`, `has`,
@@ -8242,14 +7714,14 @@ process.chdir = function (dir) {
      * `startCase`, `startsWith`, `template`, `trim`, `trimLeft`, `trimRight`,
      * `trunc`, `unescape`, `uniqueId`, `value`, and `words`
      *
-     * The wrapper method `sample` will return a wrapped value when `n` is provided,
+     * The wrapper function `sample` will return a wrapped value when `n` is provided,
      * otherwise an unwrapped value is returned.
      *
      * @name _
      * @constructor
      * @category Chain
      * @param {*} value The value to wrap in a `lodash` instance.
-     * @returns {Object} Returns the new `lodash` wrapper instance.
+     * @returns {Object} Returns a `lodash` instance.
      * @example
      *
      * var wrapped = _([1, 2, 3]);
@@ -8268,12 +7740,12 @@ process.chdir = function (dir) {
      * // => true
      */
     function lodash(value) {
-      if (isObjectLike(value) && !isArray(value) && !(value instanceof LazyWrapper)) {
+      if (isObjectLike(value) && !isArray(value)) {
         if (value instanceof LodashWrapper) {
           return value;
         }
-        if (hasOwnProperty.call(value, '__chain__') && hasOwnProperty.call(value, '__wrapped__')) {
-          return wrapperClone(value);
+        if (hasOwnProperty.call(value, '__wrapped__')) {
+          return new LodashWrapper(value.__wrapped__, value.__chain__, arrayCopy(value.__actions__));
         }
       }
       return new LodashWrapper(value);
@@ -8288,9 +7760,9 @@ process.chdir = function (dir) {
      * @param {Array} [actions=[]] Actions to peform to resolve the unwrapped value.
      */
     function LodashWrapper(value, chainAll, actions) {
-      this.__wrapped__ = value;
       this.__actions__ = actions || [];
       this.__chain__ = !!chainAll;
+      this.__wrapped__ = value;
     }
 
     /**
@@ -8423,14 +7895,14 @@ process.chdir = function (dir) {
      * @param {*} value The value to wrap.
      */
     function LazyWrapper(value) {
-      this.__wrapped__ = value;
-      this.__actions__ = null;
-      this.__dir__ = 1;
-      this.__dropCount__ = 0;
-      this.__filtered__ = false;
-      this.__iteratees__ = null;
-      this.__takeCount__ = POSITIVE_INFINITY;
-      this.__views__ = null;
+      this.actions = null;
+      this.dir = 1;
+      this.dropCount = 0;
+      this.filtered = false;
+      this.iteratees = null;
+      this.takeCount = POSITIVE_INFINITY;
+      this.views = null;
+      this.wrapped = value;
     }
 
     /**
@@ -8442,18 +7914,18 @@ process.chdir = function (dir) {
      * @returns {Object} Returns the cloned `LazyWrapper` object.
      */
     function lazyClone() {
-      var actions = this.__actions__,
-          iteratees = this.__iteratees__,
-          views = this.__views__,
-          result = new LazyWrapper(this.__wrapped__);
+      var actions = this.actions,
+          iteratees = this.iteratees,
+          views = this.views,
+          result = new LazyWrapper(this.wrapped);
 
-      result.__actions__ = actions ? arrayCopy(actions) : null;
-      result.__dir__ = this.__dir__;
-      result.__dropCount__ = this.__dropCount__;
-      result.__filtered__ = this.__filtered__;
-      result.__iteratees__ = iteratees ? arrayCopy(iteratees) : null;
-      result.__takeCount__ = this.__takeCount__;
-      result.__views__ = views ? arrayCopy(views) : null;
+      result.actions = actions ? arrayCopy(actions) : null;
+      result.dir = this.dir;
+      result.dropCount = this.dropCount;
+      result.filtered = this.filtered;
+      result.iteratees = iteratees ? arrayCopy(iteratees) : null;
+      result.takeCount = this.takeCount;
+      result.views = views ? arrayCopy(views) : null;
       return result;
     }
 
@@ -8466,13 +7938,13 @@ process.chdir = function (dir) {
      * @returns {Object} Returns the new reversed `LazyWrapper` object.
      */
     function lazyReverse() {
-      if (this.__filtered__) {
+      if (this.filtered) {
         var result = new LazyWrapper(this);
-        result.__dir__ = -1;
-        result.__filtered__ = true;
+        result.dir = -1;
+        result.filtered = true;
       } else {
         result = this.clone();
-        result.__dir__ *= -1;
+        result.dir *= -1;
       }
       return result;
     }
@@ -8486,20 +7958,20 @@ process.chdir = function (dir) {
      * @returns {*} Returns the unwrapped value.
      */
     function lazyValue() {
-      var array = this.__wrapped__.value();
+      var array = this.wrapped.value();
       if (!isArray(array)) {
-        return baseWrapperValue(array, this.__actions__);
+        return baseWrapperValue(array, this.actions);
       }
-      var dir = this.__dir__,
+      var dir = this.dir,
           isRight = dir < 0,
-          view = getView(0, array.length, this.__views__),
+          view = getView(0, array.length, this.views),
           start = view.start,
           end = view.end,
           length = end - start,
-          dropCount = this.__dropCount__,
-          takeCount = nativeMin(length, this.__takeCount__),
+          dropCount = this.dropCount,
+          takeCount = nativeMin(length, this.takeCount - dropCount),
           index = isRight ? end : start - 1,
-          iteratees = this.__iteratees__,
+          iteratees = this.iteratees,
           iterLength = iteratees ? iteratees.length : 0,
           resIndex = 0,
           result = [];
@@ -8944,7 +8416,7 @@ process.chdir = function (dir) {
         return baseCopy(source, object, props);
       }
       var index = -1,
-          length = props.length;
+          length = props.length
 
       while (++index < length) {
         var key = props[index],
@@ -9051,12 +8523,10 @@ process.chdir = function (dir) {
       if (func == null) {
         return identity;
       }
-      if (type == 'object') {
-        return baseMatches(func);
-      }
-      return typeof thisArg == 'undefined'
-        ? baseProperty(func + '')
-        : baseMatchesProperty(func + '', thisArg);
+      // Handle "_.property" and "_.matches" style callback shorthands.
+      return type == 'object'
+        ? baseMatches(func)
+        : baseProperty(func + '');
     }
 
     /**
@@ -9157,7 +8627,7 @@ process.chdir = function (dir) {
      * @returns {number} Returns the timer id.
      */
     function baseDelay(func, wait, args, fromIndex) {
-      if (typeof func != 'function') {
+      if (!isFunction(func)) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       return setTimeout(function() { func.apply(undefined, baseSlice(args, fromIndex)); }, wait);
@@ -9275,36 +8745,6 @@ process.chdir = function (dir) {
         return result;
       });
       return result;
-    }
-
-    /**
-     * The base implementation of `_.fill` without an iteratee call guard.
-     *
-     * @private
-     * @param {Array} array The array to fill.
-     * @param {*} value The value to fill `array` with.
-     * @param {number} [start=0] The start position.
-     * @param {number} [end=array.length] The end position.
-     * @returns {Array} Returns `array`.
-     */
-    function baseFill(array, value, start, end) {
-      var length = array.length;
-
-      start = start == null ? 0 : (+start || 0);
-      if (start < 0) {
-        start = -start > length ? 0 : (length + start);
-      }
-      end = (typeof end == 'undefined' || end > length) ? length : (+end || 0);
-      if (end < 0) {
-        end += length;
-      }
-      length = start > end ? 0 : end >>> 0;
-      start >>>= 0;
-
-      while (start < length) {
-        array[start++] = value;
-      }
-      return array;
     }
 
     /**
@@ -9639,7 +9079,7 @@ process.chdir = function (dir) {
      * shorthands or `this` binding.
      *
      * @private
-     * @param {Object} object The object to inspect.
+     * @param {Object} source The object to inspect.
      * @param {Array} props The source property names to match.
      * @param {Array} values The source values to match.
      * @param {Array} strictCompareFlags Strict comparison flags for source values.
@@ -9701,7 +9141,8 @@ process.chdir = function (dir) {
     }
 
     /**
-     * The base implementation of `_.matches` which does not clone `source`.
+     * The base implementation of `_.matches` which supports specifying whether
+     * `source` should be cloned.
      *
      * @private
      * @param {Object} source The object of property values to match.
@@ -9731,26 +9172,6 @@ process.chdir = function (dir) {
       }
       return function(object) {
         return baseIsMatch(object, props, values, strictCompareFlags);
-      };
-    }
-
-    /**
-     * The base implementation of `_.matchesProperty` which does not coerce `key`
-     * to a string.
-     *
-     * @private
-     * @param {string} key The key of the property to get.
-     * @param {*} value The value to compare.
-     * @returns {Function} Returns the new function.
-     */
-    function baseMatchesProperty(key, value) {
-      if (isStrictComparable(value)) {
-        return function(object) {
-          return object != null && object[key] === value;
-        };
-      }
-      return function(object) {
-        return object != null && baseIsEqual(value, object[key], null, true);
       };
     }
 
@@ -9916,7 +9337,7 @@ process.chdir = function (dir) {
       eachFunc(collection, function(value, index, collection) {
         accumulator = initFromCollection
           ? (initFromCollection = false, value)
-          : iteratee(accumulator, value, index, collection);
+          : iteratee(accumulator, value, index, collection)
       });
       return accumulator;
     }
@@ -10292,7 +9713,8 @@ process.chdir = function (dir) {
     /**
      * Creates a function that aggregates a collection, creating an accumulator
      * object composed from the results of running each element in the collection
-     * through an iteratee.
+     * through an iteratee. The `setter` sets the keys and values of the accumulator
+     * object. If `initializer` is provided initializes the accumulator object.
      *
      * @private
      * @param {Function} setter The function to set keys and values of the accumulator object.
@@ -10629,7 +10051,7 @@ process.chdir = function (dir) {
      */
     function createWrapper(func, bitmask, thisArg, partials, holders, argPos, ary, arity) {
       var isBindKey = bitmask & BIND_KEY_FLAG;
-      if (!isBindKey && typeof func != 'function') {
+      if (!isBindKey && !isFunction(func)) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       var length = partials ? partials.length : 0;
@@ -10659,9 +10081,9 @@ process.chdir = function (dir) {
       if (bitmask == BIND_FLAG) {
         var result = createBindWrapper(newData[0], newData[2]);
       } else if ((bitmask == PARTIAL_FLAG || bitmask == (BIND_FLAG | PARTIAL_FLAG)) && !newData[4].length) {
-        result = createPartialWrapper.apply(undefined, newData);
+        result = createPartialWrapper.apply(null, newData);
       } else {
-        result = createHybridWrapper.apply(undefined, newData);
+        result = createHybridWrapper.apply(null, newData);
       }
       var setter = data ? baseSetData : setData;
       return setter(result, newData);
@@ -11349,19 +10771,6 @@ process.chdir = function (dir) {
       return isObject(value) ? value : Object(value);
     }
 
-    /**
-     * Creates a clone of `wrapper`.
-     *
-     * @private
-     * @param {Object} wrapper The wrapper to clone.
-     * @returns {Object} Returns the cloned wrapper.
-     */
-    function wrapperClone(wrapper) {
-      return wrapper instanceof LazyWrapper
-        ? wrapper.clone()
-        : new LodashWrapper(wrapper.__wrapped__, wrapper.__chain__, arrayCopy(wrapper.__actions__));
-    }
-
     /*------------------------------------------------------------------------*/
 
     /**
@@ -11373,7 +10782,7 @@ process.chdir = function (dir) {
      * @memberOf _
      * @category Array
      * @param {Array} array The array to process.
-     * @param {number} [size=1] The length of each chunk.
+     * @param {numer} [size=1] The length of each chunk.
      * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
      * @returns {Array} Returns the new array containing chunks.
      * @example
@@ -11468,6 +10877,7 @@ process.chdir = function (dir) {
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to drop.
@@ -11503,6 +10913,7 @@ process.chdir = function (dir) {
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to drop.
@@ -11542,16 +10953,13 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
-     * callback returns `true` for elements that match the properties of the given
+     * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {Function|Object|string} [predicate=_.identity] The function invoked
@@ -11564,22 +10972,18 @@ process.chdir = function (dir) {
      * // => [1]
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': true },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': false }
+     *   { 'user': 'barney',  'status': 'busy', 'active': false },
+     *   { 'user': 'fred',    'status': 'busy', 'active': true },
+     *   { 'user': 'pebbles', 'status': 'away', 'active': true }
      * ];
-     *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.dropRightWhile(users, { 'age': 1, 'active': false }), 'user');
-     * // => ['barney', 'fred']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.dropRightWhile(users, 'active', false), 'user');
-     * // => ['barney']
      *
      * // using the "_.property" callback shorthand
      * _.pluck(_.dropRightWhile(users, 'active'), 'user');
-     * // => ['barney', 'fred', 'pebbles']
+     * // => ['barney']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.dropRightWhile(users, { 'status': 'away' }), 'user');
+     * // => ['barney', 'fred']
      */
     function dropRightWhile(array, predicate, thisArg) {
       var length = array ? array.length : 0;
@@ -11599,16 +11003,13 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {Function|Object|string} [predicate=_.identity] The function invoked
@@ -11621,22 +11022,18 @@ process.chdir = function (dir) {
      * // => [3]
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': false },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': true }
+     *   { 'user': 'barney',  'status': 'busy', 'active': true },
+     *   { 'user': 'fred',    'status': 'busy', 'active': false },
+     *   { 'user': 'pebbles', 'status': 'away', 'active': true }
      * ];
-     *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.dropWhile(users, { 'age': 36, 'active': false }), 'user');
-     * // => ['fred', 'pebbles']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.dropWhile(users, 'active', false), 'user');
-     * // => ['pebbles']
      *
      * // using the "_.property" callback shorthand
      * _.pluck(_.dropWhile(users, 'active'), 'user');
-     * // => ['barney', 'fred', 'pebbles']
+     * // => ['fred', 'pebbles']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.dropWhile(users, { 'status': 'busy' }), 'user');
+     * // => ['pebbles']
      */
     function dropWhile(array, predicate, thisArg) {
       var length = array ? array.length : 0;
@@ -11650,40 +11047,11 @@ process.chdir = function (dir) {
     }
 
     /**
-     * Fills elements of `array` with `value` from `start` up to, but not
-     * including, `end`.
-     *
-     * **Note:** This method mutates `array`.
-     *
-     * @private
-     * @param {Array} array The array to fill.
-     * @param {*} value The value to fill `array` with.
-     * @param {number} [start=0] The start position.
-     * @param {number} [end=array.length] The end position.
-     * @returns {Array} Returns `array`.
-     */
-    function fill(array, value, start, end) {
-      var length = array ? array.length : 0;
-      if (!length) {
-        return [];
-      }
-      if (start && typeof start != 'number' && isIterateeCall(array, value, start)) {
-        start = 0;
-        end = length;
-      }
-      return baseFill(array, value, start, end);
-    }
-
-    /**
      * This method is like `_.find` except that it returns the index of the first
      * element `predicate` returns truthy for, instead of the element itself.
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -11710,11 +11078,7 @@ process.chdir = function (dir) {
      * // => 0
      *
      * // using the "_.matches" callback shorthand
-     * _.findIndex(users, { 'age': 40, 'active': true });
-     * // => 1
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.findIndex(users, 'age', 1);
+     * _.findIndex(users, { 'age': 1 });
      * // => 2
      *
      * // using the "_.property" callback shorthand
@@ -11741,10 +11105,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -11770,11 +11130,7 @@ process.chdir = function (dir) {
      * // => 2
      *
      * // using the "_.matches" callback shorthand
-     * _.findLastIndex(users, { 'age': 36, 'active': true });
-     * // => 0
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.findLastIndex(users, 'age', 40);
+     * _.findLastIndex(users, { 'age': 40 });
      * // => 1
      *
      * // using the "_.property" callback shorthand
@@ -12132,10 +11488,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -12233,10 +11585,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -12312,6 +11660,7 @@ process.chdir = function (dir) {
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to take.
@@ -12347,6 +11696,7 @@ process.chdir = function (dir) {
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to take.
@@ -12386,16 +11736,13 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {Function|Object|string} [predicate=_.identity] The function invoked
@@ -12408,22 +11755,18 @@ process.chdir = function (dir) {
      * // => [2, 3]
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': true },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': false }
+     *   { 'user': 'barney',  'status': 'busy', 'active': false },
+     *   { 'user': 'fred',    'status': 'busy', 'active': true },
+     *   { 'user': 'pebbles', 'status': 'away', 'active': true }
      * ];
-     *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.takeRightWhile(users, { 'age': 1, 'active': true }), 'user');
-     * // => ['pebbles']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.takeRightWhile(users, 'active', false), 'user');
-     * // => ['fred', 'pebbles']
      *
      * // using the "_.property" callback shorthand
      * _.pluck(_.takeRightWhile(users, 'active'), 'user');
-     * // => []
+     * // => ['fred', 'pebbles']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.takeRightWhile(users, { 'status': 'away' }), 'user');
+     * // => ['pebbles']
      */
     function takeRightWhile(array, predicate, thisArg) {
       var length = array ? array.length : 0;
@@ -12443,16 +11786,13 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Array
      * @param {Array} array The array to query.
      * @param {Function|Object|string} [predicate=_.identity] The function invoked
@@ -12465,22 +11805,18 @@ process.chdir = function (dir) {
      * // => [1, 2]
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': false },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': true }
+     *   { 'user': 'barney',  'status': 'busy', 'active': true },
+     *   { 'user': 'fred',    'status': 'busy', 'active': false },
+     *   { 'user': 'pebbles', 'status': 'away', 'active': true }
      * ];
-     *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.takeWhile(users, { 'age': 36, 'active': true }), 'user');
-     * // => ['barney']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.takeWhile(users, 'active', false), 'user');
-     * // => ['barney', 'fred']
      *
      * // using the "_.property" callback shorthand
      * _.pluck(_.takeWhile(users, 'active'), 'user');
-     * // => []
+     * // => ['barney']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.takeWhile(users, { 'status': 'busy' }), 'user');
+     * // => ['barney', 'fred']
      */
     function takeWhile(array, predicate, thisArg) {
       var length = array ? array.length : 0;
@@ -12526,10 +11862,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -12745,7 +12077,7 @@ process.chdir = function (dir) {
      * @memberOf _
      * @category Chain
      * @param {*} value The value to wrap.
-     * @returns {Object} Returns the new `lodash` wrapper instance.
+     * @returns {Object} Returns the new `lodash` object.
      * @example
      *
      * var users = [
@@ -12821,7 +12153,7 @@ process.chdir = function (dir) {
      * @name chain
      * @memberOf _
      * @category Chain
-     * @returns {Object} Returns the new `lodash` wrapper instance.
+     * @returns {*} Returns the `lodash` object.
      * @example
      *
      * var users = [
@@ -12845,74 +12177,6 @@ process.chdir = function (dir) {
     }
 
     /**
-     * Executes the chained sequence and returns the wrapped result.
-     *
-     * @name commit
-     * @memberOf _
-     * @category Chain
-     * @returns {Object} Returns the new `lodash` wrapper instance.
-     * @example
-     *
-     * var array = [1, 2];
-     * var wrapper = _(array).push(3);
-     *
-     * console.log(array);
-     * // => [1, 2]
-     *
-     * wrapper = wrapper.commit();
-     * console.log(array);
-     * // => [1, 2, 3]
-     *
-     * wrapper.last();
-     * // => 3
-     *
-     * console.log(array);
-     * // => [1, 2, 3]
-     */
-    function wrapperCommit() {
-      return new LodashWrapper(this.value(), this.__chain__);
-    }
-
-    /**
-     * Creates a clone of the chained sequence planting `value` as the wrapped value.
-     *
-     * @name plant
-     * @memberOf _
-     * @category Chain
-     * @returns {Object} Returns the new `lodash` wrapper instance.
-     * @example
-     *
-     * var array = [1, 2];
-     * var wrapper = _(array).map(_.partial(Math.pow, _, 2));
-     *
-     * var other = [3, 4];
-     * var otherWrapper = wrapper.plant(other);
-     *
-     * otherWrapper.value();
-     * // => [9, 16]
-     *
-     * wrapper.value();
-     * // => [1, 4]
-     */
-    function wrapperPlant(value) {
-      var result,
-          parent = this;
-
-      while (parent instanceof LodashWrapper) {
-        var clone = wrapperClone(parent);
-        if (result) {
-          previous.__wrapped__ = clone;
-        } else {
-          result = clone;
-        }
-        var previous = clone;
-        parent = parent.__wrapped__;
-      }
-      previous.__wrapped__ = value;
-      return result;
-    }
-
-    /**
      * Reverses the wrapped array so the first element becomes the last, the
      * second element becomes the second to last, and so on.
      *
@@ -12921,7 +12185,7 @@ process.chdir = function (dir) {
      * @name reverse
      * @memberOf _
      * @category Chain
-     * @returns {Object} Returns the new reversed `lodash` wrapper instance.
+     * @returns {Object} Returns the new reversed `lodash` object.
      * @example
      *
      * var array = [1, 2, 3];
@@ -12938,7 +12202,7 @@ process.chdir = function (dir) {
         if (this.__actions__.length) {
           value = new LazyWrapper(this);
         }
-        return new LodashWrapper(value.reverse(), this.__chain__);
+        return new LodashWrapper(value.reverse());
       }
       return this.thru(function(value) {
         return value.reverse();
@@ -12966,7 +12230,7 @@ process.chdir = function (dir) {
      *
      * @name value
      * @memberOf _
-     * @alias run, toJSON, valueOf
+     * @alias toJSON, valueOf
      * @category Chain
      * @returns {*} Returns the resolved unwrapped value.
      * @example
@@ -13069,10 +12333,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13109,10 +12369,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13134,20 +12390,16 @@ process.chdir = function (dir) {
      * // => false
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': false },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *   { 'user': 'barney', 'age': 36 },
+     *   { 'user': 'fred',   'age': 40 }
      * ];
      *
-     * // using the "_.matches" callback shorthand
-     * _.every(users, { 'age': 36, 'active': false });
-     * // => false
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.every(users, 'active', false);
+     * // using the "_.property" callback shorthand
+     * _.every(users, 'age');
      * // => true
      *
-     * // using the "_.property" callback shorthand
-     * _.every(users, 'active');
+     * // using the "_.matches" callback shorthand
+     * _.every(users, { 'age': 36 });
      * // => false
      */
     function every(collection, predicate, thisArg) {
@@ -13165,10 +12417,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -13190,20 +12438,16 @@ process.chdir = function (dir) {
      * // => [2, 4]
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': true },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *   { 'user': 'barney', 'age': 36, 'active': false },
+     *   { 'user': 'fred',   'age': 40, 'active': true }
      * ];
-     *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.filter(users, { 'age': 36, 'active': true }), 'user');
-     * // => ['barney']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.filter(users, 'active', false), 'user');
-     * // => ['fred']
      *
      * // using the "_.property" callback shorthand
      * _.pluck(_.filter(users, 'active'), 'user');
+     * // => ['fred']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.filter(users, { 'age': 36 }), 'user');
      * // => ['barney']
      */
     function filter(collection, predicate, thisArg) {
@@ -13219,10 +12463,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -13241,25 +12481,21 @@ process.chdir = function (dir) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': true },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': true }
+     *   { 'user': 'barney',  'age': 36, 'active': false },
+     *   { 'user': 'fred',    'age': 40, 'active': true },
+     *   { 'user': 'pebbles', 'age': 1,  'active': false }
      * ];
      *
      * _.result(_.find(users, function(chr) { return chr.age < 40; }), 'user');
      * // => 'barney'
      *
      * // using the "_.matches" callback shorthand
-     * _.result(_.find(users, { 'age': 1, 'active': true }), 'user');
+     * _.result(_.find(users, { 'age': 1 }), 'user');
      * // => 'pebbles'
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.result(_.find(users, 'active', false), 'user');
-     * // => 'fred'
      *
      * // using the "_.property" callback shorthand
      * _.result(_.find(users, 'active'), 'user');
-     * // => 'barney'
+     * // => 'fred'
      */
     function find(collection, predicate, thisArg) {
       if (isArray(collection)) {
@@ -13298,11 +12534,6 @@ process.chdir = function (dir) {
      * source object, returning the first element that has equivalent property
      * values.
      *
-     * **Note:** This method supports comparing arrays, booleans, `Date` objects,
-     * numbers, `Object` objects, regexes, and strings. Objects are compared by
-     * their own, not inherited, enumerable properties. For comparing a single
-     * own or inherited property value see `_.matchesProperty`.
-     *
      * @static
      * @memberOf _
      * @category Collection
@@ -13312,14 +12543,14 @@ process.chdir = function (dir) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': true },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *   { 'user': 'barney', 'age': 36, 'status': 'busy' },
+     *   { 'user': 'fred',   'age': 40, 'status': 'busy' }
      * ];
      *
-     * _.result(_.findWhere(users, { 'age': 36, 'active': true }), 'user');
+     * _.result(_.findWhere(users, { 'status': 'busy' }), 'user');
      * // => 'barney'
      *
-     * _.result(_.findWhere(users, { 'age': 40, 'active': false }), 'user');
+     * _.result(_.findWhere(users, { 'age': 40 }), 'user');
      * // => 'fred'
      */
     function findWhere(collection, source) {
@@ -13391,10 +12622,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13437,10 +12664,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -13509,22 +12732,9 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
-     *
-     * Many lodash methods are guarded to work as interatees for methods like
-     * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
-     *
-     * The guarded methods are:
-     * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`, `drop`,
-     * `dropRight`, `fill`, `flatten`, `invert`, `max`, `min`, `parseInt`, `slice`,
-     * `sortBy`, `take`, `takeRight`, `template`, `trim`, `trimLeft`, `trimRight`,
-     * `trunc`, `random`, `range`, `sample`, `uniq`, and `words`
      *
      * @static
      * @memberOf _
@@ -13568,10 +12778,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -13618,10 +12824,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13666,10 +12868,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13697,18 +12895,12 @@ process.chdir = function (dir) {
      *   { 'user': 'pebbles', 'age': 1,  'active': false }
      * ];
      *
-     * var mapper = function(array) { return _.pluck(array, 'user'); };
-     *
      * // using the "_.matches" callback shorthand
-     * _.map(_.partition(users, { 'age': 1, 'active': false }), mapper);
+     * _.map(_.partition(users, { 'age': 1 }), function(array) { return _.pluck(array, 'user'); });
      * // => [['pebbles'], ['barney', 'fred']]
      *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.map(_.partition(users, 'active', false), mapper);
-     * // => [['barney', 'pebbles'], ['fred']]
-     *
      * // using the "_.property" callback shorthand
-     * _.map(_.partition(users, 'active'), mapper);
+     * _.map(_.partition(users, 'active'), function(array) { return _.pluck(array, 'user'); });
      * // => [['fred'], ['barney', 'pebbles']]
      */
     var partition = createAggregator(function(result, value, key) {
@@ -13739,7 +12931,7 @@ process.chdir = function (dir) {
      * // => [36, 40] (iteration order is not guaranteed)
      */
     function pluck(collection, key) {
-      return map(collection, baseProperty(key));
+      return map(collection, baseProperty(key + ''));
     }
 
     /**
@@ -13749,12 +12941,6 @@ process.chdir = function (dir) {
      * is not provided the first element of `collection` is used as the initial
      * value. The `iteratee` is bound to `thisArg`and invoked with four arguments;
      * (accumulator, value, index|key, collection).
-     *
-     * Many lodash methods are guarded to work as interatees for methods like
-     * `_.reduce`, `_.reduceRight`, and `_.transform`.
-     *
-     * The guarded methods are:
-     * `assign`, `defaults`, `merge`, and `sortAllBy`
      *
      * @static
      * @memberOf _
@@ -13812,10 +12998,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13839,17 +13021,13 @@ process.chdir = function (dir) {
      *   { 'user': 'fred',   'age': 40, 'active': true }
      * ];
      *
-     * // using the "_.matches" callback shorthand
-     * _.pluck(_.reject(users, { 'age': 40, 'active': true }), 'user');
-     * // => ['barney']
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.pluck(_.reject(users, 'active', false), 'user');
-     * // => ['fred']
-     *
      * // using the "_.property" callback shorthand
      * _.pluck(_.reject(users, 'active'), 'user');
      * // => ['barney']
+     *
+     * // using the "_.matches" callback shorthand
+     * _.pluck(_.reject(users, { 'age': 36 }), 'user');
+     * // => ['fred']
      */
     function reject(collection, predicate, thisArg) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -13954,10 +13132,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -13983,17 +13157,13 @@ process.chdir = function (dir) {
      *   { 'user': 'fred',   'age': 40, 'active': true }
      * ];
      *
-     * // using the "_.matches" callback shorthand
-     * _.some(users, { 'age': 1, 'active': true });
-     * // => false
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.some(users, 'active', false);
-     * // => true
-     *
      * // using the "_.property" callback shorthand
      * _.some(users, 'active');
      * // => true
+     *
+     * // using the "_.matches" callback shorthand
+     * _.some(users, { 'age': 1 });
+     * // => false
      */
     function some(collection, predicate, thisArg) {
       var func = isArray(collection) ? arraySome : baseSome;
@@ -14012,10 +13182,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -14096,7 +13262,7 @@ process.chdir = function (dir) {
           props = baseFlatten(args, false, false, 1),
           result = isLength(length) ? Array(length) : [];
 
-      baseEach(collection, function(value) {
+      baseEach(collection, function(value, key, collection) {
         var length = props.length,
             criteria = Array(length);
 
@@ -14113,11 +13279,6 @@ process.chdir = function (dir) {
      * source object, returning an array of all elements that have equivalent
      * property values.
      *
-     * **Note:** This method supports comparing arrays, booleans, `Date` objects,
-     * numbers, `Object` objects, regexes, and strings. Objects are compared by
-     * their own, not inherited, enumerable properties. For comparing a single
-     * own or inherited property value see `_.matchesProperty`.
-     *
      * @static
      * @memberOf _
      * @category Collection
@@ -14127,15 +13288,18 @@ process.chdir = function (dir) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ['hoppy'] },
-     *   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ['baby puss', 'dino'] }
+     *   { 'user': 'barney', 'age': 36, 'status': 'busy', 'pets': ['hoppy'] },
+     *   { 'user': 'fred',   'age': 40, 'status': 'busy', 'pets': ['baby puss', 'dino'] }
      * ];
      *
-     * _.pluck(_.where(users, { 'age': 36, 'active': false }), 'user');
+     * _.pluck(_.where(users, { 'age': 36 }), 'user');
      * // => ['barney']
      *
      * _.pluck(_.where(users, { 'pets': ['dino'] }), 'user');
      * // => ['fred']
+     *
+     * _.pluck(_.where(users, { 'status': 'busy' }), 'user');
+     * // => ['barney', 'fred']
      */
     function where(collection, source) {
       return filter(collection, baseMatches(source));
@@ -14185,8 +13349,8 @@ process.chdir = function (dir) {
      * // => logs 'done saving!' after the two async saves have completed
      */
     function after(n, func) {
-      if (typeof func != 'function') {
-        if (typeof n == 'function') {
+      if (!isFunction(func)) {
+        if (isFunction(n)) {
           var temp = n;
           n = func;
           func = temp;
@@ -14244,8 +13408,8 @@ process.chdir = function (dir) {
      */
     function before(n, func) {
       var result;
-      if (typeof func != 'function') {
-        if (typeof n == 'function') {
+      if (!isFunction(func)) {
+        if (isFunction(n)) {
           var temp = n;
           n = func;
           func = temp;
@@ -14567,7 +13731,7 @@ process.chdir = function (dir) {
           maxWait = false,
           trailing = true;
 
-      if (typeof func != 'function') {
+      if (!isFunction(func)) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       wait = wait < 0 ? 0 : wait;
@@ -14737,7 +13901,7 @@ process.chdir = function (dir) {
           length = funcs.length;
 
       if (!length) {
-        return function() { return arguments[0]; };
+        return function() {};
       }
       if (!arrayEvery(funcs, isFunction)) {
         throw new TypeError(FUNC_ERROR_TEXT);
@@ -14782,7 +13946,7 @@ process.chdir = function (dir) {
           fromIndex = funcs.length - 1;
 
       if (fromIndex < 0) {
-        return function() { return arguments[0]; };
+        return function() {};
       }
       if (!arrayEvery(funcs, isFunction)) {
         throw new TypeError(FUNC_ERROR_TEXT);
@@ -14852,7 +14016,7 @@ process.chdir = function (dir) {
      * // => { 'user': 'barney' }
      */
     function memoize(func, resolver) {
-      if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
+      if (!isFunction(func) || (resolver && !isFunction(resolver))) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       var memoized = function() {
@@ -14890,7 +14054,7 @@ process.chdir = function (dir) {
      * // => [1, 3, 5]
      */
     function negate(predicate) {
-      if (typeof predicate != 'function') {
+      if (!isFunction(predicate)) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       return function() {
@@ -14905,6 +14069,7 @@ process.chdir = function (dir) {
      *
      * @static
      * @memberOf _
+     * @type Function
      * @category Function
      * @param {Function} func The function to restrict.
      * @returns {Function} Returns the new restricted function.
@@ -15028,47 +14193,6 @@ process.chdir = function (dir) {
     }
 
     /**
-     * Creates a function that invokes `func` with the `this` binding of the
-     * created function and the array of arguments provided to the created
-     * function much like [Function#apply](http://es5.github.io/#x15.3.4.3).
-     *
-     * @static
-     * @memberOf _
-     * @category Function
-     * @param {Function} func The function to spread arguments over.
-     * @returns {*} Returns the new function.
-     * @example
-     *
-     * var spread = _.spread(function(who, what) {
-     *   return who + ' says ' + what;
-     * });
-     *
-     * spread(['Fred', 'hello']);
-     * // => 'Fred says hello'
-     *
-     * // with a Promise
-     * var numbers = Promise.all([
-     *   Promise.resolve(40),
-     *   Promise.resolve(36)
-     * ]);
-     *
-     * var add = function(x, y) {
-     *   return x + y;
-     * };
-     *
-     * numbers.then(_.spread(add));
-     * // => a Promise of 76
-     */
-    function spread(func) {
-      if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      return function(array) {
-        return func.apply(this, array);
-      };
-    }
-
-    /**
      * Creates a function that only invokes `func` at most once per every `wait`
      * milliseconds. The created function comes with a `cancel` method to cancel
      * delayed invocations. Provide an options object to indicate that `func`
@@ -15110,7 +14234,7 @@ process.chdir = function (dir) {
       var leading = true,
           trailing = true;
 
-      if (typeof func != 'function') {
+      if (!isFunction(func)) {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       if (options === false) {
@@ -15416,8 +14540,7 @@ process.chdir = function (dir) {
      * arguments; (value, other [, index|key]).
      *
      * **Note:** This method supports comparing arrays, booleans, `Date` objects,
-     * numbers, `Object` objects, regexes, and strings. Objects are compared by
-     * their own, not inherited, enumerable properties. Functions and DOM nodes
+     * numbers, `Object` objects, regexes, and strings. Functions and DOM nodes
      * are **not** supported. Provide a customizer function to extend support
      * for comparing other values.
      *
@@ -15587,7 +14710,7 @@ process.chdir = function (dir) {
      * @static
      * @memberOf _
      * @category Lang
-     * @param {Object} object The object to inspect.
+     * @param {Object} source The object to inspect.
      * @param {Object} source The object of property values to match.
      * @param {Function} [customizer] The function to customize comparing values.
      * @param {*} [thisArg] The `this` binding of `customizer`.
@@ -16016,10 +15139,6 @@ process.chdir = function (dir) {
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
      *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
@@ -16045,12 +15164,8 @@ process.chdir = function (dir) {
      * // => 'barney' (iteration order is not guaranteed)
      *
      * // using the "_.matches" callback shorthand
-     * _.findKey(users, { 'age': 1, 'active': true });
+     * _.findKey(users, { 'age': 1 });
      * // => 'pebbles'
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.findKey(users, 'active', false);
-     * // => 'fred'
      *
      * // using the "_.property" callback shorthand
      * _.findKey(users, 'active');
@@ -16067,10 +15182,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `predicate` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `predicate` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -16097,12 +15208,8 @@ process.chdir = function (dir) {
      * // => returns `pebbles` assuming `_.findKey` returns `barney`
      *
      * // using the "_.matches" callback shorthand
-     * _.findLastKey(users, { 'age': 36, 'active': true });
+     * _.findLastKey(users, { 'age': 36 });
      * // => 'barney'
-     *
-     * // using the "_.matchesProperty" callback shorthand
-     * _.findLastKey(users, 'active', false);
-     * // => 'fred'
      *
      * // using the "_.property" callback shorthand
      * _.findLastKey(users, 'active');
@@ -16391,7 +15498,7 @@ process.chdir = function (dir) {
 
       var Ctor = object.constructor,
           index = -1,
-          isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+          isProto = typeof Ctor == 'function' && Ctor.prototype == object,
           result = Array(length),
           skipIndexes = length > 0;
 
@@ -16415,10 +15522,6 @@ process.chdir = function (dir) {
      *
      * If a property name is provided for `iteratee` the created "_.property"
      * style callback returns the property value of the given element.
-     *
-     * If value is also provided for `thisArg` the created "_.matchesProperty"
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
      *
      * If an object is provided for `iteratee` the created "_.matches" style
      * callback returns `true` for elements that have the properties of the given
@@ -16688,7 +15791,7 @@ process.chdir = function (dir) {
           if (isArr) {
             accumulator = isArray(object) ? new Ctor : [];
           } else {
-            accumulator = baseCreate(isFunction(Ctor) && Ctor.prototype);
+            accumulator = baseCreate(typeof Ctor == 'function' && Ctor.prototype);
           }
         } else {
           accumulator = {};
@@ -17518,7 +16621,7 @@ process.chdir = function (dir) {
         return string;
       }
       if (guard ? isIterateeCall(value, chars, guard) : chars == null) {
-        return string.slice(trimmedLeftIndex(string));
+        return string.slice(trimmedLeftIndex(string))
       }
       return string.slice(charsLeftIndex(string, (chars + '')));
     }
@@ -17548,7 +16651,7 @@ process.chdir = function (dir) {
         return string;
       }
       if (guard ? isIterateeCall(value, chars, guard) : chars == null) {
-        return string.slice(0, trimmedRightIndex(string) + 1);
+        return string.slice(0, trimmedRightIndex(string) + 1)
       }
       return string.slice(0, charsRightIndex(string, (chars + '')) + 1);
     }
@@ -17691,8 +16794,8 @@ process.chdir = function (dir) {
     /*------------------------------------------------------------------------*/
 
     /**
-     * Attempts to invoke `func`, returning either the result or the caught error
-     * object. Any additional arguments are provided to `func` when it is invoked.
+     * Attempts to invoke `func`, returning either the result or the caught
+     * error object.
      *
      * @static
      * @memberOf _
@@ -17702,9 +16805,9 @@ process.chdir = function (dir) {
      * @example
      *
      * // avoid throwing errors for invalid selectors
-     * var elements = _.attempt(function(selector) {
+     * var elements = _.attempt(function() {
      *   return document.querySelectorAll(selector);
-     * }, '>_>');
+     * });
      *
      * if (_.isError(elements)) {
      *   elements = [];
@@ -17712,18 +16815,17 @@ process.chdir = function (dir) {
      */
     function attempt(func) {
       try {
-        return func.apply(undefined, baseSlice(arguments, 1));
+        return func();
       } catch(e) {
-        return isError(e) ? e : new Error(e);
+        return isError(e) ? e : Error(e);
       }
     }
 
     /**
-     * Creates a function that invokes `func` with the `this` binding of `thisArg`
-     * and arguments of the created function. If `func` is a property name the
-     * created callback returns the property value for a given element. If `func`
-     * is an object the created callback returns `true` for elements that contain
-     * the equivalent object properties, otherwise it returns `false`.
+     * Creates a function bound to an optional `thisArg`. If `func` is a property
+     * name the created callback returns the property value for a given element.
+     * If `func` is an object the created callback returns `true` for elements
+     * that contain the equivalent object properties, otherwise it returns `false`.
      *
      * @static
      * @memberOf _
@@ -17807,11 +16909,6 @@ process.chdir = function (dir) {
      * and `source`, returning `true` if the given object has equivalent property
      * values, else `false`.
      *
-     * **Note:** This method supports comparing arrays, booleans, `Date` objects,
-     * numbers, `Object` objects, regexes, and strings. Objects are compared by
-     * their own, not inherited, enumerable properties. For comparing a single
-     * own or inherited property value see `_.matchesProperty`.
-     *
      * @static
      * @memberOf _
      * @category Utility
@@ -17820,46 +16917,20 @@ process.chdir = function (dir) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': true },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *   { 'user': 'fred',   'age': 40 },
+     *   { 'user': 'barney', 'age': 36 }
      * ];
      *
-     * _.filter(users, _.matches({ 'age': 40, 'active': false }));
-     * // => [{ 'user': 'fred', 'age': 40, 'active': false }]
+     * var matchesAge = _.matches({ 'age': 36 });
+     *
+     * _.filter(users, matchesAge);
+     * // => [{ 'user': 'barney', 'age': 36 }]
+     *
+     * _.find(users, matchesAge);
+     * // => { 'user': 'barney', 'age': 36 }
      */
     function matches(source) {
       return baseMatches(baseClone(source, true));
-    }
-
-    /**
-     * Creates a function which compares the property value of `key` on a given
-     * object to `value`.
-     *
-     * **Note:** This method supports comparing arrays, booleans, `Date` objects,
-     * numbers, `Object` objects, regexes, and strings. Objects are compared by
-     * their own, not inherited, enumerable properties.
-     *
-     * @static
-     * @memberOf _
-     * @category Utility
-     * @param {string} key The key of the property to get.
-     * @param {*} value The value to compare.
-     * @returns {Function} Returns the new function.
-     * @example
-     *
-     * var users = [
-     *   { 'user': 'barney',  'age': 36 },
-     *   { 'user': 'fred',    'age': 40 },
-     *   { 'user': 'pebbles', 'age': 1 }
-     * ];
-     *
-     * var matchFred = _.matchesProperty('user', 'fred');
-     *
-     * _.find(users, matchFred);
-     * // => { 'user': 'fred', 'age': 40 }
-     */
-    function matchesProperty(key, value) {
-      return baseMatchesProperty(key + '', baseClone(value, true));
     }
 
     /**
@@ -17883,9 +16954,6 @@ process.chdir = function (dir) {
      *     return /[aeiou]/i.test(v);
      *   });
      * }
-     *
-     * // use `_.runInContext` to avoid potential conflicts (esp. in Node.js)
-     * var _ = require('lodash').runInContext();
      *
      * _.mixin({ 'vowels': vowels });
      * _.vowels('fred');
@@ -18161,11 +17229,7 @@ process.chdir = function (dir) {
     /*------------------------------------------------------------------------*/
 
     // Ensure `new LodashWrapper` is an instance of `lodash`.
-    LodashWrapper.prototype = baseCreate(lodash.prototype);
-
-    // Ensure `new LazyWraper` is an instance of `LodashWrapper`
-    LazyWrapper.prototype = baseCreate(LodashWrapper.prototype);
-    LazyWrapper.prototype.constructor = LazyWrapper;
+    LodashWrapper.prototype = lodash.prototype;
 
     // Add functions to the `Map` cache.
     MapCache.prototype['delete'] = mapDelete;
@@ -18206,7 +17270,6 @@ process.chdir = function (dir) {
     lodash.dropRight = dropRight;
     lodash.dropRightWhile = dropRightWhile;
     lodash.dropWhile = dropWhile;
-    lodash.fill = fill;
     lodash.filter = filter;
     lodash.flatten = flatten;
     lodash.flattenDeep = flattenDeep;
@@ -18230,7 +17293,6 @@ process.chdir = function (dir) {
     lodash.map = map;
     lodash.mapValues = mapValues;
     lodash.matches = matches;
-    lodash.matchesProperty = matchesProperty;
     lodash.memoize = memoize;
     lodash.merge = merge;
     lodash.mixin = mixin;
@@ -18256,7 +17318,6 @@ process.chdir = function (dir) {
     lodash.slice = slice;
     lodash.sortBy = sortBy;
     lodash.sortByAll = sortByAll;
-    lodash.spread = spread;
     lodash.take = take;
     lodash.takeRight = takeRight;
     lodash.takeRightWhile = takeRightWhile;
@@ -18430,15 +17491,14 @@ process.chdir = function (dir) {
 
     // Add `LazyWrapper` methods that accept an `iteratee` value.
     arrayEach(['filter', 'map', 'takeWhile'], function(methodName, index) {
-      var isFilter = index == LAZY_FILTER_FLAG,
-          isWhile = index == LAZY_WHILE_FLAG;
+      var isFilter = index == LAZY_FILTER_FLAG;
 
       LazyWrapper.prototype[methodName] = function(iteratee, thisArg) {
         var result = this.clone(),
-            filtered = result.__filtered__,
-            iteratees = result.__iteratees__ || (result.__iteratees__ = []);
+            filtered = result.filtered,
+            iteratees = result.iteratees || (result.iteratees = []);
 
-        result.__filtered__ = filtered || isFilter || (isWhile && result.__dir__ < 0);
+        result.filtered = filtered || isFilter || (index == LAZY_WHILE_FLAG && result.dir < 0);
         iteratees.push({ 'iteratee': getCallback(iteratee, thisArg, 3), 'type': index });
         return result;
       };
@@ -18446,19 +17506,19 @@ process.chdir = function (dir) {
 
     // Add `LazyWrapper` methods for `_.drop` and `_.take` variants.
     arrayEach(['drop', 'take'], function(methodName, index) {
-      var countName = '__' + methodName + 'Count__',
+      var countName = methodName + 'Count',
           whileName = methodName + 'While';
 
       LazyWrapper.prototype[methodName] = function(n) {
-        n = n == null ? 1 : nativeMax(floor(n) || 0, 0);
+        n = n == null ? 1 : nativeMax(+n || 0, 0);
 
         var result = this.clone();
-        if (result.__filtered__) {
+        if (result.filtered) {
           var value = result[countName];
           result[countName] = index ? nativeMin(value, n) : (value + n);
         } else {
-          var views = result.__views__ || (result.__views__ = []);
-          views.push({ 'size': n, 'type': methodName + (result.__dir__ < 0 ? 'Right' : '') });
+          var views = result.views || (result.views = []);
+          views.push({ 'size': n, 'type': methodName + (result.dir < 0 ? 'Right' : '') });
         }
         return result;
       };
@@ -18474,7 +17534,7 @@ process.chdir = function (dir) {
 
     // Add `LazyWrapper` methods for `_.first` and `_.last`.
     arrayEach(['first', 'last'], function(methodName, index) {
-      var takeName = 'take' + (index ? 'Right' : '');
+      var takeName = 'take' + (index ? 'Right': '');
 
       LazyWrapper.prototype[methodName] = function() {
         return this[takeName](1).value()[0];
@@ -18496,18 +17556,19 @@ process.chdir = function (dir) {
           createCallback = index ? baseMatches : baseProperty;
 
       LazyWrapper.prototype[methodName] = function(value) {
-        return this[operationName](createCallback(value));
+        return this[operationName](createCallback(index ? value : (value + '')));
       };
     });
 
-    LazyWrapper.prototype.compact = function() {
-      return this.filter(identity);
-    };
-
     LazyWrapper.prototype.dropWhile = function(iteratee, thisArg) {
-      var done;
+      var done,
+          lastIndex,
+          isRight = this.dir < 0;
+
       iteratee = getCallback(iteratee, thisArg, 3);
       return this.filter(function(value, index, array) {
+        done = done && (isRight ? index < lastIndex : index > lastIndex);
+        lastIndex = index;
         return done || (done = !iteratee(value, index, array));
       });
     };
@@ -18528,10 +17589,6 @@ process.chdir = function (dir) {
         result = end < 0 ? result.dropRight(-end) : result.take(end - start);
       }
       return result;
-    };
-
-    LazyWrapper.prototype.toArray = function() {
-      return this.drop(0);
     };
 
     // Add `LazyWrapper` methods to `lodash.prototype`.
@@ -18561,8 +17618,8 @@ process.chdir = function (dir) {
           var wrapper = onlyLazy ? value : new LazyWrapper(this),
               result = func.apply(wrapper, args);
 
-          if (!retUnwrapped && (isHybrid || result.__actions__)) {
-            var actions = result.__actions__ || (result.__actions__ = []);
+          if (!retUnwrapped && (isHybrid || result.actions)) {
+            var actions = result.actions || (result.actions = []);
             actions.push({ 'func': thru, 'args': [interceptor], 'thisArg': lodash });
           }
           return new LodashWrapper(result, chainAll);
@@ -18595,11 +17652,9 @@ process.chdir = function (dir) {
 
     // Add chaining functions to the lodash wrapper.
     lodash.prototype.chain = wrapperChain;
-    lodash.prototype.commit = wrapperCommit;
-    lodash.prototype.plant = wrapperPlant;
     lodash.prototype.reverse = wrapperReverse;
     lodash.prototype.toString = wrapperToString;
-    lodash.prototype.run = lodash.prototype.toJSON = lodash.prototype.valueOf = lodash.prototype.value = wrapperValue;
+    lodash.prototype.toJSON = lodash.prototype.valueOf = lodash.prototype.value = wrapperValue;
 
     // Add function aliases to the lodash wrapper.
     lodash.prototype.collect = lodash.prototype.map;
@@ -18647,15 +17702,7 @@ process.chdir = function (dir) {
 }.call(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],32:[function(require,module,exports){
-=======
-},{}],33:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],32:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Represents a cancellation caused by navigating away
  * before the previous transition has fully resolved.
@@ -18664,15 +17711,7 @@ function Cancellation() {}
 
 module.exports = Cancellation;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],33:[function(require,module,exports){
-=======
-},{}],34:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],33:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var warning = require('react/lib/warning');
 var invariant = require('react/lib/invariant');
 
@@ -18709,15 +17748,7 @@ var Configuration = {
 
 module.exports = Configuration;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react/lib/invariant":209,"react/lib/warning":229}],34:[function(require,module,exports){
-=======
-},{"react/lib/invariant":210,"react/lib/warning":230}],35:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react/lib/invariant":209,"react/lib/warning":229}],34:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var invariant = require('react/lib/invariant');
 var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 
@@ -18750,15 +17781,7 @@ var History = {
 
 module.exports = History;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],35:[function(require,module,exports){
-=======
-},{"react/lib/ExecutionEnvironment":92,"react/lib/invariant":210}],36:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],35:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var PropTypes = require('./PropTypes');
 
 /**
@@ -18832,15 +17855,7 @@ var Navigation = {
 
 module.exports = Navigation;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PropTypes":37}],36:[function(require,module,exports){
-=======
-},{"./PropTypes":38}],37:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PropTypes":37}],36:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var PropTypes = require('./PropTypes');
 
 /**
@@ -18870,15 +17885,7 @@ var NavigationContext = {
 
 module.exports = NavigationContext;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PropTypes":37}],37:[function(require,module,exports){
-=======
-},{"./PropTypes":38}],38:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PropTypes":37}],37:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var assign = require('react/lib/Object.assign');
 var ReactPropTypes = require('react').PropTypes;
 
@@ -18896,15 +17903,7 @@ var PropTypes = assign({
 
 module.exports = PropTypes;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230,"react/lib/Object.assign":97}],38:[function(require,module,exports){
-=======
-},{"react":231,"react/lib/Object.assign":98}],39:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react":230,"react/lib/Object.assign":97}],38:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Encapsulates a redirect to the given route.
  */
@@ -18916,15 +17915,7 @@ function Redirect(to, params, query) {
 
 module.exports = Redirect;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],39:[function(require,module,exports){
-=======
-},{}],40:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],39:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var assign = require('react/lib/Object.assign');
 var PropTypes = require('./PropTypes');
@@ -18978,15 +17969,7 @@ var RouteHandlerMixin = {
 
 module.exports = RouteHandlerMixin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PropTypes":37,"react":230,"react/lib/Object.assign":97}],40:[function(require,module,exports){
-=======
-},{"./PropTypes":38,"react":231,"react/lib/Object.assign":98}],41:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PropTypes":37,"react":230,"react/lib/Object.assign":97}],40:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /* jshint -W084 */
 var React = require('react');
 var invariant = require('react/lib/invariant');
@@ -19146,15 +18129,7 @@ module.exports = {
   Route: Route
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./components/DefaultRoute":48,"./components/NotFoundRoute":50,"./components/Redirect":51,"./utils/Path":61,"react":230,"react/lib/invariant":209}],41:[function(require,module,exports){
-=======
-},{"./components/DefaultRoute":49,"./components/NotFoundRoute":51,"./components/Redirect":52,"./utils/Path":62,"react":231,"react/lib/invariant":210}],42:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./components/DefaultRoute":48,"./components/NotFoundRoute":50,"./components/Redirect":51,"./utils/Path":61,"react":230,"react/lib/invariant":209}],41:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var invariant = require('react/lib/invariant');
 var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 var getWindowScrollPosition = require('./utils/getWindowScrollPosition');
@@ -19239,15 +18214,7 @@ var Scrolling = {
 
 module.exports = Scrolling;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./utils/getWindowScrollPosition":62,"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],42:[function(require,module,exports){
-=======
-},{"./utils/getWindowScrollPosition":63,"react/lib/ExecutionEnvironment":92,"react/lib/invariant":210}],43:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./utils/getWindowScrollPosition":62,"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],42:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var PropTypes = require('./PropTypes');
 
 /**
@@ -19326,15 +18293,7 @@ var State = {
 
 module.exports = State;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PropTypes":37}],43:[function(require,module,exports){
-=======
-},{"./PropTypes":38}],44:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PropTypes":37}],43:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var assign = require('react/lib/Object.assign');
 var PropTypes = require('./PropTypes');
 var Path = require('./utils/Path');
@@ -19437,15 +18396,7 @@ var StateContext = {
 
 module.exports = StateContext;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PropTypes":37,"./utils/Path":61,"react/lib/Object.assign":97}],44:[function(require,module,exports){
-=======
-},{"./PropTypes":38,"./utils/Path":62,"react/lib/Object.assign":98}],45:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PropTypes":37,"./utils/Path":61,"react/lib/Object.assign":97}],44:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /* jshint -W058 */
 var assign = require('react/lib/Object.assign');
 var Redirect = require('./Redirect');
@@ -19529,15 +18480,7 @@ assign(Transition.prototype, {
 
 module.exports = Transition;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Redirect":38,"react/lib/Object.assign":97}],45:[function(require,module,exports){
-=======
-},{"./Redirect":39,"react/lib/Object.assign":98}],46:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Redirect":38,"react/lib/Object.assign":97}],45:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Actions that modify the URL.
  */
@@ -19562,15 +18505,7 @@ var LocationActions = {
 
 module.exports = LocationActions;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],46:[function(require,module,exports){
-=======
-},{}],47:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],46:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var LocationActions = require('../actions/LocationActions');
 
 /**
@@ -19599,15 +18534,7 @@ var ImitateBrowserBehavior = {
 
 module.exports = ImitateBrowserBehavior;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../actions/LocationActions":45}],47:[function(require,module,exports){
-=======
-},{"../actions/LocationActions":46}],48:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../actions/LocationActions":45}],47:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * A scroll behavior that always scrolls to the top of the page
  * after a transition.
@@ -19622,15 +18549,7 @@ var ScrollToTopBehavior = {
 
 module.exports = ScrollToTopBehavior;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],48:[function(require,module,exports){
-=======
-},{}],49:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],48:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var Configuration = require('../Configuration');
 var PropTypes = require('../PropTypes');
@@ -19658,15 +18577,7 @@ var DefaultRoute = React.createClass({
 
 module.exports = DefaultRoute;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../Configuration":33,"../PropTypes":37,"react":230}],49:[function(require,module,exports){
-=======
-},{"../Configuration":34,"../PropTypes":38,"react":231}],50:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../Configuration":33,"../PropTypes":37,"react":230}],49:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var classSet = require('react/lib/cx');
 var assign = require('react/lib/Object.assign');
@@ -19776,15 +18687,7 @@ var Link = React.createClass({
 
 module.exports = Link;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../Navigation":35,"../PropTypes":37,"../State":42,"react":230,"react/lib/Object.assign":97,"react/lib/cx":187}],50:[function(require,module,exports){
-=======
-},{"../Navigation":36,"../PropTypes":38,"../State":43,"react":231,"react/lib/Object.assign":98,"react/lib/cx":188}],51:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../Navigation":35,"../PropTypes":37,"../State":42,"react":230,"react/lib/Object.assign":97,"react/lib/cx":187}],50:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var Configuration = require('../Configuration');
 var PropTypes = require('../PropTypes');
@@ -19813,15 +18716,7 @@ var NotFoundRoute = React.createClass({
 
 module.exports = NotFoundRoute;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../Configuration":33,"../PropTypes":37,"react":230}],51:[function(require,module,exports){
-=======
-},{"../Configuration":34,"../PropTypes":38,"react":231}],52:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../Configuration":33,"../PropTypes":37,"react":230}],51:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var Configuration = require('../Configuration');
 var PropTypes = require('../PropTypes');
@@ -19847,15 +18742,7 @@ var Redirect = React.createClass({
 
 module.exports = Redirect;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../Configuration":33,"../PropTypes":37,"react":230}],52:[function(require,module,exports){
-=======
-},{"../Configuration":34,"../PropTypes":38,"react":231}],53:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../Configuration":33,"../PropTypes":37,"react":230}],52:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var Configuration = require('../Configuration');
 var PropTypes = require('../PropTypes');
@@ -19923,15 +18810,7 @@ var Route = React.createClass({
 
 module.exports = Route;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../Configuration":33,"../PropTypes":37,"./RouteHandler":53,"react":230}],53:[function(require,module,exports){
-=======
-},{"../Configuration":34,"../PropTypes":38,"./RouteHandler":54,"react":231}],54:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../Configuration":33,"../PropTypes":37,"./RouteHandler":53,"react":230}],53:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 var RouteHandlerMixin = require('../RouteHandlerMixin');
 
@@ -19953,15 +18832,7 @@ var RouteHandler = React.createClass({
 
 module.exports = RouteHandler;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../RouteHandlerMixin":39,"react":230}],54:[function(require,module,exports){
-=======
-},{"../RouteHandlerMixin":40,"react":231}],55:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../RouteHandlerMixin":39,"react":230}],54:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /* jshint -W058 */
 var React = require('react');
@@ -20491,15 +19362,7 @@ function createRouter(options) {
 module.exports = createRouter;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Cancellation":32,"./History":34,"./NavigationContext":36,"./PropTypes":37,"./Redirect":38,"./Routing":40,"./Scrolling":41,"./StateContext":43,"./Transition":44,"./actions/LocationActions":45,"./behaviors/ImitateBrowserBehavior":46,"./isReactChildren":56,"./locations/HashLocation":57,"./locations/HistoryLocation":58,"./locations/RefreshLocation":59,"./utils/Path":61,"./utils/supportsHistory":63,"oMfpAn":30,"react":230,"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209,"react/lib/warning":229}],55:[function(require,module,exports){
-=======
-},{"./Cancellation":33,"./History":35,"./NavigationContext":37,"./PropTypes":38,"./Redirect":39,"./Routing":41,"./Scrolling":42,"./StateContext":44,"./Transition":45,"./actions/LocationActions":46,"./behaviors/ImitateBrowserBehavior":47,"./isReactChildren":57,"./locations/HashLocation":58,"./locations/HistoryLocation":59,"./locations/RefreshLocation":60,"./utils/Path":62,"./utils/supportsHistory":64,"oMfpAn":31,"react":231,"react/lib/ExecutionEnvironment":92,"react/lib/invariant":210,"react/lib/warning":230}],56:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Cancellation":32,"./History":34,"./NavigationContext":36,"./PropTypes":37,"./Redirect":38,"./Routing":40,"./Scrolling":41,"./StateContext":43,"./Transition":44,"./actions/LocationActions":45,"./behaviors/ImitateBrowserBehavior":46,"./isReactChildren":56,"./locations/HashLocation":57,"./locations/HistoryLocation":58,"./locations/RefreshLocation":59,"./utils/Path":61,"./utils/supportsHistory":63,"oMfpAn":30,"react":230,"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209,"react/lib/warning":229}],55:[function(require,module,exports){
->>>>>>> Can edit and create profile
 exports.DefaultRoute = require('./components/DefaultRoute');
 exports.Link = require('./components/Link');
 exports.NotFoundRoute = require('./components/NotFoundRoute');
@@ -20523,15 +19386,7 @@ exports.create = require('./createRouter');
 exports.run = require('./runRouter');
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./History":34,"./Navigation":35,"./RouteHandlerMixin":39,"./State":42,"./behaviors/ImitateBrowserBehavior":46,"./behaviors/ScrollToTopBehavior":47,"./components/DefaultRoute":48,"./components/Link":49,"./components/NotFoundRoute":50,"./components/Redirect":51,"./components/Route":52,"./components/RouteHandler":53,"./createRouter":54,"./locations/HashLocation":57,"./locations/HistoryLocation":58,"./locations/RefreshLocation":59,"./runRouter":60}],56:[function(require,module,exports){
-=======
-},{"./History":35,"./Navigation":36,"./RouteHandlerMixin":40,"./State":43,"./behaviors/ImitateBrowserBehavior":47,"./behaviors/ScrollToTopBehavior":48,"./components/DefaultRoute":49,"./components/Link":50,"./components/NotFoundRoute":51,"./components/Redirect":52,"./components/Route":53,"./components/RouteHandler":54,"./createRouter":55,"./locations/HashLocation":58,"./locations/HistoryLocation":59,"./locations/RefreshLocation":60,"./runRouter":61}],57:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./History":34,"./Navigation":35,"./RouteHandlerMixin":39,"./State":42,"./behaviors/ImitateBrowserBehavior":46,"./behaviors/ScrollToTopBehavior":47,"./components/DefaultRoute":48,"./components/Link":49,"./components/NotFoundRoute":50,"./components/Redirect":51,"./components/Route":52,"./components/RouteHandler":53,"./createRouter":54,"./locations/HashLocation":57,"./locations/HistoryLocation":58,"./locations/RefreshLocation":59,"./runRouter":60}],56:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var React = require('react');
 
 function isValidChild(object) {
@@ -20544,15 +19399,7 @@ function isReactChildren(object) {
 
 module.exports = isReactChildren;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react":230}],57:[function(require,module,exports){
-=======
-},{"react":231}],58:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react":230}],57:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var LocationActions = require('../actions/LocationActions');
 var History = require('../History');
 
@@ -20675,15 +19522,7 @@ var HashLocation = {
 
 module.exports = HashLocation;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../History":34,"../actions/LocationActions":45}],58:[function(require,module,exports){
-=======
-},{"../History":35,"../actions/LocationActions":46}],59:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../History":34,"../actions/LocationActions":45}],58:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var LocationActions = require('../actions/LocationActions');
 var History = require('../History');
 
@@ -20773,15 +19612,7 @@ var HistoryLocation = {
 
 module.exports = HistoryLocation;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../History":34,"../actions/LocationActions":45}],59:[function(require,module,exports){
-=======
-},{"../History":35,"../actions/LocationActions":46}],60:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../History":34,"../actions/LocationActions":45}],59:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var HistoryLocation = require('./HistoryLocation');
 var History = require('../History');
 
@@ -20812,15 +19643,7 @@ var RefreshLocation = {
 
 module.exports = RefreshLocation;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"../History":34,"./HistoryLocation":58}],60:[function(require,module,exports){
-=======
-},{"../History":35,"./HistoryLocation":59}],61:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"../History":34,"./HistoryLocation":58}],60:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var createRouter = require('./createRouter');
 
 /**
@@ -20870,15 +19693,7 @@ function runRouter(routes, location, callback) {
 
 module.exports = runRouter;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./createRouter":54}],61:[function(require,module,exports){
-=======
-},{"./createRouter":55}],62:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./createRouter":54}],61:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var invariant = require('react/lib/invariant');
 var merge = require('qs/lib/utils').merge;
 var qs = require('qs');
@@ -21044,15 +19859,7 @@ var Path = {
 
 module.exports = Path;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"qs":64,"qs/lib/utils":68,"react/lib/invariant":209}],62:[function(require,module,exports){
-=======
-},{"qs":65,"qs/lib/utils":69,"react/lib/invariant":210}],63:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"qs":64,"qs/lib/utils":68,"react/lib/invariant":209}],62:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var invariant = require('react/lib/invariant');
 var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 
@@ -21073,15 +19880,7 @@ function getWindowScrollPosition() {
 
 module.exports = getWindowScrollPosition;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],63:[function(require,module,exports){
-=======
-},{"react/lib/ExecutionEnvironment":92,"react/lib/invariant":210}],64:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"react/lib/ExecutionEnvironment":91,"react/lib/invariant":209}],63:[function(require,module,exports){
->>>>>>> Can edit and create profile
 function supportsHistory() {
   /*! taken from modernizr
    * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
@@ -21101,24 +19900,10 @@ function supportsHistory() {
 
 module.exports = supportsHistory;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],64:[function(require,module,exports){
 module.exports = require('./lib/');
 
 },{"./lib/":65}],65:[function(require,module,exports){
-=======
-},{}],65:[function(require,module,exports){
-module.exports = require('./lib/');
-
-},{"./lib/":66}],66:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],64:[function(require,module,exports){
-module.exports = require('./lib/');
-
-},{"./lib/":65}],65:[function(require,module,exports){
->>>>>>> Can edit and create profile
 // Load modules
 
 var Stringify = require('./stringify');
@@ -21135,15 +19920,7 @@ module.exports = {
     parse: Parse
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./parse":66,"./stringify":67}],66:[function(require,module,exports){
-=======
-},{"./parse":67,"./stringify":68}],67:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./parse":66,"./stringify":67}],66:[function(require,module,exports){
->>>>>>> Can edit and create profile
 // Load modules
 
 var Utils = require('./utils');
@@ -21302,15 +20079,7 @@ module.exports = function (str, options) {
     return Utils.compact(obj);
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./utils":68}],67:[function(require,module,exports){
-=======
-},{"./utils":69}],68:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./utils":68}],67:[function(require,module,exports){
->>>>>>> Can edit and create profile
 // Load modules
 
 var Utils = require('./utils');
@@ -21389,15 +20158,7 @@ module.exports = function (obj, options) {
     return keys.join(delimiter);
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./utils":68}],68:[function(require,module,exports){
-=======
-},{"./utils":69}],69:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./utils":68}],68:[function(require,module,exports){
->>>>>>> Can edit and create profile
 // Load modules
 
 
@@ -21531,24 +20292,10 @@ exports.isBuffer = function (obj) {
         obj.constructor.isBuffer(obj));
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],69:[function(require,module,exports){
 module.exports = require('./lib/ReactWithAddons');
 
 },{"./lib/ReactWithAddons":160}],70:[function(require,module,exports){
-=======
-},{}],70:[function(require,module,exports){
-module.exports = require('./lib/ReactWithAddons');
-
-},{"./lib/ReactWithAddons":161}],71:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],69:[function(require,module,exports){
-module.exports = require('./lib/ReactWithAddons');
-
-},{"./lib/ReactWithAddons":160}],70:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -21575,15 +20322,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./focusNode":194}],71:[function(require,module,exports){
-=======
-},{"./focusNode":195}],72:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./focusNode":194}],71:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -21805,15 +20544,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPropagators":90,"./ExecutionEnvironment":91,"./SyntheticInputEvent":170,"./keyOf":216}],72:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPropagators":91,"./ExecutionEnvironment":92,"./SyntheticInputEvent":171,"./keyOf":217}],73:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPropagators":90,"./ExecutionEnvironment":91,"./SyntheticInputEvent":170,"./keyOf":216}],72:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -21925,15 +20656,7 @@ var CSSCore = {
 module.exports = CSSCore;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],73:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],74:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],73:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22052,15 +20775,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],74:[function(require,module,exports){
-=======
-},{}],75:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],74:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -22195,15 +20910,7 @@ var CSSPropertyOperations = {
 module.exports = CSSPropertyOperations;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CSSProperty":73,"./ExecutionEnvironment":91,"./camelizeStyleName":181,"./dangerousStyleValue":188,"./hyphenateStyleName":207,"./memoizeStringOnly":218,"./warning":229,"oMfpAn":30}],75:[function(require,module,exports){
-=======
-},{"./CSSProperty":74,"./ExecutionEnvironment":92,"./camelizeStyleName":182,"./dangerousStyleValue":189,"./hyphenateStyleName":208,"./memoizeStringOnly":219,"./warning":230,"oMfpAn":31}],76:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CSSProperty":73,"./ExecutionEnvironment":91,"./camelizeStyleName":181,"./dangerousStyleValue":188,"./hyphenateStyleName":207,"./memoizeStringOnly":218,"./warning":229,"oMfpAn":30}],75:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -22303,15 +21010,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./PooledClass":98,"./invariant":209,"oMfpAn":30}],76:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./PooledClass":99,"./invariant":210,"oMfpAn":31}],77:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./PooledClass":98,"./invariant":209,"oMfpAn":30}],76:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22693,15 +21392,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPluginHub":87,"./EventPropagators":90,"./ExecutionEnvironment":91,"./ReactUpdates":159,"./SyntheticEvent":168,"./isEventSupported":210,"./isTextInputElement":212,"./keyOf":216}],77:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPluginHub":88,"./EventPropagators":91,"./ExecutionEnvironment":92,"./ReactUpdates":160,"./SyntheticEvent":169,"./isEventSupported":211,"./isTextInputElement":213,"./keyOf":217}],78:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPluginHub":87,"./EventPropagators":90,"./ExecutionEnvironment":91,"./ReactUpdates":159,"./SyntheticEvent":168,"./isEventSupported":210,"./isTextInputElement":212,"./keyOf":216}],77:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22726,15 +21417,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],78:[function(require,module,exports){
-=======
-},{}],79:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],78:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22993,15 +21676,7 @@ var CompositionEventPlugin = {
 
 module.exports = CompositionEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPropagators":90,"./ExecutionEnvironment":91,"./ReactInputSelection":133,"./SyntheticCompositionEvent":166,"./getTextContentAccessor":204,"./keyOf":216}],79:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPropagators":91,"./ExecutionEnvironment":92,"./ReactInputSelection":134,"./SyntheticCompositionEvent":167,"./getTextContentAccessor":205,"./keyOf":217}],80:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPropagators":90,"./ExecutionEnvironment":91,"./ReactInputSelection":133,"./SyntheticCompositionEvent":166,"./getTextContentAccessor":204,"./keyOf":216}],79:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -23176,15 +21851,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Danger":82,"./ReactMultiChildUpdateTypes":140,"./getTextContentAccessor":204,"./invariant":209,"oMfpAn":30}],80:[function(require,module,exports){
-=======
-},{"./Danger":83,"./ReactMultiChildUpdateTypes":141,"./getTextContentAccessor":205,"./invariant":210,"oMfpAn":31}],81:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Danger":82,"./ReactMultiChildUpdateTypes":140,"./getTextContentAccessor":204,"./invariant":209,"oMfpAn":30}],80:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -23483,15 +22150,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],81:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],82:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],81:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -23688,15 +22347,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80,"./escapeTextForBrowser":192,"./memoizeStringOnly":218,"./warning":229,"oMfpAn":30}],82:[function(require,module,exports){
-=======
-},{"./DOMProperty":81,"./escapeTextForBrowser":193,"./memoizeStringOnly":219,"./warning":230,"oMfpAn":31}],83:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80,"./escapeTextForBrowser":192,"./memoizeStringOnly":218,"./warning":229,"oMfpAn":30}],82:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -23882,15 +22533,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91,"./createNodesFromMarkup":186,"./emptyFunction":190,"./getMarkupWrap":201,"./invariant":209,"oMfpAn":30}],83:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92,"./createNodesFromMarkup":187,"./emptyFunction":191,"./getMarkupWrap":202,"./invariant":210,"oMfpAn":31}],84:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91,"./createNodesFromMarkup":186,"./emptyFunction":190,"./getMarkupWrap":201,"./invariant":209,"oMfpAn":30}],83:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -23930,15 +22573,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./keyOf":216}],84:[function(require,module,exports){
-=======
-},{"./keyOf":217}],85:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./keyOf":216}],84:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -24078,15 +22713,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPropagators":90,"./ReactMount":138,"./SyntheticMouseEvent":172,"./keyOf":216}],85:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPropagators":91,"./ReactMount":139,"./SyntheticMouseEvent":173,"./keyOf":217}],86:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPropagators":90,"./ReactMount":138,"./SyntheticMouseEvent":172,"./keyOf":216}],85:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -24158,15 +22785,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./keyMirror":215}],86:[function(require,module,exports){
-=======
-},{"./keyMirror":216}],87:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./keyMirror":215}],86:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24256,15 +22875,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./emptyFunction":190,"oMfpAn":30}],87:[function(require,module,exports){
-=======
-},{"./emptyFunction":191,"oMfpAn":31}],88:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./emptyFunction":190,"oMfpAn":30}],87:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -24540,15 +23151,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventPluginRegistry":88,"./EventPluginUtils":89,"./accumulateInto":178,"./forEachAccumulated":195,"./invariant":209,"oMfpAn":30}],88:[function(require,module,exports){
-=======
-},{"./EventPluginRegistry":89,"./EventPluginUtils":90,"./accumulateInto":179,"./forEachAccumulated":196,"./invariant":210,"oMfpAn":31}],89:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventPluginRegistry":88,"./EventPluginUtils":89,"./accumulateInto":178,"./forEachAccumulated":195,"./invariant":209,"oMfpAn":30}],88:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -24828,15 +23431,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],89:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],90:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],89:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25057,15 +23652,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./invariant":209,"oMfpAn":30}],90:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./invariant":210,"oMfpAn":31}],91:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./invariant":209,"oMfpAn":30}],90:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25207,15 +23794,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPluginHub":87,"./accumulateInto":178,"./forEachAccumulated":195,"oMfpAn":30}],91:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPluginHub":88,"./accumulateInto":179,"./forEachAccumulated":196,"oMfpAn":31}],92:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPluginHub":87,"./accumulateInto":178,"./forEachAccumulated":195,"oMfpAn":30}],91:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25260,15 +23839,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],92:[function(require,module,exports){
-=======
-},{}],93:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],92:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25460,15 +24031,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80,"./ExecutionEnvironment":91}],93:[function(require,module,exports){
-=======
-},{"./DOMProperty":81,"./ExecutionEnvironment":92}],94:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80,"./ExecutionEnvironment":91}],93:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25509,15 +24072,7 @@ var LinkedStateMixin = {
 
 module.exports = LinkedStateMixin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactLink":136,"./ReactStateSetters":153}],94:[function(require,module,exports){
-=======
-},{"./ReactLink":137,"./ReactStateSetters":154}],95:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactLink":136,"./ReactStateSetters":153}],94:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25673,15 +24228,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactPropTypes":147,"./invariant":209,"oMfpAn":30}],95:[function(require,module,exports){
-=======
-},{"./ReactPropTypes":148,"./invariant":210,"oMfpAn":31}],96:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactPropTypes":147,"./invariant":209,"oMfpAn":30}],95:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -25731,15 +24278,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactBrowserEventEmitter":101,"./accumulateInto":178,"./forEachAccumulated":195,"./invariant":209,"oMfpAn":30}],96:[function(require,module,exports){
-=======
-},{"./ReactBrowserEventEmitter":102,"./accumulateInto":179,"./forEachAccumulated":196,"./invariant":210,"oMfpAn":31}],97:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactBrowserEventEmitter":101,"./accumulateInto":178,"./forEachAccumulated":195,"./invariant":209,"oMfpAn":30}],96:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25797,15 +24336,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./emptyFunction":190}],97:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./emptyFunction":191}],98:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./emptyFunction":190}],97:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -25852,15 +24383,7 @@ function assign(target, sources) {
 
 module.exports = assign;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],98:[function(require,module,exports){
-=======
-},{}],99:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],98:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25976,15 +24499,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],99:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],100:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],99:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -26172,15 +24687,7 @@ React.version = '0.12.2';
 module.exports = React;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMPropertyOperations":81,"./EventPluginUtils":89,"./ExecutionEnvironment":91,"./Object.assign":97,"./ReactChildren":104,"./ReactComponent":105,"./ReactCompositeComponent":108,"./ReactContext":109,"./ReactCurrentOwner":110,"./ReactDOM":111,"./ReactDOMComponent":113,"./ReactDefaultInjection":123,"./ReactElement":126,"./ReactElementValidator":127,"./ReactInstanceHandles":134,"./ReactLegacyElement":135,"./ReactMount":138,"./ReactMultiChild":139,"./ReactPerf":143,"./ReactPropTypes":147,"./ReactServerRendering":151,"./ReactTextComponent":155,"./deprecated":189,"./onlyChild":220,"oMfpAn":30}],100:[function(require,module,exports){
-=======
-},{"./DOMPropertyOperations":82,"./EventPluginUtils":90,"./ExecutionEnvironment":92,"./Object.assign":98,"./ReactChildren":105,"./ReactComponent":106,"./ReactCompositeComponent":109,"./ReactContext":110,"./ReactCurrentOwner":111,"./ReactDOM":112,"./ReactDOMComponent":114,"./ReactDefaultInjection":124,"./ReactElement":127,"./ReactElementValidator":128,"./ReactInstanceHandles":135,"./ReactLegacyElement":136,"./ReactMount":139,"./ReactMultiChild":140,"./ReactPerf":144,"./ReactPropTypes":148,"./ReactServerRendering":152,"./ReactTextComponent":156,"./deprecated":190,"./onlyChild":221,"oMfpAn":31}],101:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMPropertyOperations":81,"./EventPluginUtils":89,"./ExecutionEnvironment":91,"./Object.assign":97,"./ReactChildren":104,"./ReactComponent":105,"./ReactCompositeComponent":108,"./ReactContext":109,"./ReactCurrentOwner":110,"./ReactDOM":111,"./ReactDOMComponent":113,"./ReactDefaultInjection":123,"./ReactElement":126,"./ReactElementValidator":127,"./ReactInstanceHandles":134,"./ReactLegacyElement":135,"./ReactMount":138,"./ReactMultiChild":139,"./ReactPerf":143,"./ReactPropTypes":147,"./ReactServerRendering":151,"./ReactTextComponent":155,"./deprecated":189,"./onlyChild":220,"oMfpAn":30}],100:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -26223,15 +24730,7 @@ var ReactBrowserComponentMixin = {
 module.exports = ReactBrowserComponentMixin;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactEmptyComponent":128,"./ReactMount":138,"./invariant":209,"oMfpAn":30}],101:[function(require,module,exports){
-=======
-},{"./ReactEmptyComponent":129,"./ReactMount":139,"./invariant":210,"oMfpAn":31}],102:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactEmptyComponent":128,"./ReactMount":138,"./invariant":209,"oMfpAn":30}],101:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26586,15 +25085,7 @@ var ReactBrowserEventEmitter = assign({}, ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPluginHub":87,"./EventPluginRegistry":88,"./Object.assign":97,"./ReactEventEmitterMixin":130,"./ViewportMetrics":177,"./isEventSupported":210}],102:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPluginHub":88,"./EventPluginRegistry":89,"./Object.assign":98,"./ReactEventEmitterMixin":131,"./ViewportMetrics":178,"./isEventSupported":211}],103:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPluginHub":87,"./EventPluginRegistry":88,"./Object.assign":97,"./ReactEventEmitterMixin":130,"./ViewportMetrics":177,"./isEventSupported":210}],102:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26661,15 +25152,7 @@ var ReactCSSTransitionGroup = React.createClass({
 
 module.exports = ReactCSSTransitionGroup;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./React":99,"./ReactCSSTransitionGroupChild":103,"./ReactTransitionGroup":158}],103:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./React":100,"./ReactCSSTransitionGroupChild":104,"./ReactTransitionGroup":159}],104:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./React":99,"./ReactCSSTransitionGroupChild":103,"./ReactTransitionGroup":158}],103:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -26804,15 +25287,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
 module.exports = ReactCSSTransitionGroupChild;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CSSCore":72,"./React":99,"./ReactTransitionEvents":157,"./onlyChild":220,"oMfpAn":30}],104:[function(require,module,exports){
-=======
-},{"./CSSCore":73,"./React":100,"./ReactTransitionEvents":158,"./onlyChild":221,"oMfpAn":31}],105:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CSSCore":72,"./React":99,"./ReactTransitionEvents":157,"./onlyChild":220,"oMfpAn":30}],104:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -26962,15 +25437,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./PooledClass":98,"./traverseAllChildren":227,"./warning":229,"oMfpAn":30}],105:[function(require,module,exports){
-=======
-},{"./PooledClass":99,"./traverseAllChildren":228,"./warning":230,"oMfpAn":31}],106:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./PooledClass":98,"./traverseAllChildren":227,"./warning":229,"oMfpAn":30}],105:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -27413,15 +25880,7 @@ var ReactComponent = {
 module.exports = ReactComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./ReactElement":126,"./ReactOwner":142,"./ReactUpdates":159,"./invariant":209,"./keyMirror":215,"oMfpAn":30}],106:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./ReactElement":127,"./ReactOwner":143,"./ReactUpdates":160,"./invariant":210,"./keyMirror":216,"oMfpAn":31}],107:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./ReactElement":126,"./ReactOwner":142,"./ReactUpdates":159,"./invariant":209,"./keyMirror":215,"oMfpAn":30}],106:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -27543,15 +26002,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactDOMIDOperations":115,"./ReactMarkupChecksum":137,"./ReactMount":138,"./ReactPerf":143,"./ReactReconcileTransaction":149,"./getReactRootElementInContainer":203,"./invariant":209,"./setInnerHTML":223,"oMfpAn":30}],107:[function(require,module,exports){
-=======
-},{"./ReactDOMIDOperations":116,"./ReactMarkupChecksum":138,"./ReactMount":139,"./ReactPerf":144,"./ReactReconcileTransaction":150,"./getReactRootElementInContainer":204,"./invariant":210,"./setInnerHTML":224,"oMfpAn":31}],108:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactDOMIDOperations":115,"./ReactMarkupChecksum":137,"./ReactMount":138,"./ReactPerf":143,"./ReactReconcileTransaction":149,"./getReactRootElementInContainer":203,"./invariant":209,"./setInnerHTML":223,"oMfpAn":30}],107:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27600,15 +26051,7 @@ var ReactComponentWithPureRenderMixin = {
 
 module.exports = ReactComponentWithPureRenderMixin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./shallowEqual":224}],108:[function(require,module,exports){
-=======
-},{"./shallowEqual":225}],109:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./shallowEqual":224}],108:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29048,15 +27491,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./ReactComponent":105,"./ReactContext":109,"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactElementValidator":127,"./ReactEmptyComponent":128,"./ReactErrorUtils":129,"./ReactLegacyElement":135,"./ReactOwner":142,"./ReactPerf":143,"./ReactPropTransferer":144,"./ReactPropTypeLocationNames":145,"./ReactPropTypeLocations":146,"./ReactUpdates":159,"./instantiateReactComponent":208,"./invariant":209,"./keyMirror":215,"./keyOf":216,"./mapObject":217,"./monitorCodeUse":219,"./shouldUpdateReactComponent":225,"./warning":229,"oMfpAn":30}],109:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./ReactComponent":106,"./ReactContext":110,"./ReactCurrentOwner":111,"./ReactElement":127,"./ReactElementValidator":128,"./ReactEmptyComponent":129,"./ReactErrorUtils":130,"./ReactLegacyElement":136,"./ReactOwner":143,"./ReactPerf":144,"./ReactPropTransferer":145,"./ReactPropTypeLocationNames":146,"./ReactPropTypeLocations":147,"./ReactUpdates":160,"./instantiateReactComponent":209,"./invariant":210,"./keyMirror":216,"./keyOf":217,"./mapObject":218,"./monitorCodeUse":220,"./shouldUpdateReactComponent":226,"./warning":230,"oMfpAn":31}],110:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./ReactComponent":105,"./ReactContext":109,"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactElementValidator":127,"./ReactEmptyComponent":128,"./ReactErrorUtils":129,"./ReactLegacyElement":135,"./ReactOwner":142,"./ReactPerf":143,"./ReactPropTransferer":144,"./ReactPropTypeLocationNames":145,"./ReactPropTypeLocations":146,"./ReactUpdates":159,"./instantiateReactComponent":208,"./invariant":209,"./keyMirror":215,"./keyOf":216,"./mapObject":217,"./monitorCodeUse":219,"./shouldUpdateReactComponent":225,"./warning":229,"oMfpAn":30}],109:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29118,15 +27553,7 @@ var ReactContext = {
 
 module.exports = ReactContext;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97}],110:[function(require,module,exports){
-=======
-},{"./Object.assign":98}],111:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97}],110:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29160,15 +27587,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],111:[function(require,module,exports){
-=======
-},{}],112:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],111:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29351,15 +27770,7 @@ var ReactDOM = mapObject({
 module.exports = ReactDOM;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactElementValidator":127,"./ReactLegacyElement":135,"./mapObject":217,"oMfpAn":30}],112:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactElementValidator":128,"./ReactLegacyElement":136,"./mapObject":218,"oMfpAn":31}],113:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactElementValidator":127,"./ReactLegacyElement":135,"./mapObject":217,"oMfpAn":30}],112:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29424,15 +27835,7 @@ var ReactDOMButton = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMButton;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./AutoFocusMixin":70,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./keyMirror":215}],113:[function(require,module,exports){
-=======
-},{"./AutoFocusMixin":71,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127,"./keyMirror":216}],114:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./AutoFocusMixin":70,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./keyMirror":215}],113:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29919,15 +28322,7 @@ assign(
 module.exports = ReactDOMComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CSSPropertyOperations":74,"./DOMProperty":80,"./DOMPropertyOperations":81,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactBrowserEventEmitter":101,"./ReactComponent":105,"./ReactMount":138,"./ReactMultiChild":139,"./ReactPerf":143,"./escapeTextForBrowser":192,"./invariant":209,"./isEventSupported":210,"./keyOf":216,"./monitorCodeUse":219,"oMfpAn":30}],114:[function(require,module,exports){
-=======
-},{"./CSSPropertyOperations":75,"./DOMProperty":81,"./DOMPropertyOperations":82,"./Object.assign":98,"./ReactBrowserComponentMixin":101,"./ReactBrowserEventEmitter":102,"./ReactComponent":106,"./ReactMount":139,"./ReactMultiChild":140,"./ReactPerf":144,"./escapeTextForBrowser":193,"./invariant":210,"./isEventSupported":211,"./keyOf":217,"./monitorCodeUse":220,"oMfpAn":31}],115:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CSSPropertyOperations":74,"./DOMProperty":80,"./DOMPropertyOperations":81,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactBrowserEventEmitter":101,"./ReactComponent":105,"./ReactMount":138,"./ReactMultiChild":139,"./ReactPerf":143,"./escapeTextForBrowser":192,"./invariant":209,"./isEventSupported":210,"./keyOf":216,"./monitorCodeUse":219,"oMfpAn":30}],114:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29977,15 +28372,7 @@ var ReactDOMForm = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMForm;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./LocalEventTrapMixin":95,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126}],115:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./LocalEventTrapMixin":96,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127}],116:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./LocalEventTrapMixin":95,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126}],115:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30171,15 +28558,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CSSPropertyOperations":74,"./DOMChildrenOperations":79,"./DOMPropertyOperations":81,"./ReactMount":138,"./ReactPerf":143,"./invariant":209,"./setInnerHTML":223,"oMfpAn":30}],116:[function(require,module,exports){
-=======
-},{"./CSSPropertyOperations":75,"./DOMChildrenOperations":80,"./DOMPropertyOperations":82,"./ReactMount":139,"./ReactPerf":144,"./invariant":210,"./setInnerHTML":224,"oMfpAn":31}],117:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CSSPropertyOperations":74,"./DOMChildrenOperations":79,"./DOMPropertyOperations":81,"./ReactMount":138,"./ReactPerf":143,"./invariant":209,"./setInnerHTML":223,"oMfpAn":30}],116:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30227,15 +28606,7 @@ var ReactDOMImg = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMImg;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./LocalEventTrapMixin":95,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126}],117:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./LocalEventTrapMixin":96,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127}],118:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./LocalEventTrapMixin":95,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126}],117:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30413,15 +28784,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./AutoFocusMixin":70,"./DOMPropertyOperations":81,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactMount":138,"./ReactUpdates":159,"./invariant":209,"oMfpAn":30}],118:[function(require,module,exports){
-=======
-},{"./AutoFocusMixin":71,"./DOMPropertyOperations":82,"./LinkedValueUtils":95,"./Object.assign":98,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127,"./ReactMount":139,"./ReactUpdates":160,"./invariant":210,"oMfpAn":31}],119:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./AutoFocusMixin":70,"./DOMPropertyOperations":81,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactMount":138,"./ReactUpdates":159,"./invariant":209,"oMfpAn":30}],118:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30474,15 +28837,7 @@ var ReactDOMOption = ReactCompositeComponent.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./warning":229,"oMfpAn":30}],119:[function(require,module,exports){
-=======
-},{"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127,"./warning":230,"oMfpAn":31}],120:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./warning":229,"oMfpAn":30}],119:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30666,15 +29021,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMSelect;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./AutoFocusMixin":70,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactUpdates":159}],120:[function(require,module,exports){
-=======
-},{"./AutoFocusMixin":71,"./LinkedValueUtils":95,"./Object.assign":98,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127,"./ReactUpdates":160}],121:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./AutoFocusMixin":70,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactUpdates":159}],120:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30883,15 +29230,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91,"./getNodeForCharacterOffset":202,"./getTextContentAccessor":204}],121:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92,"./getNodeForCharacterOffset":203,"./getTextContentAccessor":205}],122:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91,"./getNodeForCharacterOffset":202,"./getTextContentAccessor":204}],121:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -31032,15 +29371,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./AutoFocusMixin":70,"./DOMPropertyOperations":81,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactUpdates":159,"./invariant":209,"./warning":229,"oMfpAn":30}],122:[function(require,module,exports){
-=======
-},{"./AutoFocusMixin":71,"./DOMPropertyOperations":82,"./LinkedValueUtils":95,"./Object.assign":98,"./ReactBrowserComponentMixin":101,"./ReactCompositeComponent":109,"./ReactDOM":112,"./ReactElement":127,"./ReactUpdates":160,"./invariant":210,"./warning":230,"oMfpAn":31}],123:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./AutoFocusMixin":70,"./DOMPropertyOperations":81,"./LinkedValueUtils":94,"./Object.assign":97,"./ReactBrowserComponentMixin":100,"./ReactCompositeComponent":108,"./ReactDOM":111,"./ReactElement":126,"./ReactUpdates":159,"./invariant":209,"./warning":229,"oMfpAn":30}],122:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31113,15 +29444,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./ReactUpdates":159,"./Transaction":176,"./emptyFunction":190}],123:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./ReactUpdates":160,"./Transaction":177,"./emptyFunction":191}],124:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./ReactUpdates":159,"./Transaction":176,"./emptyFunction":190}],123:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -31250,15 +29573,7 @@ module.exports = {
 };
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./BeforeInputEventPlugin":71,"./ChangeEventPlugin":76,"./ClientReactRootIndex":77,"./CompositionEventPlugin":78,"./DefaultEventPluginOrder":83,"./EnterLeaveEventPlugin":84,"./ExecutionEnvironment":91,"./HTMLDOMPropertyConfig":92,"./MobileSafariClickEventPlugin":96,"./ReactBrowserComponentMixin":100,"./ReactComponentBrowserEnvironment":106,"./ReactDOMButton":112,"./ReactDOMComponent":113,"./ReactDOMForm":114,"./ReactDOMImg":116,"./ReactDOMInput":117,"./ReactDOMOption":118,"./ReactDOMSelect":119,"./ReactDOMTextarea":121,"./ReactDefaultBatchingStrategy":122,"./ReactDefaultPerf":124,"./ReactEventListener":131,"./ReactInjection":132,"./ReactInstanceHandles":134,"./ReactMount":138,"./SVGDOMPropertyConfig":161,"./SelectEventPlugin":162,"./ServerReactRootIndex":163,"./SimpleEventPlugin":164,"./createFullPageComponent":185,"oMfpAn":30}],124:[function(require,module,exports){
-=======
-},{"./BeforeInputEventPlugin":72,"./ChangeEventPlugin":77,"./ClientReactRootIndex":78,"./CompositionEventPlugin":79,"./DefaultEventPluginOrder":84,"./EnterLeaveEventPlugin":85,"./ExecutionEnvironment":92,"./HTMLDOMPropertyConfig":93,"./MobileSafariClickEventPlugin":97,"./ReactBrowserComponentMixin":101,"./ReactComponentBrowserEnvironment":107,"./ReactDOMButton":113,"./ReactDOMComponent":114,"./ReactDOMForm":115,"./ReactDOMImg":117,"./ReactDOMInput":118,"./ReactDOMOption":119,"./ReactDOMSelect":120,"./ReactDOMTextarea":122,"./ReactDefaultBatchingStrategy":123,"./ReactDefaultPerf":125,"./ReactEventListener":132,"./ReactInjection":133,"./ReactInstanceHandles":135,"./ReactMount":139,"./SVGDOMPropertyConfig":162,"./SelectEventPlugin":163,"./ServerReactRootIndex":164,"./SimpleEventPlugin":165,"./createFullPageComponent":186,"oMfpAn":31}],125:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./BeforeInputEventPlugin":71,"./ChangeEventPlugin":76,"./ClientReactRootIndex":77,"./CompositionEventPlugin":78,"./DefaultEventPluginOrder":83,"./EnterLeaveEventPlugin":84,"./ExecutionEnvironment":91,"./HTMLDOMPropertyConfig":92,"./MobileSafariClickEventPlugin":96,"./ReactBrowserComponentMixin":100,"./ReactComponentBrowserEnvironment":106,"./ReactDOMButton":112,"./ReactDOMComponent":113,"./ReactDOMForm":114,"./ReactDOMImg":116,"./ReactDOMInput":117,"./ReactDOMOption":118,"./ReactDOMSelect":119,"./ReactDOMTextarea":121,"./ReactDefaultBatchingStrategy":122,"./ReactDefaultPerf":124,"./ReactEventListener":131,"./ReactInjection":132,"./ReactInstanceHandles":134,"./ReactMount":138,"./SVGDOMPropertyConfig":161,"./SelectEventPlugin":162,"./ServerReactRootIndex":163,"./SimpleEventPlugin":164,"./createFullPageComponent":185,"oMfpAn":30}],124:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31518,15 +29833,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80,"./ReactDefaultPerfAnalysis":125,"./ReactMount":138,"./ReactPerf":143,"./performanceNow":222}],125:[function(require,module,exports){
-=======
-},{"./DOMProperty":81,"./ReactDefaultPerfAnalysis":126,"./ReactMount":139,"./ReactPerf":144,"./performanceNow":223}],126:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80,"./ReactDefaultPerfAnalysis":125,"./ReactMount":138,"./ReactPerf":143,"./performanceNow":222}],125:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31732,15 +30039,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97}],126:[function(require,module,exports){
-=======
-},{"./Object.assign":98}],127:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97}],126:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -31986,15 +30285,7 @@ ReactElement.isValidElement = function(object) {
 module.exports = ReactElement;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactContext":109,"./ReactCurrentOwner":110,"./warning":229,"oMfpAn":30}],127:[function(require,module,exports){
-=======
-},{"./ReactContext":110,"./ReactCurrentOwner":111,"./warning":230,"oMfpAn":31}],128:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactContext":109,"./ReactCurrentOwner":110,"./warning":229,"oMfpAn":30}],127:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -32276,15 +30567,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactPropTypeLocations":146,"./monitorCodeUse":219,"./warning":229,"oMfpAn":30}],128:[function(require,module,exports){
-=======
-},{"./ReactCurrentOwner":111,"./ReactElement":127,"./ReactPropTypeLocations":147,"./monitorCodeUse":220,"./warning":230,"oMfpAn":31}],129:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactPropTypeLocations":146,"./monitorCodeUse":219,"./warning":229,"oMfpAn":30}],128:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -32361,15 +30644,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./invariant":209,"oMfpAn":30}],129:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./invariant":210,"oMfpAn":31}],130:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./invariant":209,"oMfpAn":30}],129:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -32401,15 +30676,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],130:[function(require,module,exports){
-=======
-},{}],131:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],130:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -32459,15 +30726,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventPluginHub":87}],131:[function(require,module,exports){
-=======
-},{"./EventPluginHub":88}],132:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventPluginHub":87}],131:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -32651,15 +30910,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventListener":86,"./ExecutionEnvironment":91,"./Object.assign":97,"./PooledClass":98,"./ReactInstanceHandles":134,"./ReactMount":138,"./ReactUpdates":159,"./getEventTarget":200,"./getUnboundedScrollPosition":205}],132:[function(require,module,exports){
-=======
-},{"./EventListener":87,"./ExecutionEnvironment":92,"./Object.assign":98,"./PooledClass":99,"./ReactInstanceHandles":135,"./ReactMount":139,"./ReactUpdates":160,"./getEventTarget":201,"./getUnboundedScrollPosition":206}],133:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventListener":86,"./ExecutionEnvironment":91,"./Object.assign":97,"./PooledClass":98,"./ReactInstanceHandles":134,"./ReactMount":138,"./ReactUpdates":159,"./getEventTarget":200,"./getUnboundedScrollPosition":205}],132:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -32699,15 +30950,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80,"./EventPluginHub":87,"./ReactBrowserEventEmitter":101,"./ReactComponent":105,"./ReactCompositeComponent":108,"./ReactEmptyComponent":128,"./ReactNativeComponent":141,"./ReactPerf":143,"./ReactRootIndex":150,"./ReactUpdates":159}],133:[function(require,module,exports){
-=======
-},{"./DOMProperty":81,"./EventPluginHub":88,"./ReactBrowserEventEmitter":102,"./ReactComponent":106,"./ReactCompositeComponent":109,"./ReactEmptyComponent":129,"./ReactNativeComponent":142,"./ReactPerf":144,"./ReactRootIndex":151,"./ReactUpdates":160}],134:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80,"./EventPluginHub":87,"./ReactBrowserEventEmitter":101,"./ReactComponent":105,"./ReactCompositeComponent":108,"./ReactEmptyComponent":128,"./ReactNativeComponent":141,"./ReactPerf":143,"./ReactRootIndex":150,"./ReactUpdates":159}],133:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -32843,15 +31086,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactDOMSelection":120,"./containsNode":183,"./focusNode":194,"./getActiveElement":196}],134:[function(require,module,exports){
-=======
-},{"./ReactDOMSelection":121,"./containsNode":184,"./focusNode":195,"./getActiveElement":197}],135:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactDOMSelection":120,"./containsNode":183,"./focusNode":194,"./getActiveElement":196}],134:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -33186,15 +31421,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactRootIndex":150,"./invariant":209,"oMfpAn":30}],135:[function(require,module,exports){
-=======
-},{"./ReactRootIndex":151,"./invariant":210,"oMfpAn":31}],136:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactRootIndex":150,"./invariant":209,"oMfpAn":30}],135:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -33441,15 +31668,7 @@ ReactLegacyElementFactory._isLegacyCallWarningEnabled = true;
 module.exports = ReactLegacyElementFactory;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactCurrentOwner":110,"./invariant":209,"./monitorCodeUse":219,"./warning":229,"oMfpAn":30}],136:[function(require,module,exports){
-=======
-},{"./ReactCurrentOwner":111,"./invariant":210,"./monitorCodeUse":220,"./warning":230,"oMfpAn":31}],137:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactCurrentOwner":110,"./invariant":209,"./monitorCodeUse":219,"./warning":229,"oMfpAn":30}],136:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -33522,15 +31741,7 @@ ReactLink.PropTypes = {
 
 module.exports = ReactLink;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./React":99}],137:[function(require,module,exports){
-=======
-},{"./React":100}],138:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./React":99}],137:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -33578,15 +31789,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./adler32":179}],138:[function(require,module,exports){
-=======
-},{"./adler32":180}],139:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./adler32":179}],138:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -34284,15 +32487,7 @@ ReactMount.renderComponent = deprecated(
 module.exports = ReactMount;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80,"./ReactBrowserEventEmitter":101,"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactInstanceHandles":134,"./ReactLegacyElement":135,"./ReactPerf":143,"./containsNode":183,"./deprecated":189,"./getReactRootElementInContainer":203,"./instantiateReactComponent":208,"./invariant":209,"./shouldUpdateReactComponent":225,"./warning":229,"oMfpAn":30}],139:[function(require,module,exports){
-=======
-},{"./DOMProperty":81,"./ReactBrowserEventEmitter":102,"./ReactCurrentOwner":111,"./ReactElement":127,"./ReactInstanceHandles":135,"./ReactLegacyElement":136,"./ReactPerf":144,"./containsNode":184,"./deprecated":190,"./getReactRootElementInContainer":204,"./instantiateReactComponent":209,"./invariant":210,"./shouldUpdateReactComponent":226,"./warning":230,"oMfpAn":31}],140:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80,"./ReactBrowserEventEmitter":101,"./ReactCurrentOwner":110,"./ReactElement":126,"./ReactInstanceHandles":134,"./ReactLegacyElement":135,"./ReactPerf":143,"./containsNode":183,"./deprecated":189,"./getReactRootElementInContainer":203,"./instantiateReactComponent":208,"./invariant":209,"./shouldUpdateReactComponent":225,"./warning":229,"oMfpAn":30}],139:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -34720,15 +32915,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactComponent":105,"./ReactMultiChildUpdateTypes":140,"./flattenChildren":193,"./instantiateReactComponent":208,"./shouldUpdateReactComponent":225}],140:[function(require,module,exports){
-=======
-},{"./ReactComponent":106,"./ReactMultiChildUpdateTypes":141,"./flattenChildren":194,"./instantiateReactComponent":209,"./shouldUpdateReactComponent":226}],141:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactComponent":105,"./ReactMultiChildUpdateTypes":140,"./flattenChildren":193,"./instantiateReactComponent":208,"./shouldUpdateReactComponent":225}],140:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -34761,15 +32948,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./keyMirror":215}],141:[function(require,module,exports){
-=======
-},{"./keyMirror":216}],142:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./keyMirror":215}],141:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -34842,15 +33021,7 @@ var ReactNativeComponent = {
 module.exports = ReactNativeComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./invariant":209,"oMfpAn":30}],142:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./invariant":210,"oMfpAn":31}],143:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./invariant":209,"oMfpAn":30}],142:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -35006,15 +33177,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./emptyObject":191,"./invariant":209,"oMfpAn":30}],143:[function(require,module,exports){
-=======
-},{"./emptyObject":192,"./invariant":210,"oMfpAn":31}],144:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./emptyObject":191,"./invariant":209,"oMfpAn":30}],143:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -35098,15 +33261,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"oMfpAn":30}],144:[function(require,module,exports){
-=======
-},{"oMfpAn":31}],145:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"oMfpAn":30}],144:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -35273,15 +33428,7 @@ var ReactPropTransferer = {
 module.exports = ReactPropTransferer;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./emptyFunction":190,"./invariant":209,"./joinClasses":214,"./warning":229,"oMfpAn":30}],145:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./emptyFunction":191,"./invariant":210,"./joinClasses":215,"./warning":230,"oMfpAn":31}],146:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./emptyFunction":190,"./invariant":209,"./joinClasses":214,"./warning":229,"oMfpAn":30}],145:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -35309,15 +33456,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"oMfpAn":30}],146:[function(require,module,exports){
-=======
-},{"oMfpAn":31}],147:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"oMfpAn":30}],146:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -35341,15 +33480,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./keyMirror":215}],147:[function(require,module,exports){
-=======
-},{"./keyMirror":216}],148:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./keyMirror":215}],147:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -35703,15 +33834,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactPropTypeLocationNames":145,"./deprecated":189,"./emptyFunction":190}],148:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactPropTypeLocationNames":146,"./deprecated":190,"./emptyFunction":191}],149:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactPropTypeLocationNames":145,"./deprecated":189,"./emptyFunction":190}],148:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -35767,15 +33890,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./PooledClass":98,"./ReactBrowserEventEmitter":101}],149:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./PooledClass":99,"./ReactBrowserEventEmitter":102}],150:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./PooledClass":98,"./ReactBrowserEventEmitter":101}],149:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -35951,15 +34066,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactBrowserEventEmitter":101,"./ReactInputSelection":133,"./ReactPutListenerQueue":148,"./Transaction":176}],150:[function(require,module,exports){
-=======
-},{"./CallbackQueue":76,"./Object.assign":98,"./PooledClass":99,"./ReactBrowserEventEmitter":102,"./ReactInputSelection":134,"./ReactPutListenerQueue":149,"./Transaction":177}],151:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactBrowserEventEmitter":101,"./ReactInputSelection":133,"./ReactPutListenerQueue":148,"./Transaction":176}],150:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -35990,15 +34097,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],151:[function(require,module,exports){
-=======
-},{}],152:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],151:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -36078,15 +34177,7 @@ module.exports = {
 };
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactInstanceHandles":134,"./ReactMarkupChecksum":137,"./ReactServerRenderingTransaction":152,"./instantiateReactComponent":208,"./invariant":209,"oMfpAn":30}],152:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactInstanceHandles":135,"./ReactMarkupChecksum":138,"./ReactServerRenderingTransaction":153,"./instantiateReactComponent":209,"./invariant":210,"oMfpAn":31}],153:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactInstanceHandles":134,"./ReactMarkupChecksum":137,"./ReactServerRenderingTransaction":152,"./instantiateReactComponent":208,"./invariant":209,"oMfpAn":30}],152:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -36199,15 +34290,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactPutListenerQueue":148,"./Transaction":176,"./emptyFunction":190}],153:[function(require,module,exports){
-=======
-},{"./CallbackQueue":76,"./Object.assign":98,"./PooledClass":99,"./ReactPutListenerQueue":149,"./Transaction":177,"./emptyFunction":191}],154:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactPutListenerQueue":148,"./Transaction":176,"./emptyFunction":190}],153:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -36313,15 +34396,7 @@ ReactStateSetters.Mixin = {
 
 module.exports = ReactStateSetters;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],154:[function(require,module,exports){
-=======
-},{}],155:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],154:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -36733,15 +34808,7 @@ for (eventType in topLevelTypes) {
 
 module.exports = ReactTestUtils;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPluginHub":87,"./EventPropagators":90,"./Object.assign":97,"./React":99,"./ReactBrowserEventEmitter":101,"./ReactElement":126,"./ReactMount":138,"./ReactTextComponent":155,"./ReactUpdates":159,"./SyntheticEvent":168}],155:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPluginHub":88,"./EventPropagators":91,"./Object.assign":98,"./React":100,"./ReactBrowserEventEmitter":102,"./ReactElement":127,"./ReactMount":139,"./ReactTextComponent":156,"./ReactUpdates":160,"./SyntheticEvent":169}],156:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPluginHub":87,"./EventPropagators":90,"./Object.assign":97,"./React":99,"./ReactBrowserEventEmitter":101,"./ReactElement":126,"./ReactMount":138,"./ReactTextComponent":155,"./ReactUpdates":159,"./SyntheticEvent":168}],155:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -36847,15 +34914,7 @@ ReactTextComponentFactory.type = ReactTextComponent;
 
 module.exports = ReactTextComponentFactory;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMPropertyOperations":81,"./Object.assign":97,"./ReactComponent":105,"./ReactElement":126,"./escapeTextForBrowser":192}],156:[function(require,module,exports){
-=======
-},{"./DOMPropertyOperations":82,"./Object.assign":98,"./ReactComponent":106,"./ReactElement":127,"./escapeTextForBrowser":193}],157:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMPropertyOperations":81,"./Object.assign":97,"./ReactComponent":105,"./ReactElement":126,"./escapeTextForBrowser":192}],156:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -36956,15 +35015,7 @@ var ReactTransitionChildMapping = {
 
 module.exports = ReactTransitionChildMapping;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactChildren":104}],157:[function(require,module,exports){
-=======
-},{"./ReactChildren":105}],158:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactChildren":104}],157:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -37075,15 +35126,7 @@ var ReactTransitionEvents = {
 
 module.exports = ReactTransitionEvents;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91}],158:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92}],159:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91}],158:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -37272,15 +35315,7 @@ var ReactTransitionGroup = React.createClass({
 
 module.exports = ReactTransitionGroup;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./React":99,"./ReactTransitionChildMapping":156,"./cloneWithProps":182,"./emptyFunction":190}],159:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./React":100,"./ReactTransitionChildMapping":157,"./cloneWithProps":183,"./emptyFunction":191}],160:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./React":99,"./ReactTransitionChildMapping":156,"./cloneWithProps":182,"./emptyFunction":190}],159:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -37570,15 +35605,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactCurrentOwner":110,"./ReactPerf":143,"./Transaction":176,"./invariant":209,"./warning":229,"oMfpAn":30}],160:[function(require,module,exports){
-=======
-},{"./CallbackQueue":76,"./Object.assign":98,"./PooledClass":99,"./ReactCurrentOwner":111,"./ReactPerf":144,"./Transaction":177,"./invariant":210,"./warning":230,"oMfpAn":31}],161:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CallbackQueue":75,"./Object.assign":97,"./PooledClass":98,"./ReactCurrentOwner":110,"./ReactPerf":143,"./Transaction":176,"./invariant":209,"./warning":229,"oMfpAn":30}],160:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -37632,15 +35659,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = React;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./LinkedStateMixin":93,"./React":99,"./ReactCSSTransitionGroup":102,"./ReactComponentWithPureRenderMixin":107,"./ReactDefaultPerf":124,"./ReactTestUtils":154,"./ReactTransitionGroup":158,"./ReactUpdates":159,"./cloneWithProps":182,"./cx":187,"./update":228,"oMfpAn":30}],161:[function(require,module,exports){
-=======
-},{"./LinkedStateMixin":94,"./React":100,"./ReactCSSTransitionGroup":103,"./ReactComponentWithPureRenderMixin":108,"./ReactDefaultPerf":125,"./ReactTestUtils":155,"./ReactTransitionGroup":159,"./ReactUpdates":160,"./cloneWithProps":183,"./cx":188,"./update":229,"oMfpAn":31}],162:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./LinkedStateMixin":93,"./React":99,"./ReactCSSTransitionGroup":102,"./ReactComponentWithPureRenderMixin":107,"./ReactDefaultPerf":124,"./ReactTestUtils":154,"./ReactTransitionGroup":158,"./ReactUpdates":159,"./cloneWithProps":182,"./cx":187,"./update":228,"oMfpAn":30}],161:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -37732,15 +35751,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./DOMProperty":80}],162:[function(require,module,exports){
-=======
-},{"./DOMProperty":81}],163:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./DOMProperty":80}],162:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -37935,15 +35946,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPropagators":90,"./ReactInputSelection":133,"./SyntheticEvent":168,"./getActiveElement":196,"./isTextInputElement":212,"./keyOf":216,"./shallowEqual":224}],163:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPropagators":91,"./ReactInputSelection":134,"./SyntheticEvent":169,"./getActiveElement":197,"./isTextInputElement":213,"./keyOf":217,"./shallowEqual":225}],164:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPropagators":90,"./ReactInputSelection":133,"./SyntheticEvent":168,"./getActiveElement":196,"./isTextInputElement":212,"./keyOf":216,"./shallowEqual":224}],163:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -37974,15 +35977,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],164:[function(require,module,exports){
-=======
-},{}],165:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],164:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -38410,15 +36405,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./EventConstants":85,"./EventPluginUtils":89,"./EventPropagators":90,"./SyntheticClipboardEvent":165,"./SyntheticDragEvent":167,"./SyntheticEvent":168,"./SyntheticFocusEvent":169,"./SyntheticKeyboardEvent":171,"./SyntheticMouseEvent":172,"./SyntheticTouchEvent":173,"./SyntheticUIEvent":174,"./SyntheticWheelEvent":175,"./getEventCharCode":197,"./invariant":209,"./keyOf":216,"./warning":229,"oMfpAn":30}],165:[function(require,module,exports){
-=======
-},{"./EventConstants":86,"./EventPluginUtils":90,"./EventPropagators":91,"./SyntheticClipboardEvent":166,"./SyntheticDragEvent":168,"./SyntheticEvent":169,"./SyntheticFocusEvent":170,"./SyntheticKeyboardEvent":172,"./SyntheticMouseEvent":173,"./SyntheticTouchEvent":174,"./SyntheticUIEvent":175,"./SyntheticWheelEvent":176,"./getEventCharCode":198,"./invariant":210,"./keyOf":217,"./warning":230,"oMfpAn":31}],166:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./EventConstants":85,"./EventPluginUtils":89,"./EventPropagators":90,"./SyntheticClipboardEvent":165,"./SyntheticDragEvent":167,"./SyntheticEvent":168,"./SyntheticFocusEvent":169,"./SyntheticKeyboardEvent":171,"./SyntheticMouseEvent":172,"./SyntheticTouchEvent":173,"./SyntheticUIEvent":174,"./SyntheticWheelEvent":175,"./getEventCharCode":197,"./invariant":209,"./keyOf":216,"./warning":229,"oMfpAn":30}],165:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38464,15 +36451,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticEvent":168}],166:[function(require,module,exports){
-=======
-},{"./SyntheticEvent":169}],167:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticEvent":168}],166:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38518,15 +36497,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticCompositionEvent;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticEvent":168}],167:[function(require,module,exports){
-=======
-},{"./SyntheticEvent":169}],168:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticEvent":168}],167:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38565,15 +36536,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticMouseEvent":172}],168:[function(require,module,exports){
-=======
-},{"./SyntheticMouseEvent":173}],169:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticMouseEvent":172}],168:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38731,15 +36694,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./PooledClass":98,"./emptyFunction":190,"./getEventTarget":200}],169:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./PooledClass":99,"./emptyFunction":191,"./getEventTarget":201}],170:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./PooledClass":98,"./emptyFunction":190,"./getEventTarget":200}],169:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38778,15 +36733,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticUIEvent":174}],170:[function(require,module,exports){
-=======
-},{"./SyntheticUIEvent":175}],171:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticUIEvent":174}],170:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -38833,15 +36780,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticInputEvent;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticEvent":168}],171:[function(require,module,exports){
-=======
-},{"./SyntheticEvent":169}],172:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticEvent":168}],171:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -38928,15 +36867,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticUIEvent":174,"./getEventCharCode":197,"./getEventKey":198,"./getEventModifierState":199}],172:[function(require,module,exports){
-=======
-},{"./SyntheticUIEvent":175,"./getEventCharCode":198,"./getEventKey":199,"./getEventModifierState":200}],173:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticUIEvent":174,"./getEventCharCode":197,"./getEventKey":198,"./getEventModifierState":199}],172:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39019,15 +36950,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticUIEvent":174,"./ViewportMetrics":177,"./getEventModifierState":199}],173:[function(require,module,exports){
-=======
-},{"./SyntheticUIEvent":175,"./ViewportMetrics":178,"./getEventModifierState":200}],174:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticUIEvent":174,"./ViewportMetrics":177,"./getEventModifierState":199}],173:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39075,15 +36998,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticUIEvent":174,"./getEventModifierState":199}],174:[function(require,module,exports){
-=======
-},{"./SyntheticUIEvent":175,"./getEventModifierState":200}],175:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticUIEvent":174,"./getEventModifierState":199}],174:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39145,15 +37060,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticEvent":168,"./getEventTarget":200}],175:[function(require,module,exports){
-=======
-},{"./SyntheticEvent":169,"./getEventTarget":201}],176:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticEvent":168,"./getEventTarget":200}],175:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39214,15 +37121,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./SyntheticMouseEvent":172}],176:[function(require,module,exports){
-=======
-},{"./SyntheticMouseEvent":173}],177:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./SyntheticMouseEvent":172}],176:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -39463,15 +37362,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],177:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],178:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],177:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39503,15 +37394,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./getUnboundedScrollPosition":205}],178:[function(require,module,exports){
-=======
-},{"./getUnboundedScrollPosition":206}],179:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./getUnboundedScrollPosition":205}],178:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -39577,15 +37460,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],179:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],180:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],179:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39619,15 +37494,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],180:[function(require,module,exports){
-=======
-},{}],181:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],180:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39659,15 +37526,7 @@ function camelize(string) {
 
 module.exports = camelize;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],181:[function(require,module,exports){
-=======
-},{}],182:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],181:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -39709,15 +37568,7 @@ function camelizeStyleName(string) {
 
 module.exports = camelizeStyleName;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./camelize":180}],182:[function(require,module,exports){
-=======
-},{"./camelize":181}],183:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./camelize":180}],182:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -39776,15 +37627,7 @@ function cloneWithProps(child, props) {
 module.exports = cloneWithProps;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactPropTransferer":144,"./keyOf":216,"./warning":229,"oMfpAn":30}],183:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactPropTransferer":145,"./keyOf":217,"./warning":230,"oMfpAn":31}],184:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactPropTransferer":144,"./keyOf":216,"./warning":229,"oMfpAn":30}],183:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39828,15 +37671,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./isTextNode":213}],184:[function(require,module,exports){
-=======
-},{"./isTextNode":214}],185:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./isTextNode":213}],184:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -39922,15 +37757,7 @@ function createArrayFrom(obj) {
 
 module.exports = createArrayFrom;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./toArray":226}],185:[function(require,module,exports){
-=======
-},{"./toArray":227}],186:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./toArray":226}],185:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -39991,15 +37818,7 @@ function createFullPageComponent(tag) {
 module.exports = createFullPageComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactCompositeComponent":108,"./ReactElement":126,"./invariant":209,"oMfpAn":30}],186:[function(require,module,exports){
-=======
-},{"./ReactCompositeComponent":109,"./ReactElement":127,"./invariant":210,"oMfpAn":31}],187:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactCompositeComponent":108,"./ReactElement":126,"./invariant":209,"oMfpAn":30}],186:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -40089,15 +37908,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91,"./createArrayFrom":184,"./getMarkupWrap":201,"./invariant":209,"oMfpAn":30}],187:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92,"./createArrayFrom":185,"./getMarkupWrap":202,"./invariant":210,"oMfpAn":31}],188:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91,"./createArrayFrom":184,"./getMarkupWrap":201,"./invariant":209,"oMfpAn":30}],187:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40136,15 +37947,7 @@ function cx(classNames) {
 
 module.exports = cx;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],188:[function(require,module,exports){
-=======
-},{}],189:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],188:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40202,15 +38005,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./CSSProperty":73}],189:[function(require,module,exports){
-=======
-},{"./CSSProperty":74}],190:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./CSSProperty":73}],189:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -40261,15 +38056,7 @@ function deprecated(namespace, oldName, newName, ctx, fn) {
 module.exports = deprecated;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./warning":229,"oMfpAn":30}],190:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./warning":230,"oMfpAn":31}],191:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./warning":229,"oMfpAn":30}],190:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40303,15 +38090,7 @@ emptyFunction.thatReturnsArgument = function(arg) { return arg; };
 
 module.exports = emptyFunction;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],191:[function(require,module,exports){
-=======
-},{}],192:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],191:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -40335,15 +38114,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"oMfpAn":30}],192:[function(require,module,exports){
-=======
-},{"oMfpAn":31}],193:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"oMfpAn":30}],192:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40384,15 +38155,7 @@ function escapeTextForBrowser(text) {
 
 module.exports = escapeTextForBrowser;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],193:[function(require,module,exports){
-=======
-},{}],194:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],193:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -40461,15 +38224,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactTextComponent":155,"./traverseAllChildren":227,"./warning":229,"oMfpAn":30}],194:[function(require,module,exports){
-=======
-},{"./ReactTextComponent":156,"./traverseAllChildren":228,"./warning":230,"oMfpAn":31}],195:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactTextComponent":155,"./traverseAllChildren":227,"./warning":229,"oMfpAn":30}],194:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -40498,15 +38253,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],195:[function(require,module,exports){
-=======
-},{}],196:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],195:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40537,15 +38284,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],196:[function(require,module,exports){
-=======
-},{}],197:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],196:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40574,15 +38313,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],197:[function(require,module,exports){
-=======
-},{}],198:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],197:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40634,15 +38365,7 @@ function getEventCharCode(nativeEvent) {
 
 module.exports = getEventCharCode;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],198:[function(require,module,exports){
-=======
-},{}],199:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],198:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40747,15 +38470,7 @@ function getEventKey(nativeEvent) {
 
 module.exports = getEventKey;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./getEventCharCode":197}],199:[function(require,module,exports){
-=======
-},{"./getEventCharCode":198}],200:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./getEventCharCode":197}],199:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -40802,15 +38517,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],200:[function(require,module,exports){
-=======
-},{}],201:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],200:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -40841,15 +38548,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],201:[function(require,module,exports){
-=======
-},{}],202:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],201:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -40966,15 +38665,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91,"./invariant":209,"oMfpAn":30}],202:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92,"./invariant":210,"oMfpAn":31}],203:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91,"./invariant":209,"oMfpAn":30}],202:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41049,15 +38740,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],203:[function(require,module,exports){
-=======
-},{}],204:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],203:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41092,15 +38775,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],204:[function(require,module,exports){
-=======
-},{}],205:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],204:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41137,15 +38812,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91}],205:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92}],206:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91}],205:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41185,15 +38852,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],206:[function(require,module,exports){
-=======
-},{}],207:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],206:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41226,15 +38885,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],207:[function(require,module,exports){
-=======
-},{}],208:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],207:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41275,15 +38926,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./hyphenate":206}],208:[function(require,module,exports){
-=======
-},{"./hyphenate":207}],209:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./hyphenate":206}],208:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -41397,15 +39040,7 @@ function instantiateReactComponent(element, parentCompositeType) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactEmptyComponent":128,"./ReactLegacyElement":135,"./ReactNativeComponent":141,"./warning":229,"oMfpAn":30}],209:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactEmptyComponent":129,"./ReactLegacyElement":136,"./ReactNativeComponent":142,"./warning":230,"oMfpAn":31}],210:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactEmptyComponent":128,"./ReactLegacyElement":135,"./ReactNativeComponent":141,"./warning":229,"oMfpAn":30}],209:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -41462,15 +39097,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"oMfpAn":30}],210:[function(require,module,exports){
-=======
-},{"oMfpAn":31}],211:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"oMfpAn":30}],210:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41535,15 +39162,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91}],211:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92}],212:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91}],211:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41571,15 +39190,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],212:[function(require,module,exports){
-=======
-},{}],213:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],212:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41623,15 +39234,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],213:[function(require,module,exports){
-=======
-},{}],214:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],213:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41656,15 +39259,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./isNode":211}],214:[function(require,module,exports){
-=======
-},{"./isNode":212}],215:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./isNode":211}],214:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41705,15 +39300,7 @@ function joinClasses(className/*, ... */) {
 
 module.exports = joinClasses;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],215:[function(require,module,exports){
-=======
-},{}],216:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],215:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -41768,15 +39355,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],216:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],217:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],216:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41812,15 +39391,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],217:[function(require,module,exports){
-=======
-},{}],218:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],217:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41873,15 +39444,7 @@ function mapObject(object, callback, context) {
 
 module.exports = mapObject;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],218:[function(require,module,exports){
-=======
-},{}],219:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],218:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -41915,15 +39478,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],219:[function(require,module,exports){
-=======
-},{}],220:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],219:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -41957,15 +39512,7 @@ function monitorCodeUse(eventName, data) {
 module.exports = monitorCodeUse;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],220:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],221:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],220:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -42005,15 +39552,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./invariant":209,"oMfpAn":30}],221:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./invariant":210,"oMfpAn":31}],222:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./invariant":209,"oMfpAn":30}],221:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -42041,15 +39580,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91}],222:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92}],223:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91}],222:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -42077,15 +39608,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./performance":221}],223:[function(require,module,exports){
-=======
-},{"./performance":222}],224:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./performance":221}],223:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -42163,15 +39686,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ExecutionEnvironment":91}],224:[function(require,module,exports){
-=======
-},{"./ExecutionEnvironment":92}],225:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ExecutionEnvironment":91}],224:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -42215,15 +39730,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],225:[function(require,module,exports){
-=======
-},{}],226:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],225:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -42261,15 +39768,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 
 module.exports = shouldUpdateReactComponent;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],226:[function(require,module,exports){
-=======
-},{}],227:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],226:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -42341,15 +39840,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./invariant":209,"oMfpAn":30}],227:[function(require,module,exports){
-=======
-},{"./invariant":210,"oMfpAn":31}],228:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./invariant":209,"oMfpAn":30}],227:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -42532,15 +40023,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ReactElement":126,"./ReactInstanceHandles":134,"./invariant":209,"oMfpAn":30}],228:[function(require,module,exports){
-=======
-},{"./ReactElement":127,"./ReactInstanceHandles":135,"./invariant":210,"oMfpAn":31}],229:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ReactElement":126,"./ReactInstanceHandles":134,"./invariant":209,"oMfpAn":30}],228:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -42708,15 +40191,7 @@ function update(value, spec) {
 module.exports = update;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Object.assign":97,"./invariant":209,"./keyOf":216,"oMfpAn":30}],229:[function(require,module,exports){
-=======
-},{"./Object.assign":98,"./invariant":210,"./keyOf":217,"oMfpAn":31}],230:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Object.assign":97,"./invariant":209,"./keyOf":216,"oMfpAn":30}],229:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -42761,8 +40236,6 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require("oMfpAn"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./emptyFunction":190,"oMfpAn":30}],230:[function(require,module,exports){
 module.exports = require('./lib/React');
 
@@ -42770,22 +40243,6 @@ module.exports = require('./lib/React');
 module.exports = require('./src');
 
 },{"./src":245}],232:[function(require,module,exports){
-=======
-},{"./emptyFunction":191,"oMfpAn":31}],231:[function(require,module,exports){
-=======
-},{"./emptyFunction":190,"oMfpAn":30}],230:[function(require,module,exports){
->>>>>>> Can edit and create profile
-module.exports = require('./lib/React');
-
-},{"./lib/React":99}],231:[function(require,module,exports){
-module.exports = require('./src');
-
-<<<<<<< HEAD
-},{"./src":246}],233:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./src":245}],232:[function(require,module,exports){
->>>>>>> Can edit and create profile
 'use strict';
 
 /**
@@ -43016,15 +40473,7 @@ EventEmitter.EventEmitter3 = EventEmitter;
 //
 module.exports = EventEmitter;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],233:[function(require,module,exports){
-=======
-},{}],234:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],233:[function(require,module,exports){
->>>>>>> Can edit and create profile
 (function (global){
 /*! Native Promise Only
     v0.7.6-a (c) Kyle Simpson
@@ -43033,15 +40482,7 @@ module.exports = EventEmitter;
 !function(t,n,e){n[t]=n[t]||e(),"undefined"!=typeof module&&module.exports?module.exports=n[t]:"function"==typeof define&&define.amd&&define(function(){return n[t]})}("Promise","undefined"!=typeof global?global:this,function(){"use strict";function t(t,n){l.add(t,n),h||(h=y(l.drain))}function n(t){var n,e=typeof t;return null==t||"object"!=e&&"function"!=e||(n=t.then),"function"==typeof n?n:!1}function e(){for(var t=0;t<this.chain.length;t++)o(this,1===this.state?this.chain[t].success:this.chain[t].failure,this.chain[t]);this.chain.length=0}function o(t,e,o){var r,i;try{e===!1?o.reject(t.msg):(r=e===!0?t.msg:e.call(void 0,t.msg),r===o.promise?o.reject(TypeError("Promise-chain cycle")):(i=n(r))?i.call(r,o.resolve,o.reject):o.resolve(r))}catch(c){o.reject(c)}}function r(o){var c,u,a=this;if(!a.triggered){a.triggered=!0,a.def&&(a=a.def);try{(c=n(o))?(u=new f(a),c.call(o,function(){r.apply(u,arguments)},function(){i.apply(u,arguments)})):(a.msg=o,a.state=1,a.chain.length>0&&t(e,a))}catch(s){i.call(u||new f(a),s)}}}function i(n){var o=this;o.triggered||(o.triggered=!0,o.def&&(o=o.def),o.msg=n,o.state=2,o.chain.length>0&&t(e,o))}function c(t,n,e,o){for(var r=0;r<n.length;r++)!function(r){t.resolve(n[r]).then(function(t){e(r,t)},o)}(r)}function f(t){this.def=t,this.triggered=!1}function u(t){this.promise=t,this.state=0,this.triggered=!1,this.chain=[],this.msg=void 0}function a(n){if("function"!=typeof n)throw TypeError("Not a function");if(0!==this.__NPO__)throw TypeError("Not a promise");this.__NPO__=1;var o=new u(this);this.then=function(n,r){var i={success:"function"==typeof n?n:!0,failure:"function"==typeof r?r:!1};return i.promise=new this.constructor(function(t,n){if("function"!=typeof t||"function"!=typeof n)throw TypeError("Not a function");i.resolve=t,i.reject=n}),o.chain.push(i),0!==o.state&&t(e,o),i.promise},this["catch"]=function(t){return this.then(void 0,t)};try{n.call(void 0,function(t){r.call(o,t)},function(t){i.call(o,t)})}catch(c){i.call(o,c)}}var s,h,l,p=Object.prototype.toString,y="undefined"!=typeof setImmediate?function(t){return setImmediate(t)}:setTimeout;try{Object.defineProperty({},"x",{}),s=function(t,n,e,o){return Object.defineProperty(t,n,{value:e,writable:!0,configurable:o!==!1})}}catch(d){s=function(t,n,e){return t[n]=e,t}}l=function(){function t(t,n){this.fn=t,this.self=n,this.next=void 0}var n,e,o;return{add:function(r,i){o=new t(r,i),e?e.next=o:n=o,e=o,o=void 0},drain:function(){var t=n;for(n=e=h=void 0;t;)t.fn.call(t.self),t=t.next}}}();var g=s({},"constructor",a,!1);return s(a,"prototype",g,!1),s(g,"__NPO__",0,!1),s(a,"resolve",function(t){var n=this;return t&&"object"==typeof t&&1===t.__NPO__?t:new n(function(n,e){if("function"!=typeof n||"function"!=typeof e)throw TypeError("Not a function");n(t)})}),s(a,"reject",function(t){return new this(function(n,e){if("function"!=typeof n||"function"!=typeof e)throw TypeError("Not a function");e(t)})}),s(a,"all",function(t){var n=this;return"[object Array]"!=p.call(t)?n.reject(TypeError("Not an array")):0===t.length?n.resolve([]):new n(function(e,o){if("function"!=typeof e||"function"!=typeof o)throw TypeError("Not a function");var r=t.length,i=Array(r),f=0;c(n,t,function(t,n){i[t]=n,++f===r&&e(i)},o)})}),s(a,"race",function(t){var n=this;return"[object Array]"!=p.call(t)?n.reject(TypeError("Not an array")):new n(function(e,o){if("function"!=typeof e||"function"!=typeof o)throw TypeError("Not a function");c(n,t,function(t,n){e(n)},o)})}),a});
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],234:[function(require,module,exports){
-=======
-},{}],235:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],234:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * A module of methods that you want to include in all actions.
  * This module is consumed by `createAction`.
@@ -43049,15 +40490,7 @@ module.exports = EventEmitter;
 module.exports = {
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],235:[function(require,module,exports){
-=======
-},{}],236:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],235:[function(require,module,exports){
->>>>>>> Can edit and create profile
 exports.createdStores = [];
 
 exports.createdActions = [];
@@ -43071,15 +40504,7 @@ exports.reset = function() {
     }
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],236:[function(require,module,exports){
-=======
-},{}],237:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],236:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils'),
     maker = require('./joins').instanceJoinCreator;
 
@@ -43301,15 +40726,7 @@ module.exports = {
     joinStrict: maker("strict")
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./joins":246,"./utils":250}],237:[function(require,module,exports){
-=======
-},{"./joins":247,"./utils":251}],238:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./joins":246,"./utils":250}],237:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils'),
     ListenerMethods = require('./ListenerMethods');
 
@@ -43328,15 +40745,7 @@ module.exports = _.extend({
 
 }, ListenerMethods);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ListenerMethods":236,"./utils":250}],238:[function(require,module,exports){
-=======
-},{"./ListenerMethods":237,"./utils":251}],239:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ListenerMethods":236,"./utils":250}],238:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils');
 
 /**
@@ -43486,15 +40895,7 @@ module.exports = {
     },
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./utils":250}],239:[function(require,module,exports){
-=======
-},{"./utils":251}],240:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./utils":250}],239:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * A module of methods that you want to include in all stores.
  * This module is consumed by `createStore`.
@@ -43502,15 +40903,7 @@ module.exports = {
 module.exports = {
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],240:[function(require,module,exports){
-=======
-},{}],241:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],240:[function(require,module,exports){
->>>>>>> Can edit and create profile
 module.exports = function(store, definition) {
   for (var name in definition) {
     var property = definition[name];
@@ -43525,15 +40918,7 @@ module.exports = function(store, definition) {
   return store;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],241:[function(require,module,exports){
-=======
-},{}],242:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],241:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('./index'),
     _ = require('./utils');
 
@@ -43557,15 +40942,7 @@ module.exports = function(listenable,key){
     };
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./index":245,"./utils":250}],242:[function(require,module,exports){
-=======
-},{"./index":246,"./utils":251}],243:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./index":245,"./utils":250}],242:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('./index'),
   _ = require('./utils');
 
@@ -43606,15 +40983,7 @@ module.exports = function(listenable, key, filterFunc) {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./index":245,"./utils":250}],243:[function(require,module,exports){
-=======
-},{"./index":246,"./utils":251}],244:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./index":245,"./utils":250}],243:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils'),
     Reflux = require('./index'),
     Keep = require('./Keep'),
@@ -43681,15 +41050,7 @@ var createAction = function(definition) {
 
 module.exports = createAction;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Keep":235,"./index":245,"./utils":250}],244:[function(require,module,exports){
-=======
-},{"./Keep":236,"./index":246,"./utils":251}],245:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Keep":235,"./index":245,"./utils":250}],244:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils'),
     Reflux = require('./index'),
     Keep = require('./Keep'),
@@ -43752,15 +41113,7 @@ module.exports = function(definition) {
     return store;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./Keep":235,"./bindMethods":240,"./index":245,"./mixer":249,"./utils":250}],245:[function(require,module,exports){
-=======
-},{"./Keep":236,"./bindMethods":241,"./index":246,"./mixer":250,"./utils":251}],246:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./Keep":235,"./bindMethods":240,"./index":245,"./mixer":249,"./utils":250}],245:[function(require,module,exports){
->>>>>>> Can edit and create profile
 exports.ActionMethods = require('./ActionMethods');
 
 exports.ListenerMethods = require('./ListenerMethods');
@@ -43864,15 +41217,7 @@ if (!Function.prototype.bind) {
   );
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./ActionMethods":234,"./Keep":235,"./ListenerMethods":236,"./ListenerMixin":237,"./PublisherMethods":238,"./StoreMethods":239,"./connect":241,"./connectFilter":242,"./createAction":243,"./createStore":244,"./joins":246,"./listenTo":247,"./listenToMany":248,"./utils":250}],246:[function(require,module,exports){
-=======
-},{"./ActionMethods":235,"./Keep":236,"./ListenerMethods":237,"./ListenerMixin":238,"./PublisherMethods":239,"./StoreMethods":240,"./connect":242,"./connectFilter":243,"./createAction":244,"./createStore":245,"./joins":247,"./listenTo":248,"./listenToMany":249,"./utils":251}],247:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./ActionMethods":234,"./Keep":235,"./ListenerMethods":236,"./ListenerMixin":237,"./PublisherMethods":238,"./StoreMethods":239,"./connect":241,"./connectFilter":242,"./createAction":243,"./createStore":244,"./joins":246,"./listenTo":247,"./listenToMany":248,"./utils":250}],246:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Internal module used to create static and instance join methods
  */
@@ -43980,15 +41325,7 @@ function emitIfAllListenablesEmitted(join) {
     reset(join);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./createStore":244,"./utils":250}],247:[function(require,module,exports){
-=======
-},{"./createStore":245,"./utils":251}],248:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./createStore":244,"./utils":250}],247:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('./index');
 
 
@@ -44026,15 +41363,7 @@ module.exports = function(listenable,callback,initial){
     };
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./index":245}],248:[function(require,module,exports){
-=======
-},{"./index":246}],249:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./index":245}],248:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var Reflux = require('./index');
 
 /**
@@ -44069,15 +41398,7 @@ module.exports = function(listenables){
     };
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./index":245}],249:[function(require,module,exports){
-=======
-},{"./index":246}],250:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./index":245}],249:[function(require,module,exports){
->>>>>>> Can edit and create profile
 var _ = require('./utils');
 
 module.exports = function mix(def) {
@@ -44136,15 +41457,7 @@ module.exports = function mix(def) {
     return updated;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"./utils":250}],250:[function(require,module,exports){
-=======
-},{"./utils":251}],251:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"./utils":250}],250:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /*
  * isObject, extend, isFunction, isArguments are taken from undescore/lodash in
  * order to remove the dependency
@@ -44210,15 +41523,7 @@ exports.throwIf = function(val,msg){
     }
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"eventemitter3":232,"native-promise-only":233}],251:[function(require,module,exports){
-=======
-},{"eventemitter3":233,"native-promise-only":234}],252:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"eventemitter3":232,"native-promise-only":233}],251:[function(require,module,exports){
->>>>>>> Can edit and create profile
 /**
  * Module dependencies.
  */
@@ -45301,15 +42606,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{"emitter":252,"reduce":253}],252:[function(require,module,exports){
-=======
-},{"emitter":253,"reduce":254}],253:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{"emitter":252,"reduce":253}],252:[function(require,module,exports){
->>>>>>> Can edit and create profile
 
 /**
  * Expose `Emitter`.
@@ -45475,15 +42772,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 },{}],253:[function(require,module,exports){
-=======
-},{}],254:[function(require,module,exports){
->>>>>>> WIP transitions
-=======
-},{}],253:[function(require,module,exports){
->>>>>>> Can edit and create profile
 
 /**
  * Reduce `arr` with `fn`.
