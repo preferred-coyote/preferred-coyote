@@ -91,6 +91,9 @@ actions.editProfile.preEmit = function(formData){
       window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
     });
+  });
+};
+
 
 actions.getInterests.preEmit = function() {
   return new Promise(function(resolve, reject) {
