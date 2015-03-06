@@ -1345,7 +1345,7 @@ var ChannelList = React.createClass({displayName: "ChannelList",
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "medium-12 columns fade-in"}, 
-          React.createElement("div", {className: "channel-header fade-one"}, "Channel List"), 
+          React.createElement("div", {className: "channel-header fade-one"}, "Interests List"), 
           React.createElement("div", {className: "channel-list"}, 
             React.createElement("ul", {className: "no-bullet css-columns"}, 
               channelList
