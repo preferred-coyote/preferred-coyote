@@ -31,12 +31,13 @@ body {
 }
 
 #sidebar {
-  background-color:$primary-color;
+  background-color:#444444;
   height:750px;
 }
 
 #primary {
-  background-color:#FFF2DA;
+  background-color:#FFFFFF;
+  height:750px;
 }
 
 .button {
@@ -54,8 +55,8 @@ body {
   color:$white;
 }
 
-#callRandomUser {
-	margin-top:12rem;
+#call-user-interests {
+	margin-top:15rem;
 }
 .round {
   @include border-radius(50%);
@@ -233,3 +234,51 @@ header.top-bar {
   border-radius: 30px;
   padding: 35px;
 }
+
+////////////////////////////
+///// DASHBOARD STYLES /////
+////////////////////////////
+
+.username {
+  color: #FFFFFF;
+  text-align: right;
+  font-size: 2em;
+}
+
+#sidebar-avatar {
+  float: right;
+  height: 215px;
+  width: 215px;
+}
+
+#interests-title {
+  text-align: right;
+  color: #FFFFFF;
+}
+
+#interests-section {
+  margin-top: 10px;
+}
+
+.dash-buttons-panel {
+  margin-top: 50px;
+  border: none;
+  background-color: #E0EFFF;
+}
+
+#dash-intro {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  margin-top: 50px;
+}
+
+#dash-headline {
+  font-size: 3em;
+  color: #4b4b4b;
+  font-weight: 400;
+}
+
+#dash-desc {
+  margin-top: 20px;
+}
+

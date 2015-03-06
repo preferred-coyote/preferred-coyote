@@ -60,9 +60,9 @@ var Dashboard = React.createClass({
 
     return (
       <div>
-        <div className="medium-3 columns" id="sidebar">
+        <div className="medium-2 columns" id="sidebar">
           <h3 className="username">@{this.state.user.username}</h3>
-          <img src={this.state.avatar} className="round avatar " alt="PREFERRED COYOTE"/>
+          <img src={this.state.avatar} alt="PREFERRED COYOTE" id="sidebar-avatar" />
           <p>{this.state.user.summary}</p>
           <ul className="inline-list">
             <li>{this.state.user.location}</li>
@@ -75,7 +75,7 @@ var Dashboard = React.createClass({
           </form>
 
         </div>
-        <div className="small-9 columns" id="primary">
+        <div className="medium-10 columns" id="primary">
           <RouteHandler />
         </div>
       </div>
