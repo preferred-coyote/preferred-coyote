@@ -1729,7 +1729,7 @@ var EditProfile = React.createClass({displayName: "EditProfile",
         React.createElement("div", {className: "medium-6 columns"}, 
         React.createElement("h2", null, "Basic Info"), 
           React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
-            React.createElement("fieldset", null, 
+            React.createElement("fieldset", {className: "forms"}, 
               React.createElement(Info, {avatarimg: this.state.avatar}), 
               React.createElement("label", {htmlFOR: "location"}, "Location"), 
                 React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: this.state.user.location}), 
@@ -1743,7 +1743,7 @@ var EditProfile = React.createClass({displayName: "EditProfile",
                 React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
               )
             ), 
-            React.createElement("button", {type: "submit", className: "button small"}, "Edit Profile")
+            React.createElement("button", {type: "submit", className: "button small round shadow expand"}, "Edit Profile")
           ), 
           React.createElement(Pass, null)
         )
@@ -1808,12 +1808,12 @@ var Pass = React.createClass({displayName: "Pass",
       React.createElement("div", null, 
         React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
-          React.createElement("fieldset", null, 
+          React.createElement("fieldset", {className: "forms"}, 
             React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
           ), 
-          React.createElement("button", {type: "submit", className: "button small"}, "Update")
+          React.createElement("button", {type: "submit", className: "button small shadow round expand"}, "Update")
         )
       )
     );
