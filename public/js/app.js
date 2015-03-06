@@ -1680,6 +1680,54 @@ var Home = React.createClass({displayName: "Home",
           React.createElement("div", {className: "large-6 small-centered columns"}, 
             React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
           )
+        ), 
+
+        React.createElement("div", {className: "row", id: "aboutTeam"}, 
+          React.createElement("h1", null, "Team"), 
+          React.createElement("div", {className: "medium-3 columns"}, 
+            React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/8/000/2af/037/2d2cd6a.jpg"}), 
+            React.createElement("h3", null, "Travis Chapman"), 
+            React.createElement("h5", null, "Development Team"), 
+            React.createElement("h5", null, "Full-stack Engineer"), 
+            React.createElement("a", {href: "http://www.github.com/teechap"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+            React.createElement("a", {href: "https://www.linkedin.com/in/travisechapman"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+          ), 
+          
+          React.createElement("div", {className: "medium-3 columns"}, 
+            React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAAElAAAAJDU5YmIyYWQ0LWM5YWEtNDNmMS04MzA2LTg1YjQ3ZmM1YmU3Yg.jpg"}), 
+            React.createElement("h3", null, "Yan Fan"), 
+            React.createElement("h5", null, "Scrum Master"), 
+            React.createElement("h5", null, "Full-stack Engineer"), 
+            React.createElement("a", {href: "http://www.github.com/yanarchy"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+            React.createElement("a", {href: "https://www.linkedin.com/in/yanfan"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+          ), 
+          
+          React.createElement("div", {className: "medium-3 columns"}, 
+            React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/3/005/088/3b1/082f9e3.jpg"}), 
+            React.createElement("h3", null, "Jackson Hoose"), 
+            React.createElement("h5", null, "Product Owner"), 
+            React.createElement("h5", null, "Full-stack Engineer"), 
+            React.createElement("a", {href: "http://www.github.com/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+            React.createElement("a", {href: "https://www.linkedin.com/in/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+          ), 
+          
+          React.createElement("div", {className: "medium-3 columns"}, 
+            React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAACFAAAAJGQwZWUyZTY0LWU1ZDAtNGYxMy05MWY2LTBhMmRmODBlMzg4Yg.jpg"}), 
+            React.createElement("h3", null, "Alexander Tseung"), 
+            React.createElement("h5", null, "Development Team"), 
+            React.createElement("h5", null, "Full-stack Engineer"), 
+            React.createElement("a", {href: "http://www.github.com/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+            React.createElement("a", {href: "https://www.linkedin.com/in/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+          )
+        
+        ), 
+
+        React.createElement("div", {className: "row", id: "technologies"}, 
+          React.createElement("h1", null, "Stack"), 
+          React.createElement("div", {className: "medium-3 columns"}, 
+          React.createElement("img", {src: "../../../public/img/chailogo.png"})
+
+          )
         )
       )
     );
