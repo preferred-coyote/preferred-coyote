@@ -62,7 +62,7 @@ var EditProfile = React.createClass({
         <div className="medium-6 columns">
         <h2>Basic Info</h2>
           <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" enctype="multipart/form-data" method="POST">
-            <fieldset>
+            <fieldset className="forms">
               <Info avatarimg={this.state.avatar} />
               <label htmlFOR="location">Location</label>
                 <input type="text" id="location" name="location" ref="location" placeholder={this.state.user.location}/>
@@ -76,7 +76,7 @@ var EditProfile = React.createClass({
                 <label for="checkbox1">Allow Users to Find Me</label>
               </input>
             </fieldset>
-            <button type="submit" className="button small">Edit Profile</button>
+            <button type="submit" className="button small round shadow expand">Edit Profile</button>
           </form>
           <Pass />
         </div>

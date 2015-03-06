@@ -14,12 +14,10 @@
 body {
   -webkit-font-smoothing: antialiased;
   background-color:#175AA6;
-}
-
-body {
   background-size:cover;
   background-position: center center;
   background-image:url('/img/home_bg.jpg');
+  background-attachment: fixed;
 }
 
 .playfair {
@@ -230,3 +228,8 @@ header.top-bar {
   margin-left: 130px;
 }
 
+.forms {
+  background-color: azure;
+  border-radius: 30px;
+  padding: 35px;
+}
