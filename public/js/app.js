@@ -1481,7 +1481,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     return {
       user: JSON.parse(window.localStorage.user),
       // user: userStore.getUserData(),
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png',
+      avatar: 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg',
       interests: [],
       text: ''
     };
@@ -1517,22 +1517,30 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
     return (
       React.createElement("div", null, 
-        React.createElement("div", {className: "medium-3 columns", id: "sidebar"}, 
+        React.createElement("div", {className: "medium-2 columns", id: "sidebar"}, 
           React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
-          React.createElement("img", {src: this.state.avatar, className: "round avatar ", alt: "PREFERRED COYOTE"}), 
-          React.createElement("p", null, this.state.user.summary), 
-          React.createElement("ul", {className: "inline-list"}, 
-            React.createElement("li", null, this.state.user.location), 
-            React.createElement("li", null, this.state.user.gender)
+          React.createElement("div", {id: "sidebar-avatar-div"}, 
+            React.createElement("img", {src: this.state.avatar, alt: "PREFERRED COYOTE", id: "sidebar-avatar"})
           ), 
-
+          React.createElement("div", {className: "sidebar-summary"}, 
+            React.createElement("div", {className: "sidebar-summary-title"}, "Summary"), 
+            React.createElement("div", {className: "sidebar-summary-text"}, this.state.user.summary)
+          ), 
+          React.createElement("div", {className: "sidebar-summary"}, 
+            React.createElement("div", {className: "sidebar-summary-title"}, "Gender"), 
+            React.createElement("div", {className: "sidebar-summary-text"}, this.state.user.gender)
+          ), 
+          React.createElement("div", {className: "sidebar-summary"}, 
+            React.createElement("div", {className: "sidebar-summary-title"}, "Location"), 
+            React.createElement("div", {className: "sidebar-summary-text"}, this.state.user.location)
+          ), 
           React.createElement(Interests, {interests: this.state.interests}), 
           React.createElement("form", {onSubmit: this.handleInterestSubmit}, 
             React.createElement("input", {onChange: this.onInputChange, value: this.state.text})
           )
 
         ), 
-        React.createElement("div", {className: "small-9 columns", id: "primary"}, 
+        React.createElement("div", {className: "medium-10 columns", id: "primary"}, 
           React.createElement(RouteHandler, null)
         )
       )
@@ -1556,8 +1564,16 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
 
     return (
       React.createElement("div", {className: "row"}, 
-       	React.createElement(Link, {to: "/dashboard/pubnub", className: "button info expand", id: "callRandomUser"}, "Call Random User"), 
-	    	React.createElement(Link, {to: "/dashboard/channels", className: "button info expand"}, "Search Topics")
+        React.createElement("div", {className: "medium-12 columns"}, 
+          React.createElement("div", {id: "dash-intro"}, 
+            React.createElement("div", {id: "dash-headline"}, "Start chatting!")
+          ), 
+          React.createElement("br", null)
+        ), 
+        React.createElement(Link, {to: "/dashboard/channels", className: "button expand", id: "call-user-interest"}, 
+          "Search for somebody by interest"
+        ), 
+        React.createElement(Link, {to: "/dashboard/pubnub", className: "button expand"}, "Call a random user")
       )
     );
   }
@@ -1784,8 +1800,8 @@ var Interests = React.createClass({displayName: "Interests",
 
   render: function() {
     return (
-      React.createElement("div", null, 
-        React.createElement("h3", null, "Interests"), 
+      React.createElement("div", {id: "interests-section"}, 
+        React.createElement("h3", {id: "interests-title"}, "Interests"), 
         React.createElement("ul", {className: "inline-list"}, 
           this.props.interests.map(function(interest){
             return React.createElement("li", null, interest);
