@@ -270,6 +270,7 @@ header.top-bar {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   margin-top: 50px;
+  margin-bottom: 3rem;
 }
 
 #dash-headline {
@@ -282,3 +283,23 @@ header.top-bar {
   margin-top: 20px;
 }
 
+#sidebar-avatar-div {
+  margin-bottom: 230px;
+}
+
+.sidebar-summary {
+  margin-top: 8px;
+  text-align: right;
+  color: #FFFFFF;
+  font-family: 'Lato', sans-serif;
+}
+
+.sidebar-summary-title {
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+.sidebar-summary-text {
+  font-weight: 300;
+}
