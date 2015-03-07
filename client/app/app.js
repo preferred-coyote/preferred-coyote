@@ -31,12 +31,12 @@ var routes = (
     <Route name="about" path="about" handler={About} />
     <Route name="contact" path="contact" handler={Contact} />
     <Route name="signup" path="signup" handler={Signup} />
-    <Route name="editprofile" path="editprofile" handler={EditProfile} />
     <Route name="login" path="login" handler={Login} />
     <Route name="logout" path="logout" handler={Login} />
 
     <Route name="dashboard" path="dashboard" handler={Dashboard}>
       <DefaultRoute name="dashboardButtons" handler={DashboardButtons} />
+      <Route name="editprofile" path="editprofile" handler={EditProfile} />
       <Route name="pubnub" path="pubnub" handler={PubNub} />
       <Route name="channelList" path="channels" handler={ChannelList} />
       <Route name="channelView" path="channel/:channelName" handler={ChannelView} />
