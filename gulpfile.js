@@ -16,13 +16,15 @@ var paths = {
     bower: './client/bower_components',
     img: './client/img',
     scss: './client/scss',
-    js: './client/app'
+    js: './client/app',
+    fonts: './client/fonts'
   },
   dist: {
     public: './public',
     css: './public/css',
     img: './public/img',
-    js: './public/js'
+    js: './public/js',
+    fonts: './public/fonts'
   },
   karmaConf: __dirname + '/spec/_karma.conf.js'
 };
@@ -56,6 +58,11 @@ gulp.task('clean', function() {
 
 gulp.task('javascript', function(callback) {
   runSequence('browserify', 'uglify', callback);
+});
+
+gulp.task('fonts', function() {
+  return gulp.src(paths.src.fonts + '/**/*')
+    .pipe(gulp.dest(paths.dist.fonts));
 });
 
 gulp.task('image', function() {
@@ -111,7 +118,7 @@ gulp.task('watch', function() {
 
 // build for deploys
 gulp.task('build', function() {
-  runSequence('clean', 'javascript', 'scss', 'image')
+  runSequence('clean', 'javascript', 'scss', 'image', 'fonts');
 });
 
 // Default Task

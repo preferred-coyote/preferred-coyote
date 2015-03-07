@@ -58,7 +58,7 @@ var CallView = React.createClass({
         </div>
         <div className="row">
           <div className="large-10 columns">
-            <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://33.media.tumblr.com/avatar_7c7464817624_128.png" className="medium-4 columns"></video>
+            <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg" className="medium-4 columns"></video>
             <div className="medium-4 columns">
               <span className="icon-volume-mute medium-1 columns" id="lefticon"></span>
               <span className="icon-volume-mute2 medium-1 columns" id="righticon"></span>
@@ -67,7 +67,7 @@ var CallView = React.createClass({
                 <li><a href="#" onClick={this.endCall} className="button"><span className="icon-phone-hang-up"></span>Stop Call</a></li>
               </ul>
             </div>
-            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://avatars3.githubusercontent.com/u/2119948?v=3&s=400" className="medium-4 columns"></video>
+            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg" className="medium-4 columns"></video>
           </div>
         </div>
         <div className="row">

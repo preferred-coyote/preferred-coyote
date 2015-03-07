@@ -38,6 +38,7 @@ body {
 #primary {
   background-color:#FFFFFF;
   height:750px;
+  padding: 0px;
 }
 
 .button {
@@ -161,11 +162,11 @@ header.top-bar {
 
 @font-face {
   font-family: 'icomoon';
-  src:url('http://i.icomoon.io/public/temp/22030168f9/UntitledProject/icomoon.eot?-vikqp4');
-  src:url('http://i.icomoon.io/public/temp/22030168f9/UntitledProject/icomoon.eot?#iefix-vikqp4') format('embedded-opentype'),
-    url('http://i.icomoon.io/public/temp/22030168f9/UntitledProject/icomoon.woff?-vikqp4') format('woff'),
-    url('http://i.icomoon.io/public/temp/22030168f9/UntitledProject/icomoon.ttf?-vikqp4') format('truetype'),
-    url('http://i.icomoon.io/public/temp/22030168f9/UntitledProject/icomoon.svg?-vikqp4#icomoon') format('svg');
+  src:url('/fonts/icomoon.eot?-vikqp4');
+  src:url('/fonts/icomoon.eot?#iefix-vikqp4') format('embedded-opentype'),
+    url('/fonts/icomoon.woff?-vikqp4') format('woff'),
+    url('/fonts/icomoon.ttf?-vikqp4') format('truetype'),
+    url('/fonts/icomoon.svg?-vikqp4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -188,14 +189,12 @@ header.top-bar {
   content: "\e942";
   font-size: 20px;
   margin-right: 5px;
-  margin-top: 15px;
 }
 
 .icon-phone-hang-up:before {
   content: "\e943";
   font-size: 20px;
   margin-right: 5px;
-  margin-top: 15px;
 }
 
 .icon-volume-high2:before {
@@ -222,11 +221,13 @@ header.top-bar {
 
 #lefticon {
   margin-top: 50px;
+  float:left;
 }
 
 #righticon {
   margin-top: 50px;
-  margin-left: 130px;
+  float:right;
+  margin-right: 52px;
 }
 
 .forms {
@@ -247,8 +248,6 @@ header.top-bar {
 
 #sidebar-avatar {
   float: right;
-  height: 215px;
-  width: 215px;
 }
 
 #interests-title {
@@ -260,6 +259,23 @@ header.top-bar {
   margin-top: 10px;
 }
 
+.sidebar-summary {
+  margin-top: 8px;
+  text-align: right;
+  color: #FFFFFF;
+  font-family: 'Lato', sans-serif;
+}
+
+.sidebar-summary-title {
+  margin-top: 1.2rem;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+.sidebar-summary-text {
+  font-weight: 300;
+}
+
 .dash-buttons-panel {
   margin-top: 50px;
   border: none;
@@ -269,7 +285,7 @@ header.top-bar {
 #dash-intro {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
-  margin-top: 50px;
+  margin-top: 4rem;
   margin-bottom: 3rem;
 }
 
@@ -283,23 +299,23 @@ header.top-bar {
   margin-top: 20px;
 }
 
-#sidebar-avatar-div {
-  margin-bottom: 230px;
-}
-
-.sidebar-summary {
-  margin-top: 8px;
-  text-align: right;
-  color: #FFFFFF;
+.channel-header {
   font-family: 'Lato', sans-serif;
-}
-
-.sidebar-summary-title {
-  margin-top: 8px;
+  font-size: 3em;
+  color: #4b4b4b;
   font-weight: 400;
-  font-size: 1.2em;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
 }
 
-.sidebar-summary-text {
-  font-weight: 300;
+.css-columns {
+  @include columns(5em 4);
+}
+
+.channels {
+  font-size: 1.2em !important;
+  background: #c9c9c9;
+  &:hover {
+    background: #b3b3b3;
+  }
 }

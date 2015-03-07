@@ -2,30 +2,50 @@
 
 var React = require('react');
 var Link = require('react-router').Link;
+var request = require('superagent');
+var Promise = require('bluebird');
 
-var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', 'Kink.com', 'Godzilla'];
+var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', '', 'Godzilla'];
 var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({
   mixins: [Authentication],
 
+  getChannels: function() {
+    var self = this;
+    request
+      .get('/api/interest')
+      .end(function(response){
+        if (response.body.length) {
+          console.log(response);
+          self.setState({
+            channels: response.body
+          });
+        } 
+      });
+  },
+
   getInitialState: function() {
+    this.getChannels();
     return {
-      channels: channels
+      channels: []
     };
   },
 
   render: function() {
     var channelList = this.state.channels.length ? this.state.channels.sort().map(function(channel) {
-      return <li><Link to="channelView" params={{ channelName: channel }} className="button small">{channel.split('-').join(' ')}</Link></li>
+      return <li><Link to="channelView" params={{ channelName: channel.name.split(' ').join('-') }} className="button small channels expand">{channel.name}</Link></li>
     }) : 'No channels available.';
+
     return (
       <div className="row">
-        <div className="large-12 columns">
-          <h2 className="channel-header">Channel List</h2>
-            <ul className="no-bullet">
+        <div className="medium-12 columns">
+          <div className="channel-header">Channel List</div>
+          <div className="channel-list">
+            <ul className="no-bullet css-columns">
               {channelList}
             </ul>
+          </div>
         </div>
       </div>
     );
