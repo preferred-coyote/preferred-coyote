@@ -2,7 +2,6 @@ var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
 module.exports = function(sequelize, DataTypes) {
-
   var User = sequelize.define('User', {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -49,5 +48,4 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   return User;
-
 };
