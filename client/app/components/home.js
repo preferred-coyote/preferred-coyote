@@ -12,29 +12,40 @@ var Home = React.createClass({
     document.getElementById('barackobama').style.height = h + 'px';
     document.getElementById('footer').style.height = h + 'px';
     document.getElementById('footer').style.right ='300px';
+    $(window).scroll(function(){
+      if ($(this).scrollTop() > 100) {
+        $('.scrollToTop').fadeIn();
+      } else {
+        $('.scrollToTop').fadeOut();
+      }
+    });
+    $('.scrollToTop').click(function(){
+      $('html, body').animate({scrollTop : 0},800);
+      return false;
+    });
   },
 
   render: function() {
     return (
       <div>
-        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+        <a className="scrollToTop" href="#">To The Top ^</a> <br />
         <div id="barackobama">
           <div className="row">
             <div className="medium-12 columns">
               <h2 className="lets-talk-about text-white text-center">Lets talk about</h2>
               <h3 className="topic text-center text-white lets-talk-about">Golden State Warriors</h3>
-              <a className="jumper" href="#pliip">Pliip</a> <br />
             </div>
           </div>
           <div className="row">
             <div className="large-6 small-centered columns">
               <Link to="signup" className="button large shadow round expand">Signup</Link>
+              <img className="arrow" src="/img/downarrow2.png"/>
             </div>
           </div>
         </div>
 
         <div className="bg">
-
+          <a name="pliip"/>
           <div className="row" id="aboutTeam">
             <h1>Team</h1>
             <div className="medium-3 columns">
@@ -93,7 +104,7 @@ var Home = React.createClass({
               <img className="tech" src='/img/mochalogo.png' />
               <img className="tech" src='/img/mysqllogo.png' />
               <img className="tech" src='/img/nodelogo.png' />
-            </div>=
+            </div>
             <div className="medium-3 columns">
               <img className="tech" src='/img/pubnublogo.png' />
               <img className="tech" src='/img/reacticon.png' />
