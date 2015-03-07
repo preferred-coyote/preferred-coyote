@@ -24,7 +24,7 @@ var Dashboard = React.createClass({
     return {
       user: JSON.parse(window.localStorage.user),
       // user: userStore.getUserData(),
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png',
+      avatar: 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg',
       interests: [],
       text: ''
     };
@@ -60,22 +60,30 @@ var Dashboard = React.createClass({
 
     return (
       <div>
-        <div className="medium-3 columns" id="sidebar">
+        <div className="medium-2 columns" id="sidebar">
           <h3 className="username">@{this.state.user.username}</h3>
-          <img src={this.state.avatar} className="round avatar " alt="PREFERRED COYOTE"/>
-          <p>{this.state.user.summary}</p>
-          <ul className="inline-list">
-            <li>{this.state.user.location}</li>
-            <li>{this.state.user.gender}</li>
-          </ul>
-
+          <div id="sidebar-avatar-div">
+            <img src={this.state.avatar} alt="PREFERRED COYOTE" id="sidebar-avatar" />
+          </div>
+          <div className="sidebar-summary">
+            <div className="sidebar-summary-title">Summary</div>
+            <div className="sidebar-summary-text">{this.state.user.summary}</div>
+          </div>
+          <div className="sidebar-summary">
+            <div className="sidebar-summary-title">Gender</div>
+            <div className="sidebar-summary-text">{this.state.user.gender}</div>
+          </div>
+          <div className="sidebar-summary">
+            <div className="sidebar-summary-title">Location</div>
+            <div className="sidebar-summary-text">{this.state.user.location}</div>
+          </div>
           <Interests interests={this.state.interests} />
           <form onSubmit={this.handleInterestSubmit}>
             <input onChange={this.onInputChange} value={this.state.text} />
           </form>
 
         </div>
-        <div className="small-9 columns" id="primary">
+        <div className="medium-10 columns" id="primary">
           <RouteHandler />
         </div>
       </div>

@@ -10,8 +10,16 @@ var DashboardButtons = React.createClass({
 
     return (
       <div className="row">
-       	<Link to="/dashboard/pubnub" className="button info expand" id="callRandomUser">Call Random User</Link> 
-	    	<Link to="/dashboard/channels" className="button info expand">Search Topics</Link>
+        <div className="medium-12 columns">
+          <div id="dash-intro">
+            <div id="dash-headline">Start chatting!</div>
+          </div>
+          <br />
+        </div>
+        <Link to="/dashboard/channels" className="button expand" id="call-user-interest">
+          Search for somebody by interest
+        </Link>
+        <Link to="/dashboard/pubnub" className="button expand">Call a random user</Link> 
       </div>
     );
   }

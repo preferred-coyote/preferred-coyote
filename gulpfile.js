@@ -48,11 +48,14 @@ gulp.task('uglify', function() {
 
 gulp.task('clean', function() {
   return gulp.src(paths.dist.public)
-    .pipe(clean());
+    .pipe(clean({
+      force: true
+    }))
+    .on('error', handleError);   
 });
 
 gulp.task('javascript', function(callback) {
-  runSequence('clean', 'browserify', 'uglify', callback);
+  runSequence('browserify', 'uglify', callback);
 });
 
 gulp.task('image', function() {
@@ -107,7 +110,9 @@ gulp.task('watch', function() {
 });
 
 // build for deploys
-gulp.task('build', ['image', 'javascript', 'scss']);
+gulp.task('build', function() {
+  runSequence('clean', 'javascript', 'scss', 'image')
+});
 
 // Default Task
 gulp.task('default', ['image', 'lint', 'test', 'javascript', 'scss', 'watch']);
