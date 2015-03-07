@@ -603,6 +603,7 @@ actions.updateInterests.preEmit = function(interestsArray) {
         interests: interestsArray
       })
       .end(function(response) {
+        console.log('actions updateInterests response: ', response);
         resolve(response.body.interests);
       })
   });
@@ -1515,26 +1516,22 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
   onInterestsUpdated: function(newInterests) {
     console.log("The new interests here", newInterests);
-    this.setState({interests: newInterests.map(function(interest){return interest.name})});
-  },
-
-  onInputChange: function(e) {
-    this.setState({text: e.target.value});
-    console.log('input change');
+    this.setState({interests: newInterests.interests.map(function(interest){return interest.name})});
   },
 
   handleInterestSubmit: function(e) {
     e.preventDefault();
-    var updatedInterests = this.state.interests.concat([this.state.text]);
+    var interest = this.refs.interest.getDOMNode().value.trim();
+    var interestArray = [interest];
+    var updatedInterests = this.state.interests.concat([interest]);
     console.log("Handling update interests submit", updatedInterests);
-    Actions.updateInterests(updatedInterests);
+    // Actions.updateInterests(updatedInterests);
+    Actions.updateInterests(interestArray);
+    console.log(interestArray);
     this.setState({interests: updatedInterests});
   },
 
-
-
   render: function() {
-
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-2 columns", id: "sidebar"}, 
@@ -1556,7 +1553,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
           ), 
           React.createElement(Interests, {interests: this.state.interests}), 
           React.createElement("form", {onSubmit: this.handleInterestSubmit}, 
-            React.createElement("input", {onChange: this.onInputChange, value: this.state.text})
+            React.createElement("input", {type: "text", ref: "interest"})
           )
 
         ), 
@@ -1725,7 +1722,7 @@ var EditProfile = React.createClass({displayName: "EditProfile",
     return {
       createProfileMessage: '',
       user: JSON.parse(window.localStorage.user),
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
+      avatar: 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg'
     }
   },
 
@@ -1803,11 +1800,15 @@ var Info = React.createClass({displayName: "Info",
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "row"}, 
-          React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"})
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement("img", {src: this.props.avatarimg, alt: "PREFERRED COYOTE"})
+          )
         ), 
         React.createElement("div", {className: "row"}, 
-          React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
-          React.createElement("input", {type: "file", name: "avatar", id: "avatar"})
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement("label", {for: "avatar"}, "Upload a new avatar"), 
+            React.createElement("input", {type: "file", name: "avatar", id: "avatar"})
+          )
         )
       )
     );

@@ -38,26 +38,22 @@ var Dashboard = React.createClass({
 
   onInterestsUpdated: function(newInterests) {
     console.log("The new interests here", newInterests);
-    this.setState({interests: newInterests.map(function(interest){return interest.name})});
-  },
-
-  onInputChange: function(e) {
-    this.setState({text: e.target.value});
-    console.log('input change');
+    this.setState({interests: newInterests.interests.map(function(interest){return interest.name})});
   },
 
   handleInterestSubmit: function(e) {
     e.preventDefault();
-    var updatedInterests = this.state.interests.concat([this.state.text]);
+    var interest = this.refs.interest.getDOMNode().value.trim();
+    var interestArray = [interest];
+    var updatedInterests = this.state.interests.concat([interest]);
     console.log("Handling update interests submit", updatedInterests);
-    Actions.updateInterests(updatedInterests);
+    // Actions.updateInterests(updatedInterests);
+    Actions.updateInterests(interestArray);
+    console.log(interestArray);
     this.setState({interests: updatedInterests});
   },
 
-
-
   render: function() {
-
     return (
       <div>
         <div className="medium-2 columns" id="sidebar">
@@ -79,7 +75,7 @@ var Dashboard = React.createClass({
           </div>
           <Interests interests={this.state.interests} />
           <form onSubmit={this.handleInterestSubmit}>
-            <input onChange={this.onInputChange} value={this.state.text} />
+            <input type="text" ref="interest"  />
           </form>
 
         </div>

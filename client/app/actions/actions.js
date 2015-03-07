@@ -116,6 +116,7 @@ actions.updateInterests.preEmit = function(interestsArray) {
         interests: interestsArray
       })
       .end(function(response) {
+        console.log('actions updateInterests response: ', response);
         resolve(response.body.interests);
       })
   });

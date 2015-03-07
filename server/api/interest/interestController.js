@@ -20,7 +20,7 @@ module.exports.create = function(req, res, next) {
 module.exports.show = function(req, res, next) {
   console.log("GETTING USER INTERESTS");
 
-  var id = req.user.id;
+  var id = req.user[0].id;
   console.log("THE USER ID", id);
   Interest.find({
     where: {
@@ -37,7 +37,8 @@ module.exports.show = function(req, res, next) {
 };
 
 module.exports.update = function(req, res, next) {
-  var user = req.user.id;
+  console.log("interestsController update req.user: ", req.user);
+  var user = req.user[0].id;
   var interests = req.body.interests;
   //console.log("UPDATE INTERESTS", interests);
 
