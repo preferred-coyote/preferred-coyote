@@ -37,11 +37,8 @@ module.exports.show = function(req, res, next) {
 };
 
 module.exports.update = function(req, res, next) {
-  console.log("interestsController update req.user: ", req.user);
   var user = req.user[0].id;
   var interests = req.body.interests;
-  //console.log("UPDATE INTERESTS", interests);
-
   /**
    * Find or create all interests and return
    * into a promise map - when completed find the user object
@@ -67,6 +64,7 @@ module.exports.update = function(req, res, next) {
         id: user
       }
     }).then(function(user) {
+      console.log('THE RESPONSE', user);
       // set the interests
       user.setInterests(interests).then(function(user) {
         res.json({
