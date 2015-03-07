@@ -1337,8 +1337,8 @@ var ChannelList = React.createClass({displayName: "ChannelList",
 
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "medium-12 columns"}, 
-          React.createElement("div", {className: "channel-header"}, "Channel List"), 
+        React.createElement("div", {className: "medium-12 columns fade-in"}, 
+          React.createElement("div", {className: "channel-header fade-one"}, "Channel List"), 
           React.createElement("div", {className: "channel-list"}, 
             React.createElement("ul", {className: "no-bullet css-columns"}, 
               channelList
@@ -1454,9 +1454,9 @@ var ChannelView = React.createClass({displayName: "ChannelView",
     }) : null;
 
     return (
-      React.createElement("div", {className: "row"}, 
+      React.createElement("div", {className: "row fade-in"}, 
         React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement("h1", null, "Channel ", this.state.channel), 
+          React.createElement("div", {className: "channel-name fade-one"}, "Channel ", this.state.channel), 
           React.createElement("ul", {className: "no-bullet"}, 
             userList
           )
@@ -1583,10 +1583,10 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
   render: function() {
 
     return (
-      React.createElement("div", {className: "row"}, 
+      React.createElement("div", {className: "row fade-in"}, 
         React.createElement("div", {className: "medium-12 columns"}, 
           React.createElement("div", {id: "dash-intro"}, 
-            React.createElement("div", {id: "dash-headline"}, "Start chatting!")
+            React.createElement("div", {id: "dash-headline", className: "fade-one"}, "Start chatting!")
           ), 
           React.createElement("br", null)
         ), 

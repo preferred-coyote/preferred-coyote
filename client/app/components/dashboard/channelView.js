@@ -98,9 +98,9 @@ var ChannelView = React.createClass({
     }) : null;
 
     return (
-      <div className="row">
+      <div className="row fade-in">
         <div className="large-12 columns">
-          <h1>Channel {this.state.channel}</h1>
+          <div className="channel-name fade-one">Channel {this.state.channel}</div>
           <ul className="no-bullet">
             {userList}
           </ul>

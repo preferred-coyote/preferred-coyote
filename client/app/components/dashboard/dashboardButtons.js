@@ -9,10 +9,10 @@ var DashboardButtons = React.createClass({
   render: function() {
 
     return (
-      <div className="row">
+      <div className="row fade-in">
         <div className="medium-12 columns">
           <div id="dash-intro">
-            <div id="dash-headline">Start chatting!</div>
+            <div id="dash-headline" className="fade-one">Start chatting!</div>
           </div>
           <br />
         </div>

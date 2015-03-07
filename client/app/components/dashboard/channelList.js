@@ -39,8 +39,8 @@ var ChannelList = React.createClass({
 
     return (
       <div className="row">
-        <div className="medium-12 columns">
-          <div className="channel-header">Channel List</div>
+        <div className="medium-12 columns fade-in">
+          <div className="channel-header fade-one">Channel List</div>
           <div className="channel-list">
             <ul className="no-bullet css-columns">
               {channelList}
