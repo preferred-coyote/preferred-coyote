@@ -497,7 +497,6 @@ var actions = Reflux.createActions([
   'updatePassword',
   'getInterests',
   'updateInterests',
-  // , 'createProfile',
   'editProfile'
 ]);
 
@@ -589,8 +588,8 @@ actions.getInterests.preEmit = function() {
       .set('x-access-token', window.localStorage.getItem('token') || '')
       .end(function(response){
         resolve(response.body.interests);
-      })
-  })
+      });
+  });
 };
 
 actions.updateInterests.preEmit = function(interestsArray) {
@@ -603,9 +602,12 @@ actions.updateInterests.preEmit = function(interestsArray) {
         interests: interestsArray
       })
       .end(function(response) {
-        console.log('actions updateInterests response: ', response);
-        resolve(response.body.interests);
-      })
+        if (response.body.interests.length) {
+          resolve(response.body.interests);
+        } else {
+          reject(response.body.interests)
+        }
+      });
   });
 };
 
