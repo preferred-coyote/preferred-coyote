@@ -20,7 +20,7 @@ var Signup = React.createClass({
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('editprofile');
+      this.transitionTo('/dashboard/editprofile');
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }

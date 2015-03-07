@@ -724,7 +724,7 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: 'editprofile', text: 'Edit Profile' },
+        { to: '/dashboard/editprofile', text: 'Edit Profile' },
       ];
     } else {
       return [
@@ -868,7 +868,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('editprofile');
+      this.transitionTo('/dashboard/editprofile');
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }
@@ -1761,27 +1761,31 @@ var EditProfile = React.createClass({displayName: "EditProfile",
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("h1", null, "@", this.state.user.username, ": Edit Profile"), 
-        React.createElement("div", {className: "medium-6 columns"}, 
-        React.createElement("h2", null, "Basic Info"), 
-          React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", enctype: "multipart/form-data", method: "POST"}, 
-            React.createElement("fieldset", {className: "forms"}, 
-              React.createElement(Info, {avatarimg: this.state.avatar}), 
-              React.createElement("label", {htmlFOR: "location"}, "Location"), 
-                React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: this.state.user.location}), 
-              React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
-                React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
-              React.createElement("label", {for: "EditProfile"}, "Summary"), 
-                React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: this.state.user.summary}), 
-              React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
-                React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
+        React.createElement("div", {className: "medium-12 columns fade-in"}, 
+        React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
+              React.createElement("fieldset", null, 
+                React.createElement("legend", null, "Basic Information"), 
+                React.createElement(Info, {avatarimg: this.state.avatar}), 
+                React.createElement("label", {htmlFOR: "location"}, "Location"), 
+                  React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: this.state.user.location}), 
+                React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
+                React.createElement("label", {for: "EditProfile"}, "Summary"), 
+                  React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: this.state.user.summary}), 
+                React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
+                  React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
+                ), 
+                React.createElement("button", {type: "submit", className: "button expand"}, "Save Profile")
               )
-            ), 
-            React.createElement("button", {type: "submit", className: "button small round shadow expand"}, "Edit Profile")
+            )
           ), 
-          React.createElement(Pass, null)
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement(Pass, null)
+          )
         )
       )
     );
@@ -1842,14 +1846,14 @@ var Pass = React.createClass({displayName: "Pass",
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("h2", null, "Change Password"), 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
           React.createElement("fieldset", {className: "forms"}, 
+            React.createElement("legend", null, "Change Password"), 
             React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
           ), 
-          React.createElement("button", {type: "submit", className: "button small shadow round expand"}, "Update")
+          React.createElement("button", {type: "submit", className: "button small expand"}, "Update")
         )
       )
     );
@@ -2190,12 +2194,12 @@ var routes = (
     React.createElement(Route, {name: "about", path: "about", handler: About}), 
     React.createElement(Route, {name: "contact", path: "contact", handler: Contact}), 
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
-    React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
     React.createElement(Route, {name: "logout", path: "logout", handler: Login}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
       React.createElement(DefaultRoute, {name: "dashboardButtons", handler: DashboardButtons}), 
+      React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
       React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 

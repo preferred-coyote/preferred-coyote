@@ -32,12 +32,12 @@ body {
 
 #sidebar {
   background-color:#444444;
-  height:750px;
+  min-height: 1000px;
 }
 
 #primary {
   background-color:#FFFFFF;
-  height:750px;
+  min-height: 1000px;
   padding: 0px;
 }
 
@@ -232,8 +232,6 @@ header.top-bar {
 
 .forms {
   background-color: azure;
-  border-radius: 30px;
-  padding: 35px;
 }
 
 ////////////////////////////
@@ -323,6 +321,15 @@ header.top-bar {
 }
 
 .channel-name {
+  font-family: 'Lato', sans-serif;
+  font-size: 3em;
+  color: #4b4b4b;
+  font-weight: 400;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+}
+
+#edit-profile-header {
   font-family: 'Lato', sans-serif;
   font-size: 3em;
   color: #4b4b4b;
