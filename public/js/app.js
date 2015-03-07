@@ -727,7 +727,7 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: '/dashboard/editprofile', text: 'Edit Profile' },
+        { to: 'editprofile', text: 'Edit Profile' },
       ];
     } else {
       return [
@@ -872,7 +872,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('/dashboard/editprofile');
+      this.transitionTo('editprofile');
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }
@@ -1344,10 +1344,16 @@ var ChannelList = React.createClass({displayName: "ChannelList",
 
     return (
       React.createElement("div", {className: "row"}, 
+<<<<<<< HEAD
         React.createElement("div", {className: "medium-12 columns fade-in"}, 
           React.createElement("div", {className: "channel-header fade-one"}, "Interests List"), 
           React.createElement("div", {className: "channel-list"}, 
             React.createElement("ul", {className: "no-bullet css-columns"}, 
+=======
+        React.createElement("div", {className: "large-12 columns"}, 
+          React.createElement("h2", {className: "channel-header"}, "Channel List"), 
+            React.createElement("ul", {className: "no-bullet"}, 
+>>>>>>> public
               channelList
             )
           )
@@ -1664,103 +1670,28 @@ var React = require('react/addons');
 var Link = require('react-router').Link;
 var About = require('./about').About;
 
-var Home = React.createClass({displayName: "Home",
 
-  componentDidMount: function() {
-    var h = window.innerHeight;
-    var w = window.innerWidth;
-    document.getElementById('barackobama').style.height = h + 'px';
-    document.getElementById('footer').style.height = h + 'px';
-    document.getElementById('footer').style.right ='300px';
-  },
+var Home = React.createClass({displayName: "Home",
 
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("div", {id: "barackobama"}, 
-          React.createElement("div", {className: "row"}, 
-            React.createElement("div", {className: "medium-12 columns"}, 
-              React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Lets talk about"), 
-              React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
-            )
-          ), 
-          React.createElement("div", {className: "row"}, 
-            React.createElement("div", {className: "large-6 small-centered columns"}, 
-              React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
-            )
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "medium-12 columns"}, 
+            React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Lets talk about"), 
+            React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
           )
         ), 
-
-        React.createElement("div", {className: "bg"}, 
-
-          React.createElement("div", {className: "row", id: "aboutTeam"}, 
-            React.createElement("h1", null, "Team"), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/8/000/2af/037/2d2cd6a.jpg"}), 
-              React.createElement("h3", null, "Travis Chapman"), 
-              React.createElement("h5", null, "Development Team"), 
-              React.createElement("h5", null, "Full-stack Engineer"), 
-              React.createElement("a", {href: "http://www.github.com/teechap"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
-              React.createElement("a", {href: "https://www.linkedin.com/in/travisechapman"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
-            ), 
-            
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAAIOAAAAJDBmNmE5ODkxLTk2OTgtNGY0ZC1iY2JjLTNjODdmMGY2NGIxMA.jpg"}), 
-              React.createElement("h3", null, "Yan Fan"), 
-              React.createElement("h5", null, "Scrum Master"), 
-              React.createElement("h5", null, "Full-stack Engineer"), 
-              React.createElement("a", {href: "http://www.github.com/yanarchy"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
-              React.createElement("a", {href: "https://www.linkedin.com/in/yanfan"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
-            ), 
-            
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/3/005/088/3b1/082f9e3.jpg"}), 
-              React.createElement("h3", null, "Jackson Hoose"), 
-              React.createElement("h5", null, "Product Owner"), 
-              React.createElement("h5", null, "Full-stack Engineer"), 
-              React.createElement("a", {href: "http://www.github.com/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
-              React.createElement("a", {href: "https://www.linkedin.com/in/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
-            ), 
-            
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAACFAAAAJGQwZWUyZTY0LWU1ZDAtNGYxMy05MWY2LTBhMmRmODBlMzg4Yg.jpg"}), 
-              React.createElement("h3", null, "Alexander Tseung"), 
-              React.createElement("h5", null, "Development Team"), 
-              React.createElement("h5", null, "Full-stack Engineer"), 
-              React.createElement("a", {href: "http://www.github.com/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
-              React.createElement("a", {href: "https://www.linkedin.com/in/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
-            )
-          
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-6 small-centered columns"}, 
+            React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
           )
-        ), 
-        React.createElement("div", {className: "bg"}, 
-
-          React.createElement("div", {className: "row", id: "technologies"}, 
-            React.createElement("h1", null, "Stack"), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/chailogo.jpg"}), 
-              React.createElement("img", {className: "tech", src: "/img/circlelogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/expressicon.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/foundationlogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/gulpicon.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/herokulogo.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/mochalogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/mysqllogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/nodelogo.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/pubnublogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/reacticon.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/sequelizelogo.png"})
-            )
-          )
+<<<<<<< HEAD
         ), 
         React.createElement("div", {id: "footer"}, 
           React.createElement("h2", null, "TESTING")
+=======
+>>>>>>> public
         )
       )
     );
@@ -2344,12 +2275,12 @@ var routes = (
     React.createElement(Route, {name: "about", path: "about", handler: About}), 
     React.createElement(Route, {name: "contact", path: "contact", handler: Contact}), 
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
+    React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
     React.createElement(Route, {name: "logout", path: "logout", handler: Login}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
       React.createElement(DefaultRoute, {name: "dashboardButtons", handler: DashboardButtons}), 
-      React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
       React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 
