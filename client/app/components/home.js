@@ -17,11 +17,13 @@ var Home = React.createClass({
   render: function() {
     return (
       <div>
+        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
         <div id="barackobama">
           <div className="row">
             <div className="medium-12 columns">
               <h2 className="lets-talk-about text-white text-center">Lets talk about</h2>
               <h3 className="topic text-center text-white lets-talk-about">Golden State Warriors</h3>
+              <a className="jumper" href="#pliip">Pliip</a> <br />
             </div>
           </div>
           <div className="row">
@@ -36,7 +38,7 @@ var Home = React.createClass({
           <div className="row" id="aboutTeam">
             <h1>Team</h1>
             <div className="medium-3 columns">
-              <img className="profile" src="https://media.licdn.com/media/p/8/000/2af/037/2d2cd6a.jpg" />
+              <img className="profile" src="/img/travis.jpg" />
               <h3>Travis Chapman</h3>
               <h5>Development Team</h5>
               <h5>Full-stack Engineer</h5>
@@ -45,7 +47,7 @@ var Home = React.createClass({
             </div>
             
             <div className="medium-3 columns">
-              <img className="profile" src="https://media.licdn.com/media/AAEAAQAAAAAAAAIOAAAAJDBmNmE5ODkxLTk2OTgtNGY0ZC1iY2JjLTNjODdmMGY2NGIxMA.jpg" />
+              <img className="profile" src="/img/yan.jpg" />
               <h3>Yan Fan</h3>
               <h5>Scrum Master</h5>
               <h5>Full-stack Engineer</h5>
@@ -54,7 +56,7 @@ var Home = React.createClass({
             </div>
             
             <div className="medium-3 columns">
-              <img className="profile" src="https://media.licdn.com/media/p/3/005/088/3b1/082f9e3.jpg" />
+              <img className="profile" src="/img/jackson.jpg" />
               <h3>Jackson Hoose</h3>
               <h5>Product Owner</h5>
               <h5>Full-stack Engineer</h5>
@@ -63,7 +65,7 @@ var Home = React.createClass({
             </div>
             
             <div className="medium-3 columns">
-              <img className="profile" src="https://media.licdn.com/media/AAEAAQAAAAAAAACFAAAAJGQwZWUyZTY0LWU1ZDAtNGYxMy05MWY2LTBhMmRmODBlMzg4Yg.jpg" />
+              <img className="profile" src="/img/alex.jpg" />
               <h3>Alexander Tseung</h3>
               <h5>Development Team</h5>
               <h5>Full-stack Engineer</h5>
@@ -91,7 +93,7 @@ var Home = React.createClass({
               <img className="tech" src='/img/mochalogo.png' />
               <img className="tech" src='/img/mysqllogo.png' />
               <img className="tech" src='/img/nodelogo.png' />
-            </div>
+            </div>=
             <div className="medium-3 columns">
               <img className="tech" src='/img/pubnublogo.png' />
               <img className="tech" src='/img/reacticon.png' />
