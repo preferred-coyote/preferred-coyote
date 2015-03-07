@@ -22,7 +22,7 @@ var EditProfile = React.createClass({
     return {
       createProfileMessage: '',
       user: JSON.parse(window.localStorage.user),
-      avatar: 'https://33.media.tumblr.com/avatar_7c7464817624_128.png'
+      avatar: 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg'
     }
   },
 
