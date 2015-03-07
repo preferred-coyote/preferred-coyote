@@ -5,11 +5,15 @@ var Info = React.createClass({
     return (
       <div>
         <div className="row">
-          <img src={this.props.avatarimg} alt="PREFERRED COYOTE"/>
+          <div className="medium-6 columns">
+            <img src={this.props.avatarimg} alt="PREFERRED COYOTE"/>
+          </div>
         </div>
         <div className="row">
-          <label for="avatar">Upload a new avatar</label>
-          <input type="file" name="avatar" id="avatar" />
+          <div className="medium-6 columns">
+            <label for="avatar">Upload a new avatar</label>
+            <input type="file" name="avatar" id="avatar" />
+          </div>
         </div>
       </div>
     );
