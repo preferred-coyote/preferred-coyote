@@ -5,17 +5,15 @@ var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || "development";
 var config    = require('../config/environment');
 
-if (env === 'development') {
+if (process.env.CLEARDB_DATABASE_URL) {
+  var sequelize = new Sequelize('mysql://b452f4cd465b9b:098545a9@us-cdbr-iron-east-01.cleardb.net/heroku_5328121277d07d6?reconnect=true', {
+    dialect: 'mysql'
+  });
+} else {
   var sequelize = new Sequelize('conversely-dev', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql'
   });
-} else if (env === 'production') {
-  var sequelize = new Sequelize(config.db.base, config.db.user, config.db.pass, config.db.options)
-    .authenticate().complete(function(err) {
-      if (err) return console.log('Unable to connect');
-      console.log('Successfully connected to clearDB');
-    });
 }
 
 var db = {};
