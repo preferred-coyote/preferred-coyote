@@ -58,27 +58,31 @@ var EditProfile = React.createClass({
   render: function() {
     return (
       <div className="row">
-        <h1>@{this.state.user.username}: Edit Profile</h1>
-        <div className="medium-6 columns">
-        <h2>Basic Info</h2>
-          <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" enctype="multipart/form-data" method="POST">
-            <fieldset className="forms">
-              <Info avatarimg={this.state.avatar} />
-              <label htmlFOR="location">Location</label>
-                <input type="text" id="location" name="location" ref="location" placeholder={this.state.user.location}/>
-              <label htmlFOR="gender">Gender</label>
-                <input type="radio" ref='gender' name="gender" value="Male" id="gender"/><label for="gender">Male</label>
-                <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label for="gender">Female</label>
-                <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label for="gender">Other</label>
-              <label for="EditProfile">Summary</label>
-                <textarea name="summary" ref='summary' id="summary" placeholder= {this.state.user.summary}></textarea>
-              <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
-                <label for="checkbox1">Allow Users to Find Me</label>
-              </input>
-            </fieldset>
-            <button type="submit" className="button small round shadow expand">Edit Profile</button>
-          </form>
-          <Pass />
+        <div className="medium-12 columns fade-in">
+        <div className="fade-one" id="edit-profile-header">Edit Profile</div>
+          <div className="medium-6 columns">
+            <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" encType="multipart/form-data" method="POST">
+              <fieldset>
+                <legend>Basic Information</legend>
+                <Info avatarimg={this.state.avatar} />
+                <label htmlFOR="location">Location</label>
+                  <input type="text" id="location" name="location" ref="location" placeholder={this.state.user.location}/>
+                <label htmlFOR="gender">Gender</label>
+                  <input type="radio" ref='gender' name="gender" value="Male" id="gender"/><label for="gender">Male</label>
+                  <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label for="gender">Female</label>
+                  <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label for="gender">Other</label>
+                <label for="EditProfile">Summary</label>
+                  <textarea name="summary" ref='summary' id="summary" placeholder= {this.state.user.summary}></textarea>
+                <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
+                  <label for="checkbox1">Allow Users to Find Me</label>
+                </input>
+                <button type="submit" className="button expand">Save Profile</button>
+              </fieldset>
+            </form>
+          </div>
+          <div className="medium-6 columns">
+            <Pass />
+          </div>
         </div>
       </div>
     );
