@@ -1034,7 +1034,7 @@ var CallView = React.createClass({displayName: "CallView",
         ), 
         React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "large-10 columns"}, 
-            React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream", poster: "https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg", className: "medium-4 columns"}), 
+            React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream", poster: "https://33.media.tumblr.com/avatar_7c7464817624_128.png", className: "medium-4 columns"}), 
             React.createElement("div", {className: "medium-4 columns"}, 
               React.createElement("span", {className: "icon-volume-mute medium-1 columns", id: "lefticon"}), 
               React.createElement("span", {className: "icon-volume-mute2 medium-1 columns", id: "righticon"}), 
@@ -1043,7 +1043,7 @@ var CallView = React.createClass({displayName: "CallView",
                 React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.endCall, className: "button"}, React.createElement("span", {className: "icon-phone-hang-up"}), "Stop Call"))
               )
             ), 
-            React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream", poster: "https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg", className: "medium-4 columns"})
+            React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream", poster: "https://avatars3.githubusercontent.com/u/2119948?v=3&s=400", className: "medium-4 columns"})
           )
         ), 
         React.createElement("div", {className: "row"}, 
@@ -1300,50 +1300,30 @@ module.exports.CallView = CallView;
 
 var React = require('react');
 var Link = require('react-router').Link;
-var request = require('superagent');
-var Promise = require('bluebird');
 
-var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', '', 'Godzilla'];
+var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', 'Kink.com', 'Godzilla'];
 var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({displayName: "ChannelList",
   mixins: [Authentication],
 
-  getChannels: function() {
-    var self = this;
-    request
-      .get('/api/interest')
-      .end(function(response){
-        if (response.body.length) {
-          console.log(response);
-          self.setState({
-            channels: response.body
-          });
-        } 
-      });
-  },
-
   getInitialState: function() {
-    this.getChannels();
     return {
-      channels: []
+      channels: channels
     };
   },
 
   render: function() {
     var channelList = this.state.channels.length ? this.state.channels.sort().map(function(channel) {
-      return React.createElement("li", null, React.createElement(Link, {to: "channelView", params: { channelName: channel.name.split(' ').join('-')}, className: "button small channels expand"}, channel.name))
+      return React.createElement("li", null, React.createElement(Link, {to: "channelView", params: { channelName: channel}, className: "button small"}, channel.split('-').join(' ')))
     }) : 'No channels available.';
-
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "medium-12 columns fade-in"}, 
-          React.createElement("div", {className: "channel-header fade-one"}, "Channel List"), 
-          React.createElement("div", {className: "channel-list"}, 
-            React.createElement("ul", {className: "no-bullet css-columns"}, 
+        React.createElement("div", {className: "large-12 columns"}, 
+          React.createElement("h2", {className: "channel-header"}, "Channel List"), 
+            React.createElement("ul", {className: "no-bullet"}, 
               channelList
             )
-          )
         )
       )
     );
@@ -1353,7 +1333,7 @@ var ChannelList = React.createClass({displayName: "ChannelList",
 module.exports.ChannelList = ChannelList;
 
 
-},{"../../utils/Authentication":28,"bluebird":29,"react":229,"react-router":54,"superagent":250}],9:[function(require,module,exports){
+},{"../../utils/Authentication":28,"react":229,"react-router":54}],9:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1454,9 +1434,9 @@ var ChannelView = React.createClass({displayName: "ChannelView",
     }) : null;
 
     return (
-      React.createElement("div", {className: "row fade-in"}, 
+      React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement("div", {className: "channel-name fade-one"}, "Channel ", this.state.channel), 
+          React.createElement("h1", null, "Channel ", this.state.channel), 
           React.createElement("ul", {className: "no-bullet"}, 
             userList
           )
@@ -1539,7 +1519,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
       React.createElement("div", null, 
         React.createElement("div", {className: "medium-2 columns", id: "sidebar"}, 
           React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
-          React.createElement("div", {id: "sidebar-avatar-div", className: "cf"}, 
+          React.createElement("div", {id: "sidebar-avatar-div"}, 
             React.createElement("img", {src: this.state.avatar, alt: "PREFERRED COYOTE", id: "sidebar-avatar"})
           ), 
           React.createElement("div", {className: "sidebar-summary"}, 
@@ -1583,10 +1563,10 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
   render: function() {
 
     return (
-      React.createElement("div", {className: "row fade-in"}, 
+      React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "medium-12 columns"}, 
           React.createElement("div", {id: "dash-intro"}, 
-            React.createElement("div", {id: "dash-headline", className: "fade-one"}, "Start chatting!")
+            React.createElement("div", {id: "dash-headline"}, "Start chatting!")
           ), 
           React.createElement("br", null)
         ), 
