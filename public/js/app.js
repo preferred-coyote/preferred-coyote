@@ -497,7 +497,6 @@ var actions = Reflux.createActions([
   'updatePassword',
   'getInterests',
   'updateInterests',
-  // , 'createProfile',
   'editProfile'
 ]);
 
@@ -589,8 +588,8 @@ actions.getInterests.preEmit = function() {
       .set('x-access-token', window.localStorage.getItem('token') || '')
       .end(function(response){
         resolve(response.body.interests);
-      })
-  })
+      });
+  });
 };
 
 actions.updateInterests.preEmit = function(interestsArray) {
@@ -603,9 +602,12 @@ actions.updateInterests.preEmit = function(interestsArray) {
         interests: interestsArray
       })
       .end(function(response) {
-        console.log('actions updateInterests response: ', response);
-        resolve(response.body.interests);
-      })
+        if (response.body.interests.length) {
+          resolve(response.body.interests);
+        } else {
+          reject(response.body.interests)
+        }
+      });
   });
 };
 
@@ -1726,6 +1728,19 @@ var EditProfile = React.createClass({displayName: "EditProfile",
     }
   },
 
+  componentDidMount: function() {
+    var data = userStore.getUserData();
+    var element = document.getElementsByName('gender');
+    console.log('element: ', element);
+
+    for (var i = 0; i < element.length; i++) {
+      if (element[i].value === data.user.gender) {
+        element[i].checked = true;
+      }
+    }
+
+  },
+
   onCreate: function(isCreated) {
     if(isCreated) {
       this.transitionTo('dashboard');
@@ -1763,20 +1778,20 @@ var EditProfile = React.createClass({displayName: "EditProfile",
           React.createElement("div", {className: "medium-6 columns"}, 
             React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
               React.createElement("fieldset", null, 
-                React.createElement("legend", null, "Basic Information"), 
+                React.createElement("legend", {id: "legend"}, "Basic Information"), 
                 React.createElement(Info, {avatarimg: this.state.avatar}), 
                 React.createElement("label", {htmlFOR: "location"}, "Location"), 
-                  React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", placeholder: this.state.user.location}), 
+                  React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", defaultValue: this.state.user.location}), 
                 React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {for: "gender"}, "Male"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {for: "gender"}, "Female"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {for: "gender"}, "Other"), 
-                React.createElement("label", {for: "EditProfile"}, "Summary"), 
-                  React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", placeholder: this.state.user.summary}), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Male"), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Female"), 
+                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Other"), 
+                React.createElement("label", {htmlFor: "EditProfile"}, "Summary"), 
+                  React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", defaultValue: this.state.user.summary}), 
                 React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
-                  React.createElement("label", {for: "checkbox1"}, "Allow Users to Find Me")
+                  React.createElement("label", {htmlFor: "checkbox1"}, "Allow Users to Find Me")
                 ), 
-                React.createElement("button", {type: "submit", className: "button expand"}, "Save Profile")
+                React.createElement("button", {type: "submit", className: "button expand profile-submit"}, "Save Profile")
               )
             )
           ), 
@@ -1848,13 +1863,13 @@ var Pass = React.createClass({displayName: "Pass",
     return (
       React.createElement("div", null, 
         React.createElement("form", {onSubmit: this.updatePassword, className: "form", role: "form", action: "/api/user/profile/password", enctype: "multipart/form-data", method: "PUT"}, 
-          React.createElement("fieldset", {className: "forms"}, 
-            React.createElement("legend", null, "Change Password"), 
+          React.createElement("fieldset", null, 
+            React.createElement("legend", {id: "legend"}, "Change Password"), 
             React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
-            React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"})
-          ), 
-          React.createElement("button", {type: "submit", className: "button small expand"}, "Update")
+            React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"}), 
+            React.createElement("button", {type: "submit", className: "button small expand profile-submit"}, "Update")
+          )
         )
       )
     );

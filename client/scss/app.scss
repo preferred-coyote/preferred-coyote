@@ -363,3 +363,18 @@ header.top-bar {
   -moz-animation-duration:0.1s;
   animation-duration:0.1s;
 }
+
+legend {
+  font-family: 'Lato', sans-serif;
+  font-size: 1em;
+  color: #4b4b4b;
+  font-weight: 300;
+}
+
+#legend {
+  font-weight: 300;
+}
+
+.profile-submit {
+  margin-top: 1.5rem;
+}

@@ -44,7 +44,7 @@ Object.keys(db).forEach(function(modelName) {
 
 /* sync */
 sequelize.sync({
-  force: true
+  force: false
 }).then(function() {
   console.log('sync');
 });
