@@ -392,12 +392,12 @@ legend {
   padding: 25px;
 }
 
-/******* Parallax Scrolling ********/
+/******* Homepage Divier Things ********/
 
 .bg {
   margin-top: 600px;
   padding: 30px;
-  background-color: rgba(43, 201, 221, 0.36)
+  background-color: rgba(43, 201, 221, 0.36);
 }
 
 .bg h1 {
@@ -419,6 +419,20 @@ legend {
 .arrow {
   position: fixed;
   display: block;
+}
+
+/*
+.divider {
+  height: 300px;
+}
+*/
+
+.bg-tech {
+  background-color: rgba(98, 103, 128, 0.53);
+}
+
+.bg-tech h1 {
+  color: azure;
 }
 
 .scrollToTop{

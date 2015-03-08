@@ -98,7 +98,9 @@ var Home = React.createClass({
           
           </div>
         </div>
-        <div className="bg">
+        <div className="divider">
+        </div>
+        <div className="bg-tech">
 
           <div className="row" id="technologies">
             <h1>Stack</h1>
@@ -123,9 +125,6 @@ var Home = React.createClass({
               <img className="tech" src='/img/sequelizelogo.png' />
             </div>
           </div>
-        </div>
-        <div id="footer">
-          <h2>TESTING</h2>
         </div>
       </div>
     );

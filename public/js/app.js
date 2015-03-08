@@ -1733,7 +1733,9 @@ var Home = React.createClass({displayName: "Home",
           
           )
         ), 
-        React.createElement("div", {className: "bg"}, 
+        React.createElement("div", {className: "divider"}
+        ), 
+        React.createElement("div", {className: "bg-tech"}, 
 
           React.createElement("div", {className: "row", id: "technologies"}, 
             React.createElement("h1", null, "Stack"), 
@@ -1758,9 +1760,6 @@ var Home = React.createClass({displayName: "Home",
               React.createElement("img", {className: "tech", src: "/img/sequelizelogo.png"})
             )
           )
-        ), 
-        React.createElement("div", {id: "footer"}, 
-          React.createElement("h2", null, "TESTING")
         )
       )
     );
