@@ -26,6 +26,19 @@ var EditProfile = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    var data = userStore.getUserData();
+    var element = document.getElementsByName('gender');
+    console.log('element: ', element);
+
+    for (var i = 0; i < element.length; i++) {
+      if (element[i].value === data.user.gender) {
+        element[i].checked = true;
+      }
+    }
+
+  },
+
   onCreate: function(isCreated) {
     if(isCreated) {
       this.transitionTo('dashboard');
@@ -63,20 +76,20 @@ var EditProfile = React.createClass({
           <div className="medium-6 columns">
             <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" encType="multipart/form-data" method="POST">
               <fieldset>
-                <legend>Basic Information</legend>
+                <legend id="legend">Basic Information</legend>
                 <Info avatarimg={this.state.avatar} />
                 <label htmlFOR="location">Location</label>
-                  <input type="text" id="location" name="location" ref="location" placeholder={this.state.user.location}/>
+                  <input type="text" id="location" name="location" ref="location" defaultValue={this.state.user.location}/>
                 <label htmlFOR="gender">Gender</label>
-                  <input type="radio" ref='gender' name="gender" value="Male" id="gender"/><label for="gender">Male</label>
-                  <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label for="gender">Female</label>
-                  <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label for="gender">Other</label>
-                <label for="EditProfile">Summary</label>
-                  <textarea name="summary" ref='summary' id="summary" placeholder= {this.state.user.summary}></textarea>
+                  <input type="radio" ref='gender' name="gender" value="Male" id="gender" /><label htmlFor="gender">Male</label>
+                  <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label htmlFor="gender">Female</label>
+                  <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label htmlFor="gender">Other</label>
+                <label htmlFor="EditProfile">Summary</label>
+                  <textarea name="summary" ref='summary' id="summary" defaultValue= {this.state.user.summary}></textarea>
                 <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
-                  <label for="checkbox1">Allow Users to Find Me</label>
+                  <label htmlFor="checkbox1">Allow Users to Find Me</label>
                 </input>
-                <button type="submit" className="button expand">Save Profile</button>
+                <button type="submit" className="button expand profile-submit">Save Profile</button>
               </fieldset>
             </form>
           </div>
