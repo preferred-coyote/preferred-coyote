@@ -39,7 +39,7 @@ var EditProfile = React.createClass({
 
   onCreate: function(isCreated) {
     if(isCreated) {
-      this.transitionTo('dashboard');
+      this.redirectTo('dashboard');
     } else {
       this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }

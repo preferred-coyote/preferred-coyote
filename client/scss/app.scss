@@ -416,6 +416,11 @@ legend {
   margin: 0 auto;
 }
 
+.arrow {
+  position: fixed;
+  display: block;
+}
+
 .scrollToTop{
   width:100px; 
   height:130px;
@@ -423,7 +428,7 @@ legend {
   text-align:center; 
   background: whiteSmoke;
   font-weight: bold;
-  color: #444;
+  color: #2bc9dd;
   text-decoration: none;
   position:fixed;
   top:75px;
