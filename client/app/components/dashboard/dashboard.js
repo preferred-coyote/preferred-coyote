@@ -59,7 +59,7 @@ var Dashboard = React.createClass({
         <div className="medium-2 columns" id="sidebar">
           <h3 className="username">@{this.state.user.username}</h3>
           <div id="sidebar-avatar-div" className="cf">
-            <img src={this.state.avatar} alt="PREFERRED COYOTE" id="sidebar-avatar" />
+            <img src={this.state.avatar} alt="PREFERRED COYOTE" className="round" id="sidebar-avatar" />
           </div>
           <div className="sidebar-summary">
             <div className="sidebar-summary-title">Summary</div>

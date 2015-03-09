@@ -633,7 +633,7 @@ var About = React.createClass({displayName: "About",
           React.createElement("a", {href: "http://www.github.com/teechap"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
           React.createElement("a", {href: "https://www.linkedin.com/in/travisechapman"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
         ), 
-        
+
         React.createElement("div", {className: "medium-3 columns"}, 
           React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAAElAAAAJDU5YmIyYWQ0LWM5YWEtNDNmMS04MzA2LTg1YjQ3ZmM1YmU3Yg.jpg"}), 
           React.createElement("h3", null, "Yan Fan"), 
@@ -642,7 +642,7 @@ var About = React.createClass({displayName: "About",
           React.createElement("a", {href: "http://www.github.com/yanarchy"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
           React.createElement("a", {href: "https://www.linkedin.com/in/yanfan"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
         ), 
-        
+
         React.createElement("div", {className: "medium-3 columns"}, 
           React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/3/005/088/3b1/082f9e3.jpg"}), 
           React.createElement("h3", null, "Jackson Hoose"), 
@@ -651,7 +651,7 @@ var About = React.createClass({displayName: "About",
           React.createElement("a", {href: "http://www.github.com/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
           React.createElement("a", {href: "https://www.linkedin.com/in/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
         ), 
-        
+
         React.createElement("div", {className: "medium-3 columns"}, 
           React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAACFAAAAJGQwZWUyZTY0LWU1ZDAtNGYxMy05MWY2LTBhMmRmODBlMzg4Yg.jpg"}), 
           React.createElement("h3", null, "Alexander Tseung"), 
@@ -660,7 +660,7 @@ var About = React.createClass({displayName: "About",
           React.createElement("a", {href: "http://www.github.com/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
           React.createElement("a", {href: "https://www.linkedin.com/in/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
         )
-      
+
       )
     );
   }
@@ -1015,12 +1015,12 @@ var CallView = React.createClass({displayName: "CallView",
     var channel = this.state.channel;
     var peer = this.state.peer;
     var self = this;
+
     if (self.isMounted()) {
       pubnub = channelStore.pubnubInit(channel);
       self.subscribeToPrivate(user, pubnub, channel);
     }
-    // self.handshake(user, peer, channel);
-    // self.initializePhone(user);
+
     self.startCall();
   },
 
@@ -1037,16 +1037,20 @@ var CallView = React.createClass({displayName: "CallView",
         ), 
         React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "large-10 columns"}, 
-            React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream", poster: "https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg", className: "medium-4 columns"}), 
             React.createElement("div", {className: "medium-4 columns"}, 
-              React.createElement("span", {className: "icon-volume-mute medium-1 columns", id: "lefticon"}), 
-              React.createElement("span", {className: "icon-volume-mute2 medium-1 columns", id: "righticon"}), 
+              React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream", poster: "https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg", className: "round"})
+            ), 
+            React.createElement("div", {className: "medium-4 columns"}, 
+              React.createElement("span", {className: "icon-volume-mute", id: "lefticon"}), 
+              React.createElement("span", {className: "icon-volume-mute2", id: "righticon"}), 
               React.createElement("ul", {className: "button-group stack", id: "callbuttons"}, 
                 React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.makeCall, className: "button"}, React.createElement("span", {className: "icon-phone"}), "Call!")), 
                 React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.endCall, className: "button"}, React.createElement("span", {className: "icon-phone-hang-up"}), "Stop Call"))
               )
             ), 
-            React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream", poster: "https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg", className: "medium-4 columns"})
+            React.createElement("div", {className: "medium-4 columns"}, 
+              React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream", poster: "https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg", className: "round"})
+            )
           )
         ), 
         React.createElement("div", {className: "row"}, 
@@ -1080,7 +1084,7 @@ var CallView = React.createClass({displayName: "CallView",
     var channel = channel || this.state.channel;
     var user = user || this.state.user;
     pubnub.publish({
-      channel: peer,        
+      channel: peer,
       message: user + ' ' + peer + ' ' + channel
     });
   },
@@ -1093,7 +1097,7 @@ var CallView = React.createClass({displayName: "CallView",
       return;
     }
     pubnub.publish({
-      channel: channel,        
+      channel: channel,
       message: user + ': ' + message
     });
 
@@ -1106,25 +1110,25 @@ var CallView = React.createClass({displayName: "CallView",
 
     pubnub.subscribe({
       channel: channel,
-      
+
       connect: function() {
         pubnub.publish({
-          channel: channel,        
+          channel: channel,
           message: user + ' has joined the channel.'
         });
 
         self.handshake();
       },
-      
+
       state: {
         name: user,
         timestamp: new Date()
       },
-      
+
       presence: function(info) {
         // detects users in channel and sets them in this.state
       },
-      
+
       // Heartbeat defines heartbeat frequency to monitor for subscriber timeouts.
       heartbeat: 10,
       callback: function(message, env, channel) {
@@ -1178,7 +1182,7 @@ var CallView = React.createClass({displayName: "CallView",
 
     session = phone.dial(callPeer);
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is trying to dial.'
       });
 
@@ -1200,7 +1204,7 @@ var CallView = React.createClass({displayName: "CallView",
       var uservideo = self.refs.uservideostream.getDOMNode();
 
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is receiving a call.'
       });
 
@@ -1208,20 +1212,20 @@ var CallView = React.createClass({displayName: "CallView",
         // set the peer that you've connected to
 
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' is now connected.'
         });
-        
+
         //uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
         self.showConnect();
 
       });
-      
+
       newSession.ended(function(newSession) {
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' has disconnected.'
         });
       });
@@ -1241,7 +1245,7 @@ var CallView = React.createClass({displayName: "CallView",
 
       var session = phone.dial(callPeer);
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is trying to dial.'
       });
     });
@@ -1254,7 +1258,7 @@ var CallView = React.createClass({displayName: "CallView",
       var uservideo = self.refs.uservideostream.getDOMNode();
 
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is receiving a call.'
       });
 
@@ -1262,18 +1266,18 @@ var CallView = React.createClass({displayName: "CallView",
         // set the peer that you've connected to
 
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' is now connected.'
         });
-        
+
         // uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
       });
-      
+
       newSession.ended(function(newSession) {
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' has disconnected.'
         });
       });
@@ -1289,14 +1293,15 @@ var CallView = React.createClass({displayName: "CallView",
 
   showConnect: function() {
     var lefticon = document.getElementById('lefticon');
-    lefticon.className = 'icon-volume-high2 medium-1 columns';
+    lefticon.className = 'icon-volume-high2';
     var righticon = document.getElementById('righticon');
-    righticon.className = 'icon-volume-high medium-1 columns';
+    righticon.className = 'icon-volume-high';
   }
 
 });
 
 module.exports.CallView = CallView;
+
 
 },{"../../stores/channelStore":23,"../../utils/Authentication":28,"react":229,"react-router":54,"react/addons":68,"reflux":230}],8:[function(require,module,exports){
 /** @jsx React.DOM */
@@ -1537,7 +1542,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
         React.createElement("div", {className: "medium-2 columns", id: "sidebar"}, 
           React.createElement("h3", {className: "username"}, "@", this.state.user.username), 
           React.createElement("div", {id: "sidebar-avatar-div", className: "cf"}, 
-            React.createElement("img", {src: this.state.avatar, alt: "PREFERRED COYOTE", id: "sidebar-avatar"})
+            React.createElement("img", {src: this.state.avatar, alt: "PREFERRED COYOTE", className: "round", id: "sidebar-avatar"})
           ), 
           React.createElement("div", {className: "sidebar-summary"}, 
             React.createElement("div", {className: "sidebar-summary-title"}, "Summary"), 
