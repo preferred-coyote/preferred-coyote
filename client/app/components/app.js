@@ -59,6 +59,7 @@ var App = React.createClass({
       ];
     } else {
       return [
+        { to: 'signup', text: 'Sign Up'},
         { to: 'login', text: 'Login' },
         { to: 'about', text: 'About'},
         { to: 'contact', text: 'Contact'}

@@ -89,24 +89,24 @@ var ChannelView = React.createClass({
     var self = this;
     var userList = this.state.userlist.length ? this.state.userlist.map(function(peer) {
       var privateChannel = self.state.user + peer;
-      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small" key={peer.id}>{peer}</Link></li>
+      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small channels expand" key={peer.id}>{peer}</Link></li>
     }) : 'No users available.';
 
     var callsList = this.state.calls.length ? this.state.calls.map(function(peer) {
       var privateChannel = peer + self.state.user;
-      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small" key={peer.id}>{peer} is Calling!</Link></li>
+      return <li><Link to="call" query={{ peer: peer, channel: privateChannel }} className="button small iscalling expand" key={peer.id}>{peer} is Calling!</Link></li>
     }) : null;
 
     return (
       <div className="row fade-in">
         <div className="large-12 columns">
           <div className="channel-name fade-one">Channel {this.state.channel}</div>
-          <ul className="no-bullet">
+          <ul className="no-bullet css-columns">
             {userList}
           </ul>
         </div>
         <div className="large-12 columns">
-          <ul className="no-bullet">
+          <ul className="no-bullet css-columns">
             {callsList}
           </ul>
         </div>

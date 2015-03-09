@@ -62,9 +62,9 @@ var Login = React.createClass({
           <h2 className="lets-talk-about text-white text-center">Login</h2>
           {error}
           <form className="form" onSubmit={this.login} role="form" action="/api/auth/login" method="POST">
-            <label htmlFor="username" className="text-white text-center">Username</label>
-    	      <input type="text" name="username" className="round" ref="username" id="username" placeholder="username" />
-            <label htmlFor="password" className="text-center text-white">Password</label>
+            <label htmlFor="username" className="text-white">Username</label>
+    	      <input type="text" name="username" className="round" ref="username" id="username" />
+            <label htmlFor="password" className="text-white">Password</label>
     	      <input type="password" className="round" name="password" ref="password" id="password" />
     	      <button type="submit" className="button button-primary">
               Login

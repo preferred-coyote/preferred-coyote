@@ -27,6 +27,30 @@ var PubNub = React.createClass({
     // phone.hangup();
   },
 
+  getInitialState: function() {
+    var user = JSON.parse(window.localStorage.getItem('user'));
+    return {
+      user: user.username,
+      peer: null,
+      userlist: [],
+      messages: []
+    };
+  },
+
+  componentDidMount: function() {
+    var user = this.state.user;
+    var channel = this.state.channel;
+    var peer = this.state.peer;
+    var self = this;
+    if (self.isMounted()) {
+      pubnub = channelStore.pubnubInit(channel);
+      self.subscribeToPrivate(user, pubnub, channel);
+    }
+    // self.handshake(user, peer, channel);
+    // self.initializePhone(user);
+    self.startCall();
+  },
+
   render: function() {
     var peer = this.state.peer || '';
     var user = this.state.user || '';
@@ -34,25 +58,49 @@ var PubNub = React.createClass({
       return <li>{user}</li>;
     }) : 'There are no users available.';
 
+    var messageList = this.state.messages.length ? this.state.messages.map(function(message) {
+      return <li>{message}</li>
+    }) : 'No messages.';
+
     return (
-      <div>
-      	<h1>Hello @{this.state.user}</h1>
-      	<div className="row">
-          <div className="large-6 columns">
-            <video width="250" autoPlay id="uservideo"></video>
-            {user}
-          </div>
-          <div className="large-6 columns">
-            <video width="250" autoPlay id="peervideo"></video>
-            {peer}
+      <div className="row">
+        <div className="row">
+          <div className="large-12 columns">
+            <h1>You are chatting with {this.state.peer}</h1>
           </div>
         </div>
-        <ul>
-          {userlist}
-        </ul>
-        <button id="startCall" onClick={this.startCall}>Call!</button>
-        <button id="nextUser" onClick={this.nextUser}>Next!</button>
-        <button id="endCall" onClick={this.endAll}>Stop Call</button>
+        <div className="row">
+          <div className="large-10 columns">
+            <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg" className="medium-4 columns"></video>
+            <div className="medium-4 columns">
+              <span className="icon-volume-mute medium-1 columns" id="lefticon"></span>
+              <span className="icon-volume-mute2 medium-1 columns" id="righticon"></span>
+              <ul className="button-group stack" id="callbuttons">
+                <li><a href="#" onClick={this.makeCall} className="button"><span className="icon-phone"></span>Call!</a></li>
+                <li><a href="#" onClick={this.endCall} className="button"><span className="icon-phone-hang-up"></span>Stop Call</a></li>
+              </ul>
+            </div>
+            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg" className="medium-4 columns"></video>
+          </div>
+        </div>
+        <div className="row">
+          <div className="large-10 columns">
+            <h3>Messages</h3>
+            <div id="messagearea">
+              <ul className="no-bullet">
+                {messageList}
+              </ul>
+            </div>
+            <div className="row">
+              <div className="large-10 columns">
+                <input type="text" placeholder="Message" ref="message" onKeyPress={this.sendMessage} id="inputmessage"></input>
+              </div>
+              <div className="large-2 columns">
+                <button className="button small expand" onClick={this.sendMessage} id="sendbutton">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   },
@@ -60,14 +108,7 @@ var PubNub = React.createClass({
   //for "Call User" button, it hits getInitialSTate > render > ComponentDidMount
   //automatically
   //this allows us to get the user by going "this.state.user"
-  getInitialState: function() {
-    var user = JSON.parse(window.localStorage.getItem('user'));
-    return {
-      user: user.username,
-      peer: null,
-      userlist: []
-    };
-  },
+
 
   initializePhoneAndPubNub: function() {
     // Initializes both phone and pubnub

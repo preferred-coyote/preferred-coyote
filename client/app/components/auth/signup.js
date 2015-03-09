@@ -44,11 +44,11 @@ var Signup = React.createClass({
             {this.state.signupMessage}
           </div>
         	<form className="form" onSubmit={this.signup} role="form" action="/api/auth/signup" method="POST">
-    	      <label htmlFor="username" className="text-center text-white">Username</label>
-            <input type="text" id="username" name="username" ref="username" placeholder="username"/>
-            <label htmlFor="password" className="text-center text-white">Password</label>
+    	      <label htmlFor="username" className="text-white">Username</label>
+            <input type="text" id="username" name="username" ref="username" />
+            <label htmlFor="password" className="text-white">Password</label>
     	      <input id="password" type="password" ref="password" name="password" />
-    	      <button type="submit" className="button">Signup</button>
+    	      <button type="submit" className="button">Sign Up</button>
           </form>
         </div>
       </div>
