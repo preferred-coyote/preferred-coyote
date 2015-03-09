@@ -1672,11 +1672,35 @@ var Home = React.createClass({displayName: "Home",
     document.getElementById('barackobama').style.height = h + 'px';
     document.getElementById('footer').style.height = h + 'px';
     document.getElementById('footer').style.right ='300px';
+    $(window).scroll(function(){
+      if ($(this).scrollTop() > 100) {
+        $('.scrollToTop').fadeIn();
+      } else {
+        $('.scrollToTop').fadeOut();
+      }
+    });
+    $('.scrollToTop').click(function(){
+      $('html, body').animate({scrollTop : 0},800);
+      return false;
+    });
+
+    //down arrow working?
+    // $(window).scroll(function() {
+    //   if($(this).scrollTop() > 0) {
+    //     $('.arrow').fadeIn();
+    //   } else {
+    //     $('.arrow').fadeOut();
+    //   }
+    // });
+    $('.arrow').click(function() {
+      $('body').animate({scrollTop: h*2}, 800);
+    });
   },
 
   render: function() {
     return (
       React.createElement("div", null, 
+        React.createElement("a", {className: "scrollToTop", href: "#"}, "To The Top ^"), " ", React.createElement("br", null), 
         React.createElement("div", {id: "barackobama"}, 
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "medium-12 columns"}, 
@@ -1687,16 +1711,17 @@ var Home = React.createClass({displayName: "Home",
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "large-6 small-centered columns"}, 
               React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
-            )
+            ), 
+              React.createElement("img", {className: "arrow", src: "/img/downarrow2.png"})
           )
         ), 
 
         React.createElement("div", {className: "bg"}, 
-
+          React.createElement("a", {name: "pliip"}), 
           React.createElement("div", {className: "row", id: "aboutTeam"}, 
             React.createElement("h1", null, "Team"), 
             React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/8/000/2af/037/2d2cd6a.jpg"}), 
+              React.createElement("img", {className: "profile", src: "/img/travis.jpg"}), 
               React.createElement("h3", null, "Travis Chapman"), 
               React.createElement("h5", null, "Development Team"), 
               React.createElement("h5", null, "Full-stack Engineer"), 
@@ -1705,7 +1730,7 @@ var Home = React.createClass({displayName: "Home",
             ), 
             
             React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAAIOAAAAJDBmNmE5ODkxLTk2OTgtNGY0ZC1iY2JjLTNjODdmMGY2NGIxMA.jpg"}), 
+              React.createElement("img", {className: "profile", src: "/img/yan.jpg"}), 
               React.createElement("h3", null, "Yan Fan"), 
               React.createElement("h5", null, "Scrum Master"), 
               React.createElement("h5", null, "Full-stack Engineer"), 
@@ -1714,7 +1739,7 @@ var Home = React.createClass({displayName: "Home",
             ), 
             
             React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/p/3/005/088/3b1/082f9e3.jpg"}), 
+              React.createElement("img", {className: "profile", src: "/img/jackson.jpg"}), 
               React.createElement("h3", null, "Jackson Hoose"), 
               React.createElement("h5", null, "Product Owner"), 
               React.createElement("h5", null, "Full-stack Engineer"), 
@@ -1723,7 +1748,7 @@ var Home = React.createClass({displayName: "Home",
             ), 
             
             React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "profile", src: "https://media.licdn.com/media/AAEAAQAAAAAAAACFAAAAJGQwZWUyZTY0LWU1ZDAtNGYxMy05MWY2LTBhMmRmODBlMzg4Yg.jpg"}), 
+              React.createElement("img", {className: "profile", src: "/img/alex.jpg"}), 
               React.createElement("h3", null, "Alexander Tseung"), 
               React.createElement("h5", null, "Development Team"), 
               React.createElement("h5", null, "Full-stack Engineer"), 
@@ -1829,7 +1854,7 @@ var EditProfile = React.createClass({displayName: "EditProfile",
 
   onCreate: function(isCreated) {
     if(isCreated) {
-      this.transitionTo('dashboard');
+      this.redirectTo('dashboard');
     } else {
       this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }
