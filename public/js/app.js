@@ -1305,8 +1305,6 @@ var React = require('react');
 var Link = require('react-router').Link;
 var request = require('superagent');
 var Promise = require('bluebird');
-
-var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', '', 'Godzilla'];
 var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({displayName: "ChannelList",
@@ -1322,7 +1320,7 @@ var ChannelList = React.createClass({displayName: "ChannelList",
           self.setState({
             channels: response.body
           });
-        } 
+        }
       });
   },
 
@@ -1989,7 +1987,7 @@ var PubNub = React.createClass({displayName: "PubNub",
     // Initializes both phone and pubnub
     pubnub = pubnubStore.pubnubInit();
     phone = pubnubStore.phoneInit();
-    
+
   },
 
   startCall: function() {
@@ -2049,16 +2047,16 @@ var PubNub = React.createClass({displayName: "PubNub",
 
       callback: function(msg) {
         pubnubStore.getUsersAvailable(user, pubnub)
-        .then(function(list) {
-          list = Object.keys(list);
-          console.log('list is', list);
-          self.setState({
-            userlist: list
+          .then(function(list) {
+            list = Object.keys(list);
+            console.log('list is', list);
+            self.setState({
+              userlist: list
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
           });
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
       }
     });
   },
@@ -2078,16 +2076,14 @@ var PubNub = React.createClass({displayName: "PubNub",
   },
 
   endCall: function() {
-    var self = this;
     var user = this.state.user;
-    console.log('in endCall, user is', user);
+
     if (session) {
-      console.log('in endCall, session exists');
-      console.log('session is ', session);
       session.hangup();
-    };
-    console.log('in endcall after hangup, user is ', user);
-    self.changePhoneState(user, false);
+    }
+
+    this.changePhoneState(user, false);
+
     this.setState({
       peer: null
     });
@@ -2098,18 +2094,17 @@ var PubNub = React.createClass({displayName: "PubNub",
     phone.hangup();
     pubnub.unsubscribe({
       channel: 'preferred-coyote'
-    })
+    });
   },
 
   changePhoneState: function(user, state) {
-    // var pubnub = pubnubStore.pubnubInit();
     pubnub.state({
       channel: 'preferred-coyote',
       uuid: user,
-      state: {available: state},
+      state: { available: state },
       callback: function() {
         pubnub.publish({
-          channel: 'preferred-coyote',        
+          channel: 'preferred-coyote',
           message: 'Message posted'
         });
       }
@@ -2119,45 +2114,53 @@ var PubNub = React.createClass({displayName: "PubNub",
   phoneUser: function(rando) {
     var self = this;
     var user = this.state.user;
+
     // phone = pubnubStore.phoneInit();
     phone.ready(function(){
       pubnub.publish({
-        channel: 'preferred-coyote',        
+        channel: 'preferred-coyote',
         message: 'Message posted'
       });
       session = phone.dial(rando);
     });
+
     // When Call Comes In or is to be Connected
     phone.receive(function(session){
       //TODO: only receive session when user accepts
       //on click thingy
         //if so then run everything below:
       if (connected) return session.hangup();
-      
+
       session = session;
       self.changePhoneState(user, false);
       var peervideo = document.getElementById('peervideo');
       var uservideo = document.getElementById('uservideo');
+
       pubnub.publish({
-          channel: 'preferred-coyote',        
-          message: 'Message posted'
-        });
+        channel: 'preferred-coyote',
+        message: 'Message posted'
+      });
+
       // Display Your Friend's Live Video
       session.connected(function(session){
+
         // set the peer that you've connected to
-        self.changePhoneState(user, false); 
+        self.changePhoneState(user, false);
+
         connected = true;
+
         self.setState({
           peer: session.number
         });
-        console.log('I HAVE CONNECTED! SESSION: ', session);
-        console.log('PHONE: ', phone);
+
         peervideo.src = session.video.src;
         peervideo.play();
+
         uservideo.src = phone.video.src;
         uservideo.play();
+
         pubnub.publish({
-          channel: 'preferred-coyote',        
+          channel: 'preferred-coyote',
           message: 'Message posted'
         });
       });
@@ -2166,7 +2169,7 @@ var PubNub = React.createClass({displayName: "PubNub",
         connected = false;
         self.changePhoneState(user, true);
         pubnub.publish({
-          channel: 'preferred-coyote',        
+          channel: 'preferred-coyote',
           message: 'Message posted'
         });
       })
@@ -2175,6 +2178,7 @@ var PubNub = React.createClass({displayName: "PubNub",
 });
 
 module.exports.PubNub = PubNub;
+
 
 },{"../../stores/pubnubStore":25,"../../stores/userStore":27,"react-router":54,"react/addons":68,"reflux":230}],22:[function(require,module,exports){
 'use strict';
