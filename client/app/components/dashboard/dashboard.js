@@ -51,6 +51,7 @@ var Dashboard = React.createClass({
     Actions.updateInterests(interestArray);
     console.log(interestArray);
     this.setState({interests: updatedInterests});
+    this.refs.interest.getDOMNode().value = '';
   },
 
   render: function() {
