@@ -74,10 +74,11 @@ var Dashboard = React.createClass({
             <div className="sidebar-summary-title">Location</div>
             <div className="sidebar-summary-text">{this.state.user.location}</div>
           </div>
-          <Interests interests={this.state.interests} />
+          <h3 id="interests-title">Interests</h3>
           <form onSubmit={this.handleInterestSubmit}>
-            <input type="text" ref="interest"  />
+            <input id="interestsinput" type="text" ref="interest" />
           </form>
+          <Interests interests={this.state.interests} />
 
         </div>
         <div className="medium-10 columns" id="primary">

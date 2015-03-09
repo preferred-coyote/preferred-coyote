@@ -1558,10 +1558,11 @@ var Dashboard = React.createClass({displayName: "Dashboard",
             React.createElement("div", {className: "sidebar-summary-title"}, "Location"), 
             React.createElement("div", {className: "sidebar-summary-text"}, this.state.user.location)
           ), 
-          React.createElement(Interests, {interests: this.state.interests}), 
+          React.createElement("h3", {id: "interests-title"}, "Interests"), 
           React.createElement("form", {onSubmit: this.handleInterestSubmit}, 
-            React.createElement("input", {type: "text", ref: "interest"})
-          )
+            React.createElement("input", {id: "interestsinput", type: "text", ref: "interest"})
+          ), 
+          React.createElement(Interests, {interests: this.state.interests})
 
         ), 
         React.createElement("div", {className: "medium-10 columns", id: "primary"}, 
@@ -1945,7 +1946,7 @@ var Interests = React.createClass({displayName: "Interests",
   render: function() {
     return (
       React.createElement("div", {id: "interests-section"}, 
-        React.createElement("h3", {id: "interests-title"}, "Interests"), 
+
         React.createElement("ul", {className: "inline-list"}, 
           this.props.interests.map(function(interest) {
             return React.createElement("li", null, interest);
