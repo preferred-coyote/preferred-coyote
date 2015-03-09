@@ -1584,23 +1584,27 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
 
   mixins: [Authentication],
 
+  componentDidMount: function() {
+  },
+
   render: function() {
 
     return (
       React.createElement("div", {className: "row fade-in"}, 
-        React.createElement("div", {className: "medium-12 columns"}, 
-          React.createElement("div", {id: "dash-intro"}, 
-            React.createElement("div", {id: "dash-headline", className: "fade-one"}, "Start chatting!")
+        React.createElement("div", {className: "dashboardButtons"}, 
+          React.createElement("div", {className: "medium-12 columns"}, 
+            React.createElement("div", {id: "dash-intro"}, 
+              React.createElement("div", {id: "dash-headline", className: "fade-one"}, "Start chatting!")
+            )
           ), 
-          React.createElement("br", null)
-        ), 
-        React.createElement("div", {className: "medium-6 columns"}, 
-          React.createElement(Link, {to: "/dashboard/channels", className: "button expand", id: "call-user-interest"}, 
-            "Search for somebody by interest"
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement(Link, {to: "/dashboard/channels", className: "button expand", id: "call-user-interest"}, 
+              "Search for somebody by interest"
+            )
+          ), 
+          React.createElement("div", {className: "medium-6 columns"}, 
+            React.createElement(Link, {to: "/dashboard/pubnub", className: "button expand medium-6 columns"}, "Call a random user")
           )
-        ), 
-        React.createElement("div", {className: "medium-6 columns"}, 
-          React.createElement(Link, {to: "/dashboard/pubnub", className: "button expand medium-6 columns"}, "Call a random user")
         )
       )
     );
@@ -1870,8 +1874,8 @@ var EditProfile = React.createClass({displayName: "EditProfile",
 
   render: function() {
     return (
-      React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "editprofile"}, 
+      React.createElement("div", {className: "editprofile"}, 
+        React.createElement("div", {className: "row"}, 
           React.createElement("div", {className: "medium-12 columns fade-in"}, 
           React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
             React.createElement("div", {className: "medium-6 columns"}, 

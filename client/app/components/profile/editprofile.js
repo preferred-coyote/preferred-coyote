@@ -69,8 +69,8 @@ var EditProfile = React.createClass({
 
   render: function() {
     return (
-      <div className="row">
-        <div className="editprofile">
+      <div className="editprofile">
+        <div className="row">
           <div className="medium-12 columns fade-in">
           <div className="fade-one" id="edit-profile-header">Edit Profile</div>
             <div className="medium-6 columns">
