@@ -86,7 +86,6 @@ var userStore = Reflux.createStore({
     var self = this;
     getInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("THE USER INTERESTS", interests);
       self.trigger(interests);
     })
   },
@@ -95,7 +94,6 @@ var userStore = Reflux.createStore({
     var self = this;
     updateInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("Updated interests store", interests);
       self.trigger(interests);
     })
   },
@@ -111,7 +109,7 @@ var userStore = Reflux.createStore({
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
-      self.trigger(self.user);
+      self.trigger(user);
     }).catch(function(err) {
       self.trigger(false);
     })

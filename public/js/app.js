@@ -727,7 +727,7 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: '/dashboard/editprofile', text: 'Edit Profile' },
+        { to: 'editprofile', text: 'Edit Profile' },
       ];
     } else {
       return [
@@ -872,7 +872,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('/dashboard/editprofile');
+      this.transitionTo('editprofile');
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }
@@ -1345,7 +1345,7 @@ var ChannelList = React.createClass({displayName: "ChannelList",
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "medium-12 columns fade-in"}, 
-          React.createElement("div", {className: "channel-header fade-one"}, "Channel List"), 
+          React.createElement("div", {className: "channel-header fade-one"}, "Interests List"), 
           React.createElement("div", {className: "channel-list"}, 
             React.createElement("ul", {className: "no-bullet css-columns"}, 
               channelList
@@ -1664,21 +1664,111 @@ var React = require('react/addons');
 var Link = require('react-router').Link;
 var About = require('./about').About;
 
-
 var Home = React.createClass({displayName: "Home",
+
+  componentDidMount: function() {
+    var h = window.innerHeight;
+    var w = window.innerWidth;
+    document.getElementById('barackobama').style.height = h + 'px';
+    $(window).scroll(function() {
+      if ($(this).scrollTop() > 100) {
+        $('.scrollToTop').fadeIn();
+      } else {
+        $('.scrollToTop').fadeOut();
+      }
+    });
+    $('.scrollToTop').click(function() {
+      $('html, body').animate({scrollTop : 0},800);
+      return false;
+    });
+  },
 
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("div", {className: "row"}, 
-          React.createElement("div", {className: "medium-12 columns"}, 
-            React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Lets talk about"), 
-            React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
+        React.createElement("a", {className: "scrollToTop", href: "#"}, "To The Top ^"), " ", React.createElement("br", null), 
+        React.createElement("div", {id: "barackobama"}, 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "medium-12 columns"}, 
+              React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Let's talk about"), 
+              React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
+            )
+          ), 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "large-6 small-centered columns"}, 
+              React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
+            )
           )
         ), 
-        React.createElement("div", {className: "row"}, 
-          React.createElement("div", {className: "large-6 small-centered columns"}, 
-            React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
+
+        React.createElement("div", {className: "bg"}, 
+          React.createElement("a", {name: "pliip"}), 
+          React.createElement("div", {className: "row", id: "aboutTeam"}, 
+            React.createElement("h1", null, "Team"), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "profile", src: "/img/travis.jpg"}), 
+              React.createElement("h3", null, "Travis Chapman"), 
+              React.createElement("h5", null, "Development Team"), 
+              React.createElement("h5", null, "Full-stack Engineer"), 
+              React.createElement("a", {href: "http://www.github.com/teechap"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+              React.createElement("a", {href: "https://www.linkedin.com/in/travisechapman"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+            ), 
+            
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "profile", src: "/img/yan.jpg"}), 
+              React.createElement("h3", null, "Yan Fan"), 
+              React.createElement("h5", null, "Scrum Master"), 
+              React.createElement("h5", null, "Full-stack Engineer"), 
+              React.createElement("a", {href: "http://www.github.com/yanarchy"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+              React.createElement("a", {href: "https://www.linkedin.com/in/yanfan"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+            ), 
+            
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "profile", src: "/img/jackson.jpg"}), 
+              React.createElement("h3", null, "Jackson Hoose"), 
+              React.createElement("h5", null, "Product Owner"), 
+              React.createElement("h5", null, "Full-stack Engineer"), 
+              React.createElement("a", {href: "http://www.github.com/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+              React.createElement("a", {href: "https://www.linkedin.com/in/jacksonhoose"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+            ), 
+            
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "profile", src: "/img/alex.jpg"}), 
+              React.createElement("h3", null, "Alexander Tseung"), 
+              React.createElement("h5", null, "Development Team"), 
+              React.createElement("h5", null, "Full-stack Engineer"), 
+              React.createElement("a", {href: "http://www.github.com/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/GitHub-Mark-64px.png"})), 
+              React.createElement("a", {href: "https://www.linkedin.com/in/alextsg"}, React.createElement("img", {className: "logo", target: "_blank", src: "http://www.fanofyan.com/Images/InBug-60px-R.png"}))
+            )
+          
+          )
+        ), 
+        React.createElement("div", {className: "divider"}
+        ), 
+        React.createElement("div", {className: "bg-tech"}, 
+
+          React.createElement("div", {className: "row", id: "technologies"}, 
+            React.createElement("h1", null, "Stack"), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/chailogo.jpg"}), 
+              React.createElement("img", {className: "tech", src: "/img/circlelogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/expressicon.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/foundationlogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/gulpicon.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/herokulogo.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/mochalogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/mysqllogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/nodelogo.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/pubnublogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/reacticon.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/sequelizelogo.png"})
+            )
           )
         )
       )
@@ -1748,6 +1838,7 @@ var EditProfile = React.createClass({displayName: "EditProfile",
   },
 
   onCreate: function(isCreated) {
+    console.log("HAS IT BEEN CREATED???");
     if(isCreated) {
       this.transitionTo('dashboard');
     } else {
@@ -1779,30 +1870,32 @@ var EditProfile = React.createClass({displayName: "EditProfile",
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "medium-12 columns fade-in"}, 
-        React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
-          React.createElement("div", {className: "medium-6 columns"}, 
-            React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
-              React.createElement("fieldset", null, 
-                React.createElement("legend", {id: "legend"}, "Basic Information"), 
-                React.createElement(Info, {avatarimg: this.state.avatar}), 
-                React.createElement("label", {htmlFOR: "location"}, "Location"), 
-                  React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", defaultValue: this.state.user.location}), 
-                React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Male"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Female"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Other"), 
-                React.createElement("label", {htmlFor: "EditProfile"}, "Summary"), 
-                  React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", defaultValue: this.state.user.summary}), 
-                React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
-                  React.createElement("label", {htmlFor: "checkbox1"}, "Allow Users to Find Me")
-                ), 
-                React.createElement("button", {type: "submit", className: "button expand profile-submit"}, "Save Profile")
+        React.createElement("div", {className: "editprofile"}, 
+          React.createElement("div", {className: "medium-12 columns fade-in"}, 
+          React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
+            React.createElement("div", {className: "medium-6 columns"}, 
+              React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
+                React.createElement("fieldset", null, 
+                  React.createElement("legend", {id: "legend"}, "Basic Information"), 
+                  React.createElement(Info, {avatarimg: this.state.avatar}), 
+                  React.createElement("label", {htmlFOR: "location"}, "Location"), 
+                    React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", defaultValue: this.state.user.location}), 
+                  React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Male"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Female"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Other"), 
+                  React.createElement("label", {htmlFor: "EditProfile"}, "Summary"), 
+                    React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", defaultValue: this.state.user.summary}), 
+                  React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
+                    React.createElement("label", {htmlFor: "checkbox1"}, "Allow Users to Find Me")
+                  ), 
+                  React.createElement("button", {type: "submit", className: "button expand profile-submit"}, "Save Profile")
+                )
               )
+            ), 
+            React.createElement("div", {className: "medium-6 columns"}, 
+              React.createElement(Pass, null)
             )
-          ), 
-          React.createElement("div", {className: "medium-6 columns"}, 
-            React.createElement(Pass, null)
           )
         )
       )
@@ -1849,7 +1942,7 @@ var Interests = React.createClass({displayName: "Interests",
       React.createElement("div", {id: "interests-section"}, 
         React.createElement("h3", {id: "interests-title"}, "Interests"), 
         React.createElement("ul", {className: "inline-list"}, 
-          this.props.interests.map(function(interest){
+          this.props.interests.map(function(interest) {
             return React.createElement("li", null, interest);
           })
         )
@@ -2265,10 +2358,10 @@ var routes = (
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
     React.createElement(Route, {name: "logout", path: "logout", handler: Login}), 
+    React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
       React.createElement(DefaultRoute, {name: "dashboardButtons", handler: DashboardButtons}), 
-      React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
       React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 
@@ -2594,7 +2687,6 @@ var userStore = Reflux.createStore({
     var self = this;
     getInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("THE USER INTERESTS", interests);
       self.trigger(interests);
     })
   },
@@ -2603,7 +2695,6 @@ var userStore = Reflux.createStore({
     var self = this;
     updateInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("Updated interests store", interests);
       self.trigger(interests);
     })
   },
@@ -2619,7 +2710,7 @@ var userStore = Reflux.createStore({
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
-      self.trigger(self.user);
+      self.trigger(user);
     }).catch(function(err) {
       self.trigger(false);
     })

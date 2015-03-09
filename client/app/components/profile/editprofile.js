@@ -38,6 +38,7 @@ var EditProfile = React.createClass({
   },
 
   onCreate: function(isCreated) {
+    console.log("HAS IT BEEN CREATED???");
     if(isCreated) {
       this.transitionTo('dashboard');
     } else {
@@ -69,30 +70,32 @@ var EditProfile = React.createClass({
   render: function() {
     return (
       <div className="row">
-        <div className="medium-12 columns fade-in">
-        <div className="fade-one" id="edit-profile-header">Edit Profile</div>
-          <div className="medium-6 columns">
-            <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" encType="multipart/form-data" method="POST">
-              <fieldset>
-                <legend id="legend">Basic Information</legend>
-                <Info avatarimg={this.state.avatar} />
-                <label htmlFOR="location">Location</label>
-                  <input type="text" id="location" name="location" ref="location" defaultValue={this.state.user.location}/>
-                <label htmlFOR="gender">Gender</label>
-                  <input type="radio" ref='gender' name="gender" value="Male" id="gender" /><label htmlFor="gender">Male</label>
-                  <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label htmlFor="gender">Female</label>
-                  <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label htmlFor="gender">Other</label>
-                <label htmlFor="EditProfile">Summary</label>
-                  <textarea name="summary" ref='summary' id="summary" defaultValue= {this.state.user.summary}></textarea>
-                <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
-                  <label htmlFor="checkbox1">Allow Users to Find Me</label>
-                </input>
-                <button type="submit" className="button expand profile-submit">Save Profile</button>
-              </fieldset>
-            </form>
-          </div>
-          <div className="medium-6 columns">
-            <Pass />
+        <div className="editprofile">
+          <div className="medium-12 columns fade-in">
+          <div className="fade-one" id="edit-profile-header">Edit Profile</div>
+            <div className="medium-6 columns">
+              <form className="form" onSubmit={this.editProfile} role="form" action="/api/user/editprofile" encType="multipart/form-data" method="POST">
+                <fieldset>
+                  <legend id="legend">Basic Information</legend>
+                  <Info avatarimg={this.state.avatar} />
+                  <label htmlFOR="location">Location</label>
+                    <input type="text" id="location" name="location" ref="location" defaultValue={this.state.user.location}/>
+                  <label htmlFOR="gender">Gender</label>
+                    <input type="radio" ref='gender' name="gender" value="Male" id="gender" /><label htmlFor="gender">Male</label>
+                    <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label htmlFor="gender">Female</label>
+                    <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label htmlFor="gender">Other</label>
+                  <label htmlFor="EditProfile">Summary</label>
+                    <textarea name="summary" ref='summary' id="summary" defaultValue= {this.state.user.summary}></textarea>
+                  <input type="checkbox" name="searchable" ref='searchable' id="searchable" defaultChecked>
+                    <label htmlFor="checkbox1">Allow Users to Find Me</label>
+                  </input>
+                  <button type="submit" className="button expand profile-submit">Save Profile</button>
+                </fieldset>
+              </form>
+            </div>
+            <div className="medium-6 columns">
+              <Pass />
+            </div>
           </div>
         </div>
       </div>

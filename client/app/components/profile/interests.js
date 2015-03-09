@@ -7,7 +7,7 @@ var Interests = React.createClass({
       <div id="interests-section">
         <h3 id="interests-title">Interests</h3>
         <ul className="inline-list">
-          {this.props.interests.map(function(interest){
+          {this.props.interests.map(function(interest) {
             return <li>{interest}</li>;
           })}
         </ul>
