@@ -90,24 +90,24 @@ var Home = React.createClass({
           <div className="row" id="technologies">
             <h1>Stack</h1>
             <div className="medium-3 columns">
-              <img className="tech" src='/img/chailogo.jpg' />
-              <img className="tech" src='/img/circlelogo.png' />
-              <img className="tech" src='/img/expressicon.png' />
-            </div>
-            <div className="medium-3 columns">
-              <img className="tech" src='/img/foundationlogo.png' />
-              <img className="tech" src='/img/gulpicon.png' />
-              <img className="tech" src='/img/herokulogo.png' />
-            </div>
-            <div className="medium-3 columns">
-              <img className="tech" src='/img/mochalogo.png' />
-              <img className="tech" src='/img/mysqllogo.png' />
-              <img className="tech" src='/img/nodelogo.png' />
-            </div>
-            <div className="medium-3 columns">
-              <img className="tech" src='/img/pubnublogo.png' />
               <img className="tech" src='/img/reacticon.png' />
+              <img className="tech" src='/img/mysqllogo.png' />
+              <img className="tech" src='/img/gulpicon.png' />
+            </div>
+            <div className="medium-3 columns">
+              <img className="tech" src='/img/nodelogo.png' />
               <img className="tech" src='/img/sequelizelogo.png' />
+              <img className="tech" src='/img/circlelogo.png' />
+            </div>
+            <div className="medium-3 columns">
+              <img className="tech" src='/img/expressicon.png' />
+              <img className="tech" src='/img/pubnublogo.png' />
+              <img className="tech" src='/img/mochalogo.png' />
+            </div>
+            <div className="medium-3 columns">
+              <img className="tech" src='/img/herokulogo.png' />
+              <img className="tech" src='/img/foundationlogo.png' />
+              <img className="tech" src='/img/chailogo.jpg' />
             </div>
           </div>
         </div>

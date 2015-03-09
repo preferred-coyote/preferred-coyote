@@ -1756,24 +1756,24 @@ var Home = React.createClass({displayName: "Home",
           React.createElement("div", {className: "row", id: "technologies"}, 
             React.createElement("h1", null, "Stack"), 
             React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/chailogo.jpg"}), 
-              React.createElement("img", {className: "tech", src: "/img/circlelogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/expressicon.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/foundationlogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/gulpicon.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/herokulogo.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/mochalogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/mysqllogo.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/nodelogo.png"})
-            ), 
-            React.createElement("div", {className: "medium-3 columns"}, 
-              React.createElement("img", {className: "tech", src: "/img/pubnublogo.png"}), 
               React.createElement("img", {className: "tech", src: "/img/reacticon.png"}), 
-              React.createElement("img", {className: "tech", src: "/img/sequelizelogo.png"})
+              React.createElement("img", {className: "tech", src: "/img/mysqllogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/gulpicon.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/nodelogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/sequelizelogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/circlelogo.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/expressicon.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/pubnublogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/mochalogo.png"})
+            ), 
+            React.createElement("div", {className: "medium-3 columns"}, 
+              React.createElement("img", {className: "tech", src: "/img/herokulogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/foundationlogo.png"}), 
+              React.createElement("img", {className: "tech", src: "/img/chailogo.jpg"})
             )
           )
         )
