@@ -16,10 +16,14 @@ var DashboardButtons = React.createClass({
           </div>
           <br />
         </div>
-        <Link to="/dashboard/channels" className="button expand" id="call-user-interest">
-          Search for somebody by interest
-        </Link>
-        <Link to="/dashboard/pubnub" className="button expand">Call a random user</Link> 
+        <div className="medium-6 columns">
+          <Link to="/dashboard/channels" className="button expand" id="call-user-interest">
+            Search for somebody by interest
+          </Link>
+        </div>
+        <div className="medium-6 columns">
+          <Link to="/dashboard/pubnub" className="button expand medium-6 columns">Call a random user</Link> 
+        </div>
       </div>
     );
   }

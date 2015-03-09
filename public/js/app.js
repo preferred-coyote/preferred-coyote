@@ -1592,10 +1592,14 @@ var DashboardButtons = React.createClass({displayName: "DashboardButtons",
           ), 
           React.createElement("br", null)
         ), 
-        React.createElement(Link, {to: "/dashboard/channels", className: "button expand", id: "call-user-interest"}, 
-          "Search for somebody by interest"
+        React.createElement("div", {className: "medium-6 columns"}, 
+          React.createElement(Link, {to: "/dashboard/channels", className: "button expand", id: "call-user-interest"}, 
+            "Search for somebody by interest"
+          )
         ), 
-        React.createElement(Link, {to: "/dashboard/pubnub", className: "button expand"}, "Call a random user")
+        React.createElement("div", {className: "medium-6 columns"}, 
+          React.createElement(Link, {to: "/dashboard/pubnub", className: "button expand medium-6 columns"}, "Call a random user")
+        )
       )
     );
   }
@@ -1733,15 +1737,13 @@ var EditProfile = React.createClass({displayName: "EditProfile",
 
   componentDidMount: function() {
     var data = userStore.getUserData();
+    console.log('data', data);
     var element = document.getElementsByName('gender');
-    console.log('element: ', element);
-
     for (var i = 0; i < element.length; i++) {
       if (element[i].value === data.user.gender) {
         element[i].checked = true;
       }
     }
-
   },
 
   onCreate: function(isCreated) {
@@ -1870,8 +1872,8 @@ var Pass = React.createClass({displayName: "Pass",
             React.createElement("legend", {id: "legend"}, "Change Password"), 
             React.createElement("input", {type: "password", name: "oldpassword", placeholder: "Confirm old password", ref: "oldPassword"}), 
             React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPassword"}), 
-            React.createElement("input", {type: "password", name: "newpassword", placeholder: "New password", ref: "newPasswordConfirmation"}), 
-            React.createElement("button", {type: "submit", className: "button small expand profile-submit"}, "Update")
+            React.createElement("input", {type: "password", name: "newpassword", placeholder: "Confirm new password", ref: "newPasswordConfirmation"}), 
+            React.createElement("button", {type: "submit", className: "button small expand profile-submit"}, "Update Password")
           )
         )
       )
@@ -1946,6 +1948,30 @@ var PubNub = React.createClass({displayName: "PubNub",
     // phone.hangup();
   },
 
+  getInitialState: function() {
+    var user = JSON.parse(window.localStorage.getItem('user'));
+    return {
+      user: user.username,
+      peer: null,
+      userlist: [],
+      messages: []
+    };
+  },
+
+  componentDidMount: function() {
+    var user = this.state.user;
+    var channel = this.state.channel;
+    var peer = this.state.peer;
+    var self = this;
+    if (self.isMounted()) {
+      pubnub = channelStore.pubnubInit(channel);
+      self.subscribeToPrivate(user, pubnub, channel);
+    }
+    // self.handshake(user, peer, channel);
+    // self.initializePhone(user);
+    self.startCall();
+  },
+
   render: function() {
     var peer = this.state.peer || '';
     var user = this.state.user || '';
@@ -1953,25 +1979,49 @@ var PubNub = React.createClass({displayName: "PubNub",
       return React.createElement("li", null, user);
     }) : 'There are no users available.';
 
+    var messageList = this.state.messages.length ? this.state.messages.map(function(message) {
+      return React.createElement("li", null, message)
+    }) : 'No messages.';
+
     return (
-      React.createElement("div", null, 
-      	React.createElement("h1", null, "Hello @", this.state.user), 
-      	React.createElement("div", {className: "row"}, 
-          React.createElement("div", {className: "large-6 columns"}, 
-            React.createElement("video", {width: "250", autoPlay: true, id: "uservideo"}), 
-            user
-          ), 
-          React.createElement("div", {className: "large-6 columns"}, 
-            React.createElement("video", {width: "250", autoPlay: true, id: "peervideo"}), 
-            peer
+      React.createElement("div", {className: "row"}, 
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-12 columns"}, 
+            React.createElement("h1", null, "You are chatting with ", this.state.peer)
           )
         ), 
-        React.createElement("ul", null, 
-          userlist
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-10 columns"}, 
+            React.createElement("video", {width: "250", autoPlay: true, id: "uservideostream", ref: "uservideostream", poster: "https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg", className: "medium-4 columns"}), 
+            React.createElement("div", {className: "medium-4 columns"}, 
+              React.createElement("span", {className: "icon-volume-mute medium-1 columns", id: "lefticon"}), 
+              React.createElement("span", {className: "icon-volume-mute2 medium-1 columns", id: "righticon"}), 
+              React.createElement("ul", {className: "button-group stack", id: "callbuttons"}, 
+                React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.makeCall, className: "button"}, React.createElement("span", {className: "icon-phone"}), "Call!")), 
+                React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.endCall, className: "button"}, React.createElement("span", {className: "icon-phone-hang-up"}), "Stop Call"))
+              )
+            ), 
+            React.createElement("video", {width: "250", autoPlay: true, id: "peervideostream", ref: "peervideostream", poster: "https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg", className: "medium-4 columns"})
+          )
         ), 
-        React.createElement("button", {id: "startCall", onClick: this.startCall}, "Call!"), 
-        React.createElement("button", {id: "nextUser", onClick: this.nextUser}, "Next!"), 
-        React.createElement("button", {id: "endCall", onClick: this.endAll}, "Stop Call")
+        React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "large-10 columns"}, 
+            React.createElement("h3", null, "Messages"), 
+            React.createElement("div", {id: "messagearea"}, 
+              React.createElement("ul", {className: "no-bullet"}, 
+                messageList
+              )
+            ), 
+            React.createElement("div", {className: "row"}, 
+              React.createElement("div", {className: "large-10 columns"}, 
+                React.createElement("input", {type: "text", placeholder: "Message", ref: "message", onKeyPress: this.sendMessage, id: "inputmessage"})
+              ), 
+              React.createElement("div", {className: "large-2 columns"}, 
+                React.createElement("button", {className: "button small expand", onClick: this.sendMessage, id: "sendbutton"}, "Send")
+              )
+            )
+          )
+        )
       )
     );
   },
@@ -1979,14 +2029,7 @@ var PubNub = React.createClass({displayName: "PubNub",
   //for "Call User" button, it hits getInitialSTate > render > ComponentDidMount
   //automatically
   //this allows us to get the user by going "this.state.user"
-  getInitialState: function() {
-    var user = JSON.parse(window.localStorage.getItem('user'));
-    return {
-      user: user.username,
-      peer: null,
-      userlist: []
-    };
-  },
+
 
   initializePhoneAndPubNub: function() {
     // Initializes both phone and pubnub
