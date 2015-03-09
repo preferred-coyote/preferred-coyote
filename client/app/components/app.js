@@ -55,7 +55,7 @@ var App = React.createClass({
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: '/dashboard/editprofile', text: 'Edit Profile' },
+        { to: 'editprofile', text: 'Edit Profile' },
       ];
     } else {
       return [

@@ -727,7 +727,7 @@ var App = React.createClass({displayName: "App",
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: '/dashboard/editprofile', text: 'Edit Profile' },
+        { to: 'editprofile', text: 'Edit Profile' },
       ];
     } else {
       return [
@@ -872,7 +872,7 @@ var Signup = React.createClass({displayName: "Signup",
 
   onLoggedIn: function(isAuthenticated) {
     if (isAuthenticated) {
-      this.transitionTo('/dashboard/editprofile');
+      this.transitionTo('editprofile');
     } else {
       this.setState({signupMessage: 'Username already taken'});
     }
@@ -1851,8 +1851,9 @@ var EditProfile = React.createClass({displayName: "EditProfile",
   },
 
   onCreate: function(isCreated) {
+    console.log("HAS IT BEEN CREATED???");
     if(isCreated) {
-      this.redirectTo('dashboard');
+      this.transitionTo('dashboard');
     } else {
       this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }
@@ -2368,10 +2369,10 @@ var routes = (
     React.createElement(Route, {name: "signup", path: "signup", handler: Signup}), 
     React.createElement(Route, {name: "login", path: "login", handler: Login}), 
     React.createElement(Route, {name: "logout", path: "logout", handler: Login}), 
+    React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
 
     React.createElement(Route, {name: "dashboard", path: "dashboard", handler: Dashboard}, 
       React.createElement(DefaultRoute, {name: "dashboardButtons", handler: DashboardButtons}), 
-      React.createElement(Route, {name: "editprofile", path: "editprofile", handler: EditProfile}), 
       React.createElement(Route, {name: "pubnub", path: "pubnub", handler: PubNub}), 
       React.createElement(Route, {name: "channelList", path: "channels", handler: ChannelList}), 
       React.createElement(Route, {name: "channelView", path: "channel/:channelName", handler: ChannelView}), 
@@ -2697,7 +2698,6 @@ var userStore = Reflux.createStore({
     var self = this;
     getInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("THE USER INTERESTS", interests);
       self.trigger(interests);
     })
   },
@@ -2706,7 +2706,6 @@ var userStore = Reflux.createStore({
     var self = this;
     updateInterestsPromise.then(function(interests) {
       self.userInterests = interests;
-      console.log("Updated interests store", interests);
       self.trigger(interests);
     })
   },
@@ -2722,7 +2721,7 @@ var userStore = Reflux.createStore({
       self.user = data.body;
       self.user.loggedIn = true;
       self.user.profileCreated = true;
-      self.trigger(self.user);
+      self.trigger(user);
     }).catch(function(err) {
       self.trigger(false);
     })

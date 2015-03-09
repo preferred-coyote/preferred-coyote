@@ -38,8 +38,9 @@ var EditProfile = React.createClass({
   },
 
   onCreate: function(isCreated) {
+    console.log("HAS IT BEEN CREATED???");
     if(isCreated) {
-      this.redirectTo('dashboard');
+      this.transitionTo('dashboard');
     } else {
       this.setState({ createProfileMessage: 'SOMETHING WENT WRONG IN CREATE PROFILE' });
     }
