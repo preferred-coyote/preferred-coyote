@@ -1870,30 +1870,32 @@ var EditProfile = React.createClass({displayName: "EditProfile",
   render: function() {
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "medium-12 columns fade-in"}, 
-        React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
-          React.createElement("div", {className: "medium-6 columns"}, 
-            React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
-              React.createElement("fieldset", null, 
-                React.createElement("legend", {id: "legend"}, "Basic Information"), 
-                React.createElement(Info, {avatarimg: this.state.avatar}), 
-                React.createElement("label", {htmlFOR: "location"}, "Location"), 
-                  React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", defaultValue: this.state.user.location}), 
-                React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Male"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Female"), 
-                  React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Other"), 
-                React.createElement("label", {htmlFor: "EditProfile"}, "Summary"), 
-                  React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", defaultValue: this.state.user.summary}), 
-                React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
-                  React.createElement("label", {htmlFor: "checkbox1"}, "Allow Users to Find Me")
-                ), 
-                React.createElement("button", {type: "submit", className: "button expand profile-submit"}, "Save Profile")
+        React.createElement("div", {className: "editprofile"}, 
+          React.createElement("div", {className: "medium-12 columns fade-in"}, 
+          React.createElement("div", {className: "fade-one", id: "edit-profile-header"}, "Edit Profile"), 
+            React.createElement("div", {className: "medium-6 columns"}, 
+              React.createElement("form", {className: "form", onSubmit: this.editProfile, role: "form", action: "/api/user/editprofile", encType: "multipart/form-data", method: "POST"}, 
+                React.createElement("fieldset", null, 
+                  React.createElement("legend", {id: "legend"}, "Basic Information"), 
+                  React.createElement(Info, {avatarimg: this.state.avatar}), 
+                  React.createElement("label", {htmlFOR: "location"}, "Location"), 
+                    React.createElement("input", {type: "text", id: "location", name: "location", ref: "location", defaultValue: this.state.user.location}), 
+                  React.createElement("label", {htmlFOR: "gender"}, "Gender"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Male", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Male"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Female", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Female"), 
+                    React.createElement("input", {type: "radio", ref: "gender", name: "gender", value: "Other", id: "gender"}), React.createElement("label", {htmlFor: "gender"}, "Other"), 
+                  React.createElement("label", {htmlFor: "EditProfile"}, "Summary"), 
+                    React.createElement("textarea", {name: "summary", ref: "summary", id: "summary", defaultValue: this.state.user.summary}), 
+                  React.createElement("input", {type: "checkbox", name: "searchable", ref: "searchable", id: "searchable", defaultChecked: true}, 
+                    React.createElement("label", {htmlFor: "checkbox1"}, "Allow Users to Find Me")
+                  ), 
+                  React.createElement("button", {type: "submit", className: "button expand profile-submit"}, "Save Profile")
+                )
               )
+            ), 
+            React.createElement("div", {className: "medium-6 columns"}, 
+              React.createElement(Pass, null)
             )
-          ), 
-          React.createElement("div", {className: "medium-6 columns"}, 
-            React.createElement(Pass, null)
           )
         )
       )
