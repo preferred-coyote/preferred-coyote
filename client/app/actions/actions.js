@@ -48,7 +48,11 @@ actions.signup.preEmit = function(creds) {
       .set('Content-Type', 'application/json')
       .send({ username: creds.username, password: creds.password })
       .end(function(data) {
-        resolve(data);
+        if (data.body) {
+          resolve(data);
+        } else {
+          reject(data);
+        }
       });
   });
 };
@@ -65,7 +69,6 @@ actions.updatePassword.preEmit = function(formData){
       newPasswordConfirmation: formData.newPasswordConfirmation
     })
     .end(function(data){
-      console.log("Line 62 actions", data);
       resolve(data);
     });
   })
@@ -86,7 +89,6 @@ actions.editProfile.preEmit = function(formData){
     })
     .end(function(data) {
       window.localStorage.setItem('profileCreated', true);
-      console.log('is this data.body???', data);
       window.localStorage.setItem('user', JSON.stringify(data.body));
       resolve(data);
     });
@@ -99,8 +101,12 @@ actions.getInterests.preEmit = function() {
     request
       .get('/api/profile/interests')
       .set('x-access-token', window.localStorage.getItem('token') || '')
-      .end(function(response){
-        resolve(response.body.interests);
+      .end(function(response) {
+        if (response.body.interests) {
+          resolve(response.body.interests);
+        } else {
+          reject(response.body);
+        }
       });
   });
 };
@@ -123,7 +129,5 @@ actions.updateInterests.preEmit = function(interestsArray) {
       });
   });
 };
-
-
 
 module.exports = actions;
