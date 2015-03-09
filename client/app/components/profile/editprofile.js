@@ -28,15 +28,13 @@ var EditProfile = React.createClass({
 
   componentDidMount: function() {
     var data = userStore.getUserData();
+    console.log('data', data);
     var element = document.getElementsByName('gender');
-    console.log('element: ', element);
-
     for (var i = 0; i < element.length; i++) {
       if (element[i].value === data.user.gender) {
         element[i].checked = true;
       }
     }
-
   },
 
   onCreate: function(isCreated) {
