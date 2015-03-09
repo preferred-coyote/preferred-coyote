@@ -18,22 +18,21 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.show = function(req, res, next) {
-  console.log("GETTING USER INTERESTS");
+  var id = req.user.id;
 
-  var id = req.user[0].id;
-  console.log("THE USER ID", id);
-  Interest.find({
+  User.find({
     where: {
       id: id
     },
-    include: [DB.User]
-  }).then(function(interests) {
-    //interests === null if interests havent been added
-    res.json({interests: interests});
-  }).catch(function(err) {
-    console.log(err);
-    res.status(500).end();
+    include: [DB.Interest]
+  }).then(function(user) {
+    if (user) {
+      res.json({ interests: user['Interests'] });
+    } else {
+      res.json({ message: 'Error finding interests' });
+    }
   });
+
 };
 
 module.exports.update = function(req, res, next) {
@@ -65,7 +64,6 @@ module.exports.update = function(req, res, next) {
         id: user
       }
     }).then(function(user) {
-      console.log('THE RESPONSE', user);
       // set the interests
       user.setInterests(interests).then(function(user) {
         res.json({

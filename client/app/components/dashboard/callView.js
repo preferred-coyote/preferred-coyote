@@ -272,7 +272,6 @@ var CallView = React.createClass({
     });
 
     phone.receive(function(newSession) {
-
       session = newSession;
 
       var peervideo = self.refs.peervideostream.getDOMNode();
@@ -285,7 +284,6 @@ var CallView = React.createClass({
 
       newSession.connected(function(newSession) {
         // set the peer that you've connected to
-
         pubnub.publish({
           channel: self.state.channel,
           message: self.state.user + ' is now connected.'
@@ -293,7 +291,6 @@ var CallView = React.createClass({
 
         // uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
-
       });
 
       newSession.ended(function(newSession) {
@@ -302,7 +299,6 @@ var CallView = React.createClass({
           message: self.state.user + ' has disconnected.'
         });
       });
-
     });
 
   },
