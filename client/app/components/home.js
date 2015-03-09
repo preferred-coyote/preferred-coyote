@@ -21,18 +21,6 @@ var Home = React.createClass({
       $('html, body').animate({scrollTop : 0},800);
       return false;
     });
-
-    //down arrow working?
-    // $(window).scroll(function() {
-    //   if($(this).scrollTop() > 0) {
-    //     $('.arrow').fadeIn();
-    //   } else {
-    //     $('.arrow').fadeOut();
-    //   }
-    // });
-    $('.arrow').click(function() {
-      $('body').animate({scrollTop: h*2}, 800);
-    });
   },
 
   render: function() {
@@ -50,7 +38,6 @@ var Home = React.createClass({
             <div className="large-6 small-centered columns">
               <Link to="signup" className="button large shadow round expand">Signup</Link>
             </div>
-              <img className="arrow" src="/img/downarrow2.png"/>
           </div>
         </div>
 

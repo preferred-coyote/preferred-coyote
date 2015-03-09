@@ -1681,18 +1681,6 @@ var Home = React.createClass({displayName: "Home",
       $('html, body').animate({scrollTop : 0},800);
       return false;
     });
-
-    //down arrow working?
-    // $(window).scroll(function() {
-    //   if($(this).scrollTop() > 0) {
-    //     $('.arrow').fadeIn();
-    //   } else {
-    //     $('.arrow').fadeOut();
-    //   }
-    // });
-    $('.arrow').click(function() {
-      $('body').animate({scrollTop: h*2}, 800);
-    });
   },
 
   render: function() {
@@ -1709,8 +1697,7 @@ var Home = React.createClass({displayName: "Home",
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "large-6 small-centered columns"}, 
               React.createElement(Link, {to: "signup", className: "button large shadow round expand"}, "Signup")
-            ), 
-              React.createElement("img", {className: "arrow", src: "/img/downarrow2.png"})
+            )
           )
         ), 
 
