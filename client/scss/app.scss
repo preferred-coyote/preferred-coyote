@@ -31,7 +31,7 @@ body {
 }
 
 #sidebar {
-  background-color:#444444;
+  background-color:#183a5c;
   min-height: 1000px;
 }
 
@@ -200,13 +200,13 @@ header.top-bar {
 .icon-volume-high2:before {
   content: "\e38f";
   font-size: 48px;
-  color: #78FF69;
+  color: #2BC9DD;
 }
 
 .icon-volume-high:before {
   content: "\ea26";
   font-size: 48px;
-  color: #78FF69;
+  color: #2BC9DD;
 }
 
 .icon-volume-mute:before {
@@ -227,7 +227,6 @@ header.top-bar {
 #righticon {
   margin-top: 50px;
   float:right;
-  margin-right: 52px;
 }
 
 .forms {
@@ -342,17 +341,17 @@ header.top-bar {
 @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
- 
+
 .fade-in {
   opacity: 0;  /* make things invisible upon start */
   -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
   -moz-animation:fadeIn ease-in 1;
   animation:fadeIn ease-in 1;
- 
+
   -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
   -moz-animation-fill-mode:forwards;
   animation-fill-mode:forwards;
- 
+
   -webkit-animation-duration:0.2s;
   -moz-animation-duration:0.2s;
   animation-duration:0.2s;

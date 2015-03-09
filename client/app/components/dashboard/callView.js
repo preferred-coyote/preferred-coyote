@@ -36,12 +36,12 @@ var CallView = React.createClass({
     var channel = this.state.channel;
     var peer = this.state.peer;
     var self = this;
+
     if (self.isMounted()) {
       pubnub = channelStore.pubnubInit(channel);
       self.subscribeToPrivate(user, pubnub, channel);
     }
-    // self.handshake(user, peer, channel);
-    // self.initializePhone(user);
+
     self.startCall();
   },
 
@@ -58,16 +58,20 @@ var CallView = React.createClass({
         </div>
         <div className="row">
           <div className="large-10 columns">
-            <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg" className="medium-4 columns"></video>
             <div className="medium-4 columns">
-              <span className="icon-volume-mute medium-1 columns" id="lefticon"></span>
-              <span className="icon-volume-mute2 medium-1 columns" id="righticon"></span>
+              <video width="250" autoPlay id='uservideostream' ref='uservideostream' poster="https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xfa1/t51.2885-15/11005049_1565239487047612_521686647_n.jpg" className="round"></video>
+            </div>
+            <div className="medium-4 columns">
+              <span className="icon-volume-mute" id="lefticon"></span>
+              <span className="icon-volume-mute2" id="righticon"></span>
               <ul className="button-group stack" id="callbuttons">
                 <li><a href="#" onClick={this.makeCall} className="button"><span className="icon-phone"></span>Call!</a></li>
                 <li><a href="#" onClick={this.endCall} className="button"><span className="icon-phone-hang-up"></span>Stop Call</a></li>
               </ul>
             </div>
-            <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg" className="medium-4 columns"></video>
+            <div className="medium-4 columns">
+              <video width="250" autoPlay id='peervideostream' ref='peervideostream' poster="https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/10326583_452330148250353_1893737027_n.jpg" className="round"></video>
+            </div>
           </div>
         </div>
         <div className="row">
@@ -101,7 +105,7 @@ var CallView = React.createClass({
     var channel = channel || this.state.channel;
     var user = user || this.state.user;
     pubnub.publish({
-      channel: peer,        
+      channel: peer,
       message: user + ' ' + peer + ' ' + channel
     });
   },
@@ -114,7 +118,7 @@ var CallView = React.createClass({
       return;
     }
     pubnub.publish({
-      channel: channel,        
+      channel: channel,
       message: user + ': ' + message
     });
 
@@ -127,25 +131,25 @@ var CallView = React.createClass({
 
     pubnub.subscribe({
       channel: channel,
-      
+
       connect: function() {
         pubnub.publish({
-          channel: channel,        
+          channel: channel,
           message: user + ' has joined the channel.'
         });
 
         self.handshake();
       },
-      
+
       state: {
         name: user,
         timestamp: new Date()
       },
-      
+
       presence: function(info) {
         // detects users in channel and sets them in this.state
       },
-      
+
       // Heartbeat defines heartbeat frequency to monitor for subscriber timeouts.
       heartbeat: 10,
       callback: function(message, env, channel) {
@@ -199,7 +203,7 @@ var CallView = React.createClass({
 
     session = phone.dial(callPeer);
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is trying to dial.'
       });
 
@@ -221,7 +225,7 @@ var CallView = React.createClass({
       var uservideo = self.refs.uservideostream.getDOMNode();
 
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is receiving a call.'
       });
 
@@ -229,20 +233,20 @@ var CallView = React.createClass({
         // set the peer that you've connected to
 
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' is now connected.'
         });
-        
+
         //uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
         self.showConnect();
 
       });
-      
+
       newSession.ended(function(newSession) {
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' has disconnected.'
         });
       });
@@ -262,7 +266,7 @@ var CallView = React.createClass({
 
       var session = phone.dial(callPeer);
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is trying to dial.'
       });
     });
@@ -275,7 +279,7 @@ var CallView = React.createClass({
       var uservideo = self.refs.uservideostream.getDOMNode();
 
       pubnub.publish({
-        channel: self.state.channel,        
+        channel: self.state.channel,
         message: self.state.user + ' is receiving a call.'
       });
 
@@ -283,18 +287,18 @@ var CallView = React.createClass({
         // set the peer that you've connected to
 
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' is now connected.'
         });
-        
+
         // uservideo.src = phone.video.src;
         peervideo.src = newSession.video.src;
 
       });
-      
+
       newSession.ended(function(newSession) {
         pubnub.publish({
-          channel: self.state.channel,        
+          channel: self.state.channel,
           message: self.state.user + ' has disconnected.'
         });
       });
@@ -310,9 +314,9 @@ var CallView = React.createClass({
 
   showConnect: function() {
     var lefticon = document.getElementById('lefticon');
-    lefticon.className = 'icon-volume-high2 medium-1 columns';
+    lefticon.className = 'icon-volume-high2';
     var righticon = document.getElementById('righticon');
-    righticon.className = 'icon-volume-high medium-1 columns';
+    righticon.className = 'icon-volume-high';
   }
 
 });

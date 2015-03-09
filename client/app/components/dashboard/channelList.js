@@ -4,8 +4,6 @@ var React = require('react');
 var Link = require('react-router').Link;
 var request = require('superagent');
 var Promise = require('bluebird');
-
-var channels = ['Jackson-Hoose', '60-Rausch', 'Golden-State-Warriors', 'Korean-BBQ', 'Fremont', '', 'Godzilla'];
 var Authentication = require('../../utils/Authentication');
 
 var ChannelList = React.createClass({
@@ -21,7 +19,7 @@ var ChannelList = React.createClass({
           self.setState({
             channels: response.body
           });
-        } 
+        }
       });
   },
 
