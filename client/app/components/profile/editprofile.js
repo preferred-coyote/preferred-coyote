@@ -78,9 +78,9 @@ var EditProfile = React.createClass({
                 <fieldset>
                   <legend id="legend">Basic Information</legend>
                   <Info avatarimg={this.state.avatar} />
-                  <label htmlFOR="location">Location</label>
+                  <label htmlFor="location">Location</label>
                     <input type="text" id="location" name="location" ref="location" defaultValue={this.state.user.location}/>
-                  <label htmlFOR="gender">Gender</label>
+                  <label htmlFor="gender">Gender</label>
                     <input type="radio" ref='gender' name="gender" value="Male" id="gender" /><label htmlFor="gender">Male</label>
                     <input type="radio" ref='gender' name="gender" value="Female" id="gender"/><label htmlFor="gender">Female</label>
                     <input type="radio" ref='gender' name="gender" value="Other" id="gender"/><label htmlFor="gender">Other</label>
