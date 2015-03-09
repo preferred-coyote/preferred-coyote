@@ -45,7 +45,8 @@ module.exports.update = function(req, res, next) {
    * and associate interests with that user
    */
   Promise.map(interests, function(name) {
-    return Interest.findOrCreate({
+    return Interest.findOrCreate(
+      {
       where: {
         name: name
       },

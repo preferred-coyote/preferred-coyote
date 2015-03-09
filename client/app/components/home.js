@@ -10,16 +10,14 @@ var Home = React.createClass({
     var h = window.innerHeight;
     var w = window.innerWidth;
     document.getElementById('barackobama').style.height = h + 'px';
-    document.getElementById('footer').style.height = h + 'px';
-    document.getElementById('footer').style.right ='300px';
-    $(window).scroll(function(){
+    $(window).scroll(function() {
       if ($(this).scrollTop() > 100) {
         $('.scrollToTop').fadeIn();
       } else {
         $('.scrollToTop').fadeOut();
       }
     });
-    $('.scrollToTop').click(function(){
+    $('.scrollToTop').click(function() {
       $('html, body').animate({scrollTop : 0},800);
       return false;
     });
@@ -44,7 +42,7 @@ var Home = React.createClass({
         <div id="barackobama">
           <div className="row">
             <div className="medium-12 columns">
-              <h2 className="lets-talk-about text-white text-center">Lets talk about</h2>
+              <h2 className="lets-talk-about text-white text-center">Let's talk about</h2>
               <h3 className="topic text-center text-white lets-talk-about">Golden State Warriors</h3>
             </div>
           </div>

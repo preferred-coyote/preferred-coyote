@@ -1670,16 +1670,14 @@ var Home = React.createClass({displayName: "Home",
     var h = window.innerHeight;
     var w = window.innerWidth;
     document.getElementById('barackobama').style.height = h + 'px';
-    document.getElementById('footer').style.height = h + 'px';
-    document.getElementById('footer').style.right ='300px';
-    $(window).scroll(function(){
+    $(window).scroll(function() {
       if ($(this).scrollTop() > 100) {
         $('.scrollToTop').fadeIn();
       } else {
         $('.scrollToTop').fadeOut();
       }
     });
-    $('.scrollToTop').click(function(){
+    $('.scrollToTop').click(function() {
       $('html, body').animate({scrollTop : 0},800);
       return false;
     });
@@ -1704,7 +1702,7 @@ var Home = React.createClass({displayName: "Home",
         React.createElement("div", {id: "barackobama"}, 
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "medium-12 columns"}, 
-              React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Lets talk about"), 
+              React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Let's talk about"), 
               React.createElement("h3", {className: "topic text-center text-white lets-talk-about"}, "Golden State Warriors")
             )
           ), 
@@ -1954,7 +1952,7 @@ var Interests = React.createClass({displayName: "Interests",
       React.createElement("div", {id: "interests-section"}, 
         React.createElement("h3", {id: "interests-title"}, "Interests"), 
         React.createElement("ul", {className: "inline-list"}, 
-          this.props.interests.map(function(interest){
+          this.props.interests.map(function(interest) {
             return React.createElement("li", null, interest);
           })
         )
