@@ -36,7 +36,7 @@ body {
 }
 
 #primary {
-  background-color:#e3e3e3;
+  background-color:#ededed;
   min-height: 1000px;
   padding: 0px;
 }
@@ -317,6 +317,10 @@ header.top-bar {
   &:hover {
     background: #b3b3b3;
   }
+}
+
+.iscalling {
+  font-size: 1.2em !important;
 }
 
 .channel-name {

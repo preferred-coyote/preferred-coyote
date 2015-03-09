@@ -731,6 +731,7 @@ var App = React.createClass({displayName: "App",
       ];
     } else {
       return [
+        { to: 'signup', text: 'Sign Up'},
         { to: 'login', text: 'Login' },
         { to: 'about', text: 'About'},
         { to: 'contact', text: 'Contact'}
@@ -830,9 +831,9 @@ var Login = React.createClass({displayName: "Login",
           React.createElement("h2", {className: "lets-talk-about text-white text-center"}, "Login"), 
           error, 
           React.createElement("form", {className: "form", onSubmit: this.login, role: "form", action: "/api/auth/login", method: "POST"}, 
-            React.createElement("label", {htmlFor: "username", className: "text-white text-center"}, "Username"), 
-    	      React.createElement("input", {type: "text", name: "username", className: "round", ref: "username", id: "username", placeholder: "username"}), 
-            React.createElement("label", {htmlFor: "password", className: "text-center text-white"}, "Password"), 
+            React.createElement("label", {htmlFor: "username", className: "text-white"}, "Username"), 
+    	      React.createElement("input", {type: "text", name: "username", className: "round", ref: "username", id: "username"}), 
+            React.createElement("label", {htmlFor: "password", className: "text-white"}, "Password"), 
     	      React.createElement("input", {type: "password", className: "round", name: "password", ref: "password", id: "password"}), 
     	      React.createElement("button", {type: "submit", className: "button button-primary"}, 
               "Login"
@@ -895,11 +896,11 @@ var Signup = React.createClass({displayName: "Signup",
             this.state.signupMessage
           ), 
         	React.createElement("form", {className: "form", onSubmit: this.signup, role: "form", action: "/api/auth/signup", method: "POST"}, 
-    	      React.createElement("label", {htmlFor: "username", className: "text-center text-white"}, "Username"), 
-            React.createElement("input", {type: "text", id: "username", name: "username", ref: "username", placeholder: "username"}), 
-            React.createElement("label", {htmlFor: "password", className: "text-center text-white"}, "Password"), 
+    	      React.createElement("label", {htmlFor: "username", className: "text-white"}, "Username"), 
+            React.createElement("input", {type: "text", id: "username", name: "username", ref: "username"}), 
+            React.createElement("label", {htmlFor: "password", className: "text-white"}, "Password"), 
     	      React.createElement("input", {id: "password", type: "password", ref: "password", name: "password"}), 
-    	      React.createElement("button", {type: "submit", className: "button"}, "Signup")
+    	      React.createElement("button", {type: "submit", className: "button"}, "Sign Up")
           )
         )
       )
@@ -1451,24 +1452,24 @@ var ChannelView = React.createClass({displayName: "ChannelView",
     var self = this;
     var userList = this.state.userlist.length ? this.state.userlist.map(function(peer) {
       var privateChannel = self.state.user + peer;
-      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small", key: peer.id}, peer))
+      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small channels expand", key: peer.id}, peer))
     }) : 'No users available.';
 
     var callsList = this.state.calls.length ? this.state.calls.map(function(peer) {
       var privateChannel = peer + self.state.user;
-      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small", key: peer.id}, peer, " is Calling!"))
+      return React.createElement("li", null, React.createElement(Link, {to: "call", query: { peer: peer, channel: privateChannel}, className: "button small iscalling expand", key: peer.id}, peer, " is Calling!"))
     }) : null;
 
     return (
       React.createElement("div", {className: "row fade-in"}, 
         React.createElement("div", {className: "large-12 columns"}, 
           React.createElement("div", {className: "channel-name fade-one"}, "Channel ", this.state.channel), 
-          React.createElement("ul", {className: "no-bullet"}, 
+          React.createElement("ul", {className: "no-bullet css-columns"}, 
             userList
           )
         ), 
         React.createElement("div", {className: "large-12 columns"}, 
-          React.createElement("ul", {className: "no-bullet"}, 
+          React.createElement("ul", {className: "no-bullet css-columns"}, 
             callsList
           )
         )
