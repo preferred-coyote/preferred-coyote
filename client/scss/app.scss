@@ -112,12 +112,12 @@ header.top-bar {
   margin-top:150px;
   margin-bottom:0;
   font-size:72px;
-  &+.lets-talk-about {
-    margin-top:-20px;
-    margin-bottom:.5em;
-    font-size:72px;
-    font-weight:700;
-  }
+}
+
+.flexslider {
+  margin-top:-20px;
+  margin-bottom:.5em;
+
 }
 
 /**
@@ -398,6 +398,7 @@ legend {
 }
 
 .bg h1 {
+  text-align: center;
   color: azure;
 }
 
@@ -425,11 +426,18 @@ legend {
 */
 
 .bg-tech {
+  padding: 30px;
   background-color: rgba(30, 36, 61, 0.85);
 }
 
 .bg-tech h1 {
+  text-align: center;
   color: azure;
+}
+
+.bg-about {
+  padding: 30px;
+  background-color: rgba(43, 201, 221, 0.36);  
 }
 
 .scrollToTop{
@@ -470,4 +478,64 @@ legend {
   border-color: grey;
   background-color: rgba(194, 223, 248, 0.53);
   border-radius: 25px;
+}
+
+/************** THIS IS THE FLEX SLIDER INFO ***************/
+
+/* ====================================================================================================================
+ * RESETS
+ * ====================================================================================================================*/
+.flex-container a:hover,
+.flex-slider a:hover,
+.flex-container a:focus,
+.flex-slider a:focus {
+  outline: none;
+}
+.slides,
+.slides > li,
+.flex-control-nav,
+.flex-direction-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flex-pauseplay span {
+  text-transform: capitalize;
+}
+/* ====================================================================================================================
+ * BASE STYLES
+ * ====================================================================================================================*/
+
+.flexslider {
+  margin: 0;
+  padding: 0; 
+}
+.flexslider .slides > li {
+  display: none;
+  -webkit-backface-visibility: hidden;
+  text-align: center;
+  color: azure;
+  font-size:72px;
+  font-weight:700;
+}
+.flexslider .slides img {
+  width: 100%;
+  display: block;
+}
+.flexslider .slides:after {
+  content: "\0020";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+html[xmlns] .flexslider .slides {
+  display: block;
+}
+* html .flexslider .slides {
+  height: 1%;
+}
+.no-js .flexslider .slides > li:first-child {
+  display: block;
 }
