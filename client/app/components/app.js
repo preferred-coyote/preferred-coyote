@@ -55,13 +55,12 @@ var App = React.createClass({
     if (this.state.loggedIn) {
       return [
         { to: 'dashboard', text: 'Dashboard'},
-        { to: 'editprofile', text: 'Edit Profile' },
+        { to: 'editprofile', text: 'Edit Profile' }
       ];
     } else {
       return [
         { to: 'signup', text: 'Sign Up'},
         { to: 'login', text: 'Login' },
-        { to: 'about', text: 'About'},
         { to: 'contact', text: 'Contact'}
       ];
     }

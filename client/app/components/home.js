@@ -2,7 +2,10 @@
 
 var React = require('react/addons');
 var Link = require('react-router').Link;
-var About = require('./about').About;
+
+
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 
 var Home = React.createClass({
 
@@ -21,6 +24,18 @@ var Home = React.createClass({
       $('html, body').animate({scrollTop : 0},800);
       return false;
     });
+
+    $(window).load(function() {
+      $('.flexslider').flexslider({
+        controlNav: false,
+        directionNav: false,
+        animationSpeed: 800,
+        slideshowSpeed: 3000,
+        randomize: true,
+        animation: 'fade',
+        easing: 'swing'
+      });
+    });
   },
 
   render: function() {
@@ -31,13 +46,38 @@ var Home = React.createClass({
           <div className="row">
             <div className="medium-12 columns">
               <h2 className="lets-talk-about text-white text-center">Let's talk about</h2>
-              <h3 className="topic text-center text-white lets-talk-about">Golden State Warriors</h3>
+              <div className="flexslider">
+                <ul className="slides">
+                  <li>Kandinsky</li>
+                  <li>Tetris</li>
+                  <li>JavaScript</li>
+                  <li>Jackie Chan</li>
+                  <li>San Francisco Housing Prices</li>
+                  <li>Full-Contact Yodelling</li>
+                  <li>Chess Strategy</li>
+                  <li>Tap-Dancing</li>
+                  <li>Hash Tables & Regex</li>
+                  <li>Cooking with Butter</li>
+                  <li>The NSA</li>
+                  <li>American Ninja Warrior</li>
+                  <li>Elaborate Kites</li>
+                  <li>Raising Backyard Chickens</li>
+                  <li>Fly Fishing</li>
+                  <li>Eagle Scouts</li>
+                  <li>Krav Maga</li>
+                </ul>
+              </div>
             </div>
           </div>
           <div className="row">
             <div className="large-6 small-centered columns">
               <Link to="signup" className="button large shadow round expand">Signup</Link>
             </div>
+          </div>
+        </div>
+        <div className="bg-about">
+          <div className="row">
+
           </div>
         </div>
 
