@@ -11,7 +11,6 @@ var RouteHandler = Router.RouteHandler;
 var App = require('./components/app').App;
 var NotFound = require('./components/notFound').NotFound;
 var Home = require('./components/home').Home;
-var About = require('./components/about').About;
 var Contact = require('./components/contact').Contact;
 var Login = require('./components/auth/login').Login;
 var Signup = require('./components/auth/signup').Signup;
@@ -28,7 +27,6 @@ var DashboardButtons = require('./components/dashboard/dashboardButtons').Dashbo
 var routes = (
   <Route name="conversely" path="/" handler={App}>
     <DefaultRoute name="index" handler={Home} />
-    <Route name="about" path="about" handler={About} />
     <Route name="contact" path="contact" handler={Contact} />
     <Route name="signup" path="signup" handler={Signup} />
     <Route name="login" path="login" handler={Login} />

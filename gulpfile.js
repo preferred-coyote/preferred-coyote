@@ -32,8 +32,7 @@ var paths = {
 // files to concat into final build
 var filesToUglify = [
   paths.src.bower + '/jquery/dist/jquery.min.js',
-  paths.src.bower + '/foundation/js/foundation.min.js',
-  paths.src.bower + '/foundation/js/foundation/foundation.orbit.js',
+  paths.src.bower + '/flexslider/jquery.flexslider.js',
   paths.dist.public + '/js/app.bundled.js'
 ];
 
